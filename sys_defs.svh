@@ -117,7 +117,7 @@ typedef struct packed {
     logic valid;
    // logic rd_wr_en;//0 for rd, 1 for wr
     logic [$clog2(`Max_Node_id)-1:0] Node_id;
-    logic[$clog2(`Num_Edge_PE)-1:0] PE_tag;
+    logic [$clog2(`Num_Edge_PE)-1:0] PE_tag;
     //logic empty;
 
 } FIFO2FV_info_MEM_CNTL;
@@ -131,14 +131,14 @@ typedef struct packed {
     logic valid;
    // logic rd_wr_en;//0 for rd, 1 for wr
     logic [$clog2(`Max_Node_id)-1:0] Node_id;
-    logic[$clog2(`Num_Edge_PE)-1:0] PE_tag;
+    logic [$clog2(`Num_Edge_PE)-1:0] PE_tag;
 
 } BUS2FV_info_FIFO;
 typedef struct packed {
     logic valid;
   //  logic rd_wr_en;//0 for rd, 1 for wr
     logic [$clog2(`Max_Node_id)-1:0] Node_id;
-    logic[$clog2(`Num_Edge_PE)-1:0] PE_tag;
+    logic [$clog2(`Num_Edge_PE)-1:0] PE_tag;
 
 } BUS2Neighbor_info_MEM_CNTL;
 typedef struct packed {

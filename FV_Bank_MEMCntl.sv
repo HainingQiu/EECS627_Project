@@ -1,25 +1,32 @@
+`include "sys_defs.svh"
 module FV_Bank_MEMCntl(
-    input clk,
-    input reset,
-    input [$clog2(`Max_FV_num):0] Num_FV,
-    input FV_MEM_CNTL2FV_Bank_CNTL FV_MEM_CNTL2FV_Bank_CNTL_in,
-    input FV_MEM2FV_Bank  FV_MEM2FV_Bank_in,
-    input [`FV_bandwidth-1:0 ] FV_SRAM_DATA,
+input clk,
+input reset,
+input [$clog2(`Max_FV_num):0] Num_FV,
+input FV_MEM_CNTL2FV_Bank_CNTL FV_MEM_CNTL2FV_Bank_CNTL_in,
+input FV_MEM2FV_Bank  FV_MEM2FV_Bank_in,
+input [`FV_bandwidth-1:0 ] FV_SRAM_DATA,
 
-    output FV_bank2SRAM_Interface FV_bank2SRAM_Interface_out,
-    output FV_bank_CNTL2Edge_PE FV_bank_CNTL2Edge_PE_out,
-    output Busy
-    
+output FV_bank2SRAM_Interface FV_bank2SRAM_Interface_out,
+output FV_bank_CNTL2Edge_PE FV_bank_CNTL2Edge_PE_out,
+output logic Busy
 );
-parameter IDLE='d0, Stream='d1, Write_FV='d2;
-logic [$clog2(2)-1:0] state,nx_state;
+
+typedef enum reg [1:0] {
+IDLE='d0,
+Stream='d1,
+Write_FV='d2
+} state_t;
+state_t state,nx_state;
+
+
 FV_info_CNTL2SRAM_Interface nx_FV_bank2SRAM_Interface_out;
 logic[$clog2(`Max_FV_num)-1:0] cnt,nx_cnt;
 logic [`$clog2(`Num_Edge_PE)-1:0] reg_PE_tag,nx_reg_PE_tag;
 FV_bank_CNTL2Edge_PE nx_FV_bank_CNTL2Edge_PE_out;
 always_ff @(posedge clk)begin
     if(reset)begin
-        state<=#1 'd0;
+        state<=#1 IDLE;
         reg_PE_tag<=#1 'd0;
     end
     else begin
@@ -29,7 +36,7 @@ always_ff @(posedge clk)begin
 end
 always_comb begin
     nx_cnt=cnt;
-    nx_FV_bank2SRAM_Interfaceout='d0;
+    nx_FV_bank2SRAM_Interface_out='d0;
     nx_FV_bank_CNTL2Edge_PE_out='d0;
     nx_FV_bank2SRAM_Interface_out='d0;
     Busy='d0;
