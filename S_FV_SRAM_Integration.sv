@@ -1,3 +1,4 @@
+`include "sys_defs.svh"
 module S_FV_SRAM_integration(
     input clk,
     input reset,
@@ -65,8 +66,8 @@ generate
 endgenerate
 // SMALL_FV_SRAM bank width iss 16 bits, depth is 256
 generate
-    genvar i;
-    for(i=0;i<`Num_Banks_FV;i=i+1)begin:decode_Instantiations
+    //genvar i;
+    for(i=0;i<`Num_Banks_FV;i=i+1)begin:SRAM_Instantiations
         SMALL_FV_SRAM SMALL_FV_SRAM(
             .Q(FV_bank2SRAM_Interface_out[i].Q),
             .CLK(clk),

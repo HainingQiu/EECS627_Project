@@ -24,7 +24,7 @@
 `define Size_Neighbor_SRAM `Max_Node_id*`Max_connectivity_all*`$clog2(`Max_Node_id) 
 `define line_Size_Neighbor_SRAM $clog2(`Size_Neighbor_SRAM)  //4096 lines
 `define Neighbor_info_bandwidth 16 //12 bits addr and  max_degree_Iter
-`define num_bank_neighbor_info 2;
+`define num_bank_neighbor_info 2
 `define Num_Banks_Neighbor 4
 `define start_bit_addr_neighbor $clog2(`max_degree_Iter)
 `define Neighbor_addr_length `Neighbor_info_bandwidth-$clog2(`max_degree_Iter)-$clog2(`Num_Banks_Neighbor)//bank  16-4-2=10bits

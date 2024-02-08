@@ -1,16 +1,16 @@
-
+`include "sys_defs.svh"
 module dual_port_RAM(
 	 input wclk
 	,input wenc
-	,input [$clog2(`DEPTH_FV_FIFO)-1:0] waddr  //深度对2取对数，得到地址的位宽。
-	,input FV_info2FV_FIFO wdata      	//数据写入
+	,input [$clog2(`DEPTH_FV_FIFO)-1:0] waddr
+	,input FV_info2FV_FIFO wdata
 	,input rclk
 	,input renc
-	,input [$clog2(`DEPTH_FV_FIFO)-1:0] raddr  //深度对2取对数，得到地址的位宽。
-	,output FV_info2FV_FIFO rdata 		//数据输出
+	,input [$clog2(`DEPTH_FV_FIFO)-1:0] raddr
+	,output FV_info2FV_FIFO rdata
 );
 
-logic  FV_info2FV_FIFO[`DEPTH_FV_FIFO-1:0] RAM_MEM;
+FV_info2FV_FIFO[`DEPTH_FV_FIFO-1:0] RAM_MEM;
 
 always @(posedge wclk) begin
 	if(wenc)
@@ -27,10 +27,10 @@ always @(posedge rclk) begin
 end 
 
 endmodule  
-/**********************************SFIFO************************************/
+
 module FV_Sync_FIFO(
 	input 					clk		, 
-	input 					rst	,
+	input 					rst_n,
 	input 					winc	,
 	input 			 		rinc	,
 	input FV_info2FV_FIFO	wdata	,
@@ -70,12 +70,12 @@ dual_port_RAM #(.DEPTH(DEPTH),
 tb_dual_port_RAM(
 	.wclk(clk),
 	.wenc(~wfull&&winc),
-	.waddr(wr_ptr),  //深度对2取对数，得到地址的位宽。
-	.wdata(wdata),     	//数据写入
+	.waddr(wr_ptr),
+	.wdata(wdata),
 	.rclk(clk),
 	.renc(~rempty&&rinc),
-	.raddr(rd_ptr),  //深度对2取对数，得到地址的位宽。
-	.rdata(rdata)		//数据输出
+	.raddr(rd_ptr),
+	.rdata(rdata)
 );
 
 endmodule
