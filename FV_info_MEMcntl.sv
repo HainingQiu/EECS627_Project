@@ -1,3 +1,4 @@
+`include "sys_defs.svh"
 module FV_info_MEMcntl(
     input clk,
     input reset,
@@ -10,13 +11,20 @@ module FV_info_MEMcntl(
     output FV_info2FV_FIFO FV_info2FV_FIFO_out
 );
 //FV_info_SRAM  each line has 12 bits for addr, {8 bits,4 bits offset}
-parameter IDLE='d0, Fetch_val='d1;
-logic[$clog2(2)-1:0] state,nx_state;
+typedef enum reg {
+IDLE='d0,
+Fetch_val='d1
+} state_t;
+state_t state,nx_state;
+
+FV_info_CNTL2SRAM_Interface nx_FV_info_CNTL2SRAM_Interface_out;
+FV_info2FV_FIFO nx_FV_info2FV_FIFO_out;
+
 logic[$clog2(`Num_Edge_PE)-1:0] reg_PE_tag,nx_PE_tag;
 FV_info_MEM_CNTL2FIFO nx_FV_info_MEM_CNTL2FIFO_out;
 always_ff@(posedge clk)begin
     if(!reset)begin
-        state<=#1 'd0;
+        state<=#1 IDLE;
         FV_info_CNTL2SRAM_Interface_out<=#1 'd0;
         FV_info2FV_FIFO_out<=#1 'd0;
         reg_PE_tag<=#1 'd0;
@@ -50,11 +58,12 @@ always_comb begin
             else begin
                 nx_state=IDLE;
             end
-        Fetch_val:
+        Fetch_val: begin
                 nx_FV_info2FV_FIFO_out.valid=1'b1;
                 nx_FV_info2FV_FIFO_out.FV_addr=FV_Info_SRAM2CNTL_in.D;
                 nx_FV_info2FV_FIFO_out.PE_tag=reg_PE_tag; 
                 nx_state=IDLE;
+		end
     endcase
 end
 

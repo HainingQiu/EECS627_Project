@@ -1,4 +1,5 @@
-module S_FV_SRAM_integration(
+`include "sys_defs.svh"
+module S_Neighbor_SRAM_integration(
     input clk,
     input reset,
     input winc,
@@ -32,7 +33,7 @@ Neighbor_MEM_CNTL Neighbor_MEM_CNTL_U(
     .reset,
     .Neighbor_info2Neighbor_FIFO_in(rdata),
     .Bank_busy(Bank_busy),
-    .empty(empty)
+    .empty(empty),
 
     .rinc_Neighbor_CNTL2FIFO(rinc_Neighbor_CNTL2FIFO),
     .Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_out(Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_out)
@@ -58,8 +59,8 @@ generate
 endgenerate
 //Neighbor_SRAM bank size is Width is 14 bits, depth is 1024
 generate
-    genvar i;
-    for(i=0;i<`Num_Banks_FV;i=i+1)begin:decode_Instantiations
+    //genvar i;
+    for(i=0;i<`Num_Banks_FV;i=i+1)begin:SRAM_Instantiations
         Neighbor_SRAM Neighbor_SRAM(
             .Q(Neighbor_bank2SRAM_Interface_out[i].Q),
             .CLK(clk),

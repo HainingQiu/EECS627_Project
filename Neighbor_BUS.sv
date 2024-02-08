@@ -1,5 +1,5 @@
+`include "sys_defs.svh"
 module Neighbor_BUS(
-
     input clk,
     input reset,
     input Neighbor_bank_CNTL2Edge_PE[`Num_Banks_Neighbor-1:0] Neighbor_bank_CNTL2Edge_PE_in,

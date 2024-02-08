@@ -1,3 +1,4 @@
+`include "sys_defs.svh"
 module Neighbor_info_Integration(
     input clk,
     input reset,
@@ -12,7 +13,7 @@ module Neighbor_info_Integration(
 logic rempty;
 logic wfull;
 logic rinc2Neighbor_FIFO;
-BUS2Neighbor_info_MEM_CNTL BUS2Neighbor_info_MEM_CNTL_in;
+//BUS2Neighbor_info_MEM_CNTL BUS2Neighbor_info_MEM_CNTL_in;
 Neighbor_info_CNTL2SRAM_interface[`num_bank_neighbor_info-1:0] Neighbor_info_CNTL2SRAM_interface_out;
 logic [`num_bank_neighbor_info-1:0][`Neighbor_info_bandwidth-1:0] Data_SRAM_in;
 
