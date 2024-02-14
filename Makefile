@@ -22,8 +22,8 @@ all:    simv
 # Modify starting here
 #####
 
-TESTBENCH = Weight_CNTL_tb.sv
-SIMFILES = Weight_CNTL.sv rr_arbiter.sv Output_Bus_arbiter.sv Edge_PE.sv S_FV_SRAM_Integration.sv SMALL_FV_SRAM.v FV_MEMcntl.sv FV_BUS.sv FV_Bank_MEMCntl.sv FV_Sync_FIFO.sv  FV_Info_Integration.sv FV_info_MEMcntl.sv FV_Info_Sync_FIFO.sv FV_info_SRAM.v Neighbor_Bank_MEMCntl.sv Neighbor_BUS.sv Neighbor_Info_CNTL.sv Neighbor_Info_Integration.sv Neighbor_Info_Sync_FIFO.sv Neighbor_MEM_CNTL.sv Neighbor_Sync_FIFO.sv S_Neighbor_SRAM_Integration.sv Neighbor_Info_SRAM.v Neighbor_SRAM.v
+TESTBENCH = testbench/BIG_FV_tb.sv # Weight_CNTL_tb.sv
+SIMFILES = Big_FV_wrapper.sv Big_FV_BankCntl.sv BIG_FV_SRAM.v # Weight_CNTL.sv rr_arbiter.sv Output_Bus_arbiter.sv Edge_PE.sv S_FV_SRAM_Integration.sv SMALL_FV_SRAM.v FV_MEMcntl.sv FV_BUS.sv FV_Bank_MEMCntl.sv FV_Sync_FIFO.sv  FV_Info_Integration.sv FV_info_MEMcntl.sv FV_Info_Sync_FIFO.sv FV_info_SRAM.v Neighbor_Bank_MEMCntl.sv Neighbor_BUS.sv Neighbor_Info_CNTL.sv Neighbor_Info_Integration.sv Neighbor_Info_Sync_FIFO.sv Neighbor_MEM_CNTL.sv Neighbor_Sync_FIFO.sv S_Neighbor_SRAM_Integration.sv Neighbor_Info_SRAM.v Neighbor_SRAM.v
 SYNFILES = my_waveform_gen.vg  my_controller.vg DFS.vg
 LIB = /afs/umich.edu/class/eecs470/lib/verilog/lec25dscc25.v
 

@@ -1,9 +1,12 @@
+`include "sys_defs.svh"
+`timescale 1 ns/1 ps
+
 module Big_FV_wrapper(
     input clk,
     input reset,
-    input [$clog2(`Max_replay_iter)-1:0] Cur_Replay_Iter,
-    input [$clog2(`Max_update_iter)-1:0] Cur_Update_Iter,
-    input [$clog2(Max_FV_num)-1:0] FV_num, 
+    input [$clog2(`Max_replay_Iter)-1:0] Cur_Replay_Iter,
+    input [$clog2(`Max_update_Iter)-1:0] Cur_Update_Iter,
+    input [$clog2(`Max_FV_num)-1:0] FV_num, 
     input Req2Output_SRAM_Bank [`Num_Banks_all_FV-1:0] req_pkt,
 
     output FV_MEM2FV_Bank [`Num_Banks_all_FV-1:0] Big_FV2Sm_FV,
@@ -29,18 +32,19 @@ module Big_FV_wrapper(
                 .reset(reset),
                 .Cur_Replay_Iter(Cur_Replay_Iter),
                 .Cur_Update_Iter(Cur_Update_Iter),
-                .FV_SRAM_DATA(FV_SRAM_DATA[i]),
+                .FV_SRAM_data(FV_SRAM_DATA[i]),
                 .FV_num(FV_num),
-                .req_pkt(req_pkt[i])
+                .req_pkt(req_pkt[i]),
 
                 .FV2SRAM_out(FV2SRAM_out[i]),
                 .Big_FV2Sm_FV(Big_FV2Sm_FV[i]), 
+                .EdgePE_rd_out(EdgePE_rd_out[i])
             );
         end 
    
         genvar i;
         for (i = 0; i < `Num_Banks_all_FV; i++) begin : ping_buffer
-            RA1SHD BIG_FV_SRAM(
+            BIG_FV_SRAM BIG_FV_SRAM_u(
                 .Q(FV_SRAM_DATA[i]), // output 
                 .CLK(clk),
                 .CEN(FV2SRAM_out[i].CEN),
