@@ -1,3 +1,6 @@
+`ifndef __SYS_DEFS_SVH__
+`define __SYS_DEFS_SVH__
+
 `define packet_size 16
 `define Num_Edge_PE 4
 `define Num_Banks_FV_INFO 1 //this is fv//neigbor info each replay_iteration info has one bank for simple
@@ -6,7 +9,9 @@
 // `define Bank_offset_FV_INFO 
 `define Max_Node_id 128
 `define Max_replay_Iter 4
+`define Max_update_Iter 4
 `define FV_info_bank_width 10 //don't need to store offset, in this case 16bits in FV SRAM, 2^4, save 4 bits
+
 // `define FV_info_SRAM_addr ;
 `define Max_FV_num 16 //#16 FVs
 `define FV_size 8// one FV is 8 bits
@@ -14,7 +19,12 @@
 `define Neighbor_ID_bandwidth 14
 `define FV_SRAM_size `Max_FV_num*`FV_size*`Max_Node_id/4
 `define FV_SRAM_bank_size `FV_SRAM_size/4    //unit bits
-// `define FV_SRAM_bank_cache_line `FV_SRAM_bank_size/`FV_bandwidth    //unit bits
+
+`define FV_MEM_size `Max_FV_num*`FV_size*`Max_Node_id // 4096
+`define FV_MEM_size `FV_SRAM_size/4    //unit bits 4096
+`define FV_MEM_cache_line `FV_SRAM_bank_size/`FV_bandwidth   //256
+
+`define FV_SRAM_bank_cache_line `FV_SRAM_bank_size/`FV_bandwidth    //unit bits
 `define FV_SRAM_bank_id_bit $clog2(`FV_SRAM_bank_size)+1 //which bank
 `define max_degree_Iter 16       //max num of neighbor for one replay iteration
 `define num_neighbor_id `Neighbor_ID_bandwidth/$clog2(`Max_Node_id)
@@ -349,6 +359,15 @@ typedef struct packed {
 	logic [$clog2(`Max_Node_id)-1:0] Node_id;
 
 } Vertex_Accu_Bank_in;
+
+typedef struct packed {
+    logic CEN;
+    logic WEN;
+    logic [$clog2(`FV_MEM_cache_line)-1:0] addr; // $clog2(`FV_MEM_cache_line) = 8
+    logic [`FV_bandwidth-1:0] FV_data; // TODO: parameterize this
+} Big_FV2SRAM_pkt;
+
+`endif
 
 //Bank[`] 16 
 // 16*16

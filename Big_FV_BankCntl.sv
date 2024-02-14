@@ -1,12 +1,15 @@
 `define NODE_PER_ITER_BANK `Max_Node_id/(`Num_Banks_all_FV*`Max_replay_Iter)
 
+`include "sys_defs.svh"
+`timescale 1 ns/1 ps
+
 module Big_FV_BankCntl(
     input clk,
-    input reset,
-    input [$clog2(`Max_replay_iter)-1:0] Cur_Replay_Iter,
-    input [$clog2(`Max_update_iter)-1:0] Cur_Update_Iter,
+    input reset, 
+    input [$clog2(`Max_replay_Iter)-1:0] Cur_Replay_Iter,
+    input [$clog2(`Max_update_Iter)-1:0] Cur_Update_Iter,
     input [`FV_bandwidth-1:0] FV_SRAM_data,
-    input [$clog2(Max_FV_num):0] FV_num,
+    input [$clog2(`Max_FV_num):0] FV_num,
 
     // input [`FV_bandwidth-1:0] FV_WB_data, 
     input Req2Output_SRAM_Bank req_pkt, // data write back to output buffer, either from acc_buff or vertex_buff
@@ -31,7 +34,7 @@ module Big_FV_BankCntl(
     logic [$clog2(`FV_SRAM_bank_cache_line)-1:0] node_offset;
     logic [$clog2(`NODE_PER_ITER_BANK):0] node_cnt;
     logic [$clog2(`NODE_PER_ITER_BANK):0] nx_node_cnt;
-    assign node_offset = node_cnt << ($clog2(`MAX_FV_num/2));
+    assign node_offset = node_cnt << ($clog2(`Max_FV_num/2));
 
     logic [$clog2(`Max_FV_num):0] cnt; // sram bank cache line per iteration = 64
     logic [$clog2(`Max_FV_num):0] nx_cnt;
@@ -40,8 +43,8 @@ module Big_FV_BankCntl(
     logic [$clog2(`Max_FV_num):0] nx_total_FV_num;
    
     logic [$clog2(`FV_MEM_cache_line)-1:0] iter_offset;
-    logic [$clog2(`Max_replay_iter)-1:0] cur_iter;
-    logic [$clog2(`Max_replay_iter)-1:0] nx_iter;
+    logic [$clog2(`Max_replay_Iter)-1:0] cur_iter;
+    logic [$clog2(`Max_replay_Iter)-1:0] nx_iter;
     logic change;
 
     assign iter_offset = cur_iter << ($clog2(`FV_SRAM_bank_cache_line));
@@ -89,7 +92,7 @@ module Big_FV_BankCntl(
                         FV2SRAM_out.addr = cnt + node_offset + (Cur_Replay_Iter << ($clog2(`FV_SRAM_bank_cache_line)));
                         FV2SRAM_out.FV_data = 'd0;
                         nx_total_FV_num = FV_num;
-                        nx_cnt = cnt++;
+                        nx_cnt = cnt + 1;
                         nx_iter = Cur_Replay_Iter;
                     end
                 end else begin
@@ -99,7 +102,7 @@ module Big_FV_BankCntl(
                                 nx_state = IDLE;
                             end else begin
                                 nx_state = FV_WB;
-                                nx_cnt = cnt++;
+                                nx_cnt = cnt + 1;
                             end
                             FV2SRAM_out.CEN = 1'b0;
                             FV2SRAM_out.WEN = 1'b0;
@@ -113,7 +116,7 @@ module Big_FV_BankCntl(
                             FV2SRAM_out.FV_data = 'd0;
                             nx_total_FV_num = FV_num;
                             nx_PE_tag = req_pkt.PE_tag;
-                            nx_cnt = cnt++;
+                            nx_cnt = cnt + 1;
                         end
                     end
                 end
@@ -134,13 +137,13 @@ module Big_FV_BankCntl(
                         nx_node_cnt = 'd0;
                         FV2SRAM_out.CEN = 1'b1; 
                     end else begin
-                        nx_node_cnt = node_cnt++;
+                        nx_node_cnt = node_cnt + 1;
                         nx_cnt = 'd0;
                     end
                 end else begin
                     Big_FV2Sm_FV.sos = 1'b0;
                     Big_FV2Sm_FV.eos = 1'b0; 
-                    nx_cnt = cnt++;
+                    nx_cnt = cnt + 1;
                 end
                 
                 // Configure output to small FV
@@ -171,7 +174,7 @@ module Big_FV_BankCntl(
                     nx_cnt = 'd0;
                 end else begin
                     EdgePE_rd_out.eos = 1'b0;
-                    nx_cnt = cnt++;
+                    nx_cnt = cnt + 1;
 
                     FV2SRAM_out.CEN = 1'b0;
                     FV2SRAM_out.WEN = 1'b1;
@@ -191,13 +194,13 @@ module Big_FV_BankCntl(
         if (!reset) begin
             cnt <= 'd0;
             state <= IDLE;
-            Big_FV2Sm_FV <= 0;
+            // Big_FV2Sm_FV <= 0;
             cur_iter <= 'd0;
             node_cnt <= 'd0;
             total_FV_num <= 'd0;
             PE_tag <= 'd0;
         end else begin
-            total_FV_line <= nx_total_FV_line;
+            // total_FV_line <= nx_total_FV_line;
             state <= nx_state;
             cnt <= nx_cnt;
             node_cnt <= nx_node_cnt;
