@@ -125,7 +125,7 @@ PACKET_SRAM_integration PACKET_SRAM_integration_U(
     .TB_state(TB_state)
 );//----------------------------//
 //WIDTH=16 Depth 256 for IMEM_SRAM//
-IMEM_SRAM IMEM_SRAM(
+IMem_Sram IMem_Sram_U(
     .Q(PACKET_CNTL_SRAM_out.SRAM_DATA),
     .CLK(clk),
     .CEN(0),
