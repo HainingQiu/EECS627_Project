@@ -179,6 +179,7 @@ typedef struct packed {
 typedef struct packed {
     logic[$clog2(`Max_Node_id)-1:0] A;
     logic CEN;
+    logic WEN;
 } FV_info_CNTL2SRAM_Interface;
 typedef struct packed {
     logic[$clog2(`Max_Node_id):0] A;
@@ -303,11 +304,12 @@ typedef struct packed {
 } DP_task2RS;
 
 typedef struct packed {
-	logic re_valid;
-    logic wr_valid;
+	logic wen;
+  
     logic[$clog2(`Max_packet_line)-1:0] SRAM_addr;
     logic [`packet_size-1:0] SRAM_DATA;
 } PACKET_CNTL2SRAM;
+
 typedef struct packed {
 	logic valid; 
     logic [`packet_size-1:0] packet;

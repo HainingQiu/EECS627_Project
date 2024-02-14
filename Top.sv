@@ -72,6 +72,7 @@ logic [$clog2(`Max_Node_id)-1:0] Node_id_out;
 Bank_Req2Req_Output_SRAM [`Num_Vertex_Unit-1:0] vertex_outbuff_pkt;
 logic Vertex_buffer_empty;
 //------------------------Wires------------------------------------------//
+logic[`packet_size-1:0] Data_SRAM_in;
 logic RS_unavailable, RS_empty;
 RS2Vertex_PE RS2Vertex_PE_out;
 logic Vertex_complete;
@@ -110,7 +111,7 @@ PACKET_SRAM_integration PACKET_SRAM_integration_U(
     .grant(Grant_WB_Packet_Decoder),
     .PE_IDLE(Edge_PE2DP_out.IDLE_flag),
     .Edge_PE2IMEM_CNTL_in(Edge_PE2IMEM_CNTL_out), // not connected
-    input [`packet_size-1:0] Data_SRAM_in,
+    .Data_SRAM_in(Data_SRAM_in),
     .bank_busy(edge_buffer_busy),
     .stream_end(EdgePE_rd_out.eos),
     .vertex_done(Vertex_buffer_empty),
@@ -124,6 +125,14 @@ PACKET_SRAM_integration PACKET_SRAM_integration_U(
     .TB_state(TB_state)
 );//----------------------------//
 //WIDTH=16 Depth 256 for IMEM_SRAM//
+IMEM_SRAM IMEM_SRAM(
+    .Q(PACKET_CNTL_SRAM_out.SRAM_DATA),
+    .CLK(clk),
+    .CEN(0),
+    .WEN(PACKET_CNTL_SRAM_out.wen),
+    .A(PACKET_CNTL_SRAM_out.SRAM_addr),
+    .D(Data_SRAM_in)
+);
 //--------------------------------------------------------------------Edge_PE-----------------------------------------------------------------//
 generate
     genvar i;

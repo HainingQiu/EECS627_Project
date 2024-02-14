@@ -31,6 +31,7 @@ always_ff@(posedge clk)begin
         for(int i=0;i<`num_bank_neighbor_info;i++)begin
             Neighbor_info_CNTL2SRAM_interface_out[i].A<=#1 'd0;
             Neighbor_info_CNTL2SRAM_interface_out[i].CEN<=#1 'd1;
+            Neighbor_info_CNTL2SRAM_interface_out[i].WEN<=#1 'd1;
         end
 
         Neighbor_info2Neighbor_FIFO_out<=#1 'd0;
@@ -50,6 +51,7 @@ always_comb begin
     for(int i=0;i<`num_bank_neighbor_info;i++)begin
         nx_Neighbor_info_CNTL2SRAM_interface_out[i].A= 'd0;
         nx_Neighbor_info_CNTL2SRAM_interface_out[i].CEN= 'd1;
+        nx_Neighbor_info_CNTL2SRAM_interface_out[Current_replay_Iter[1]].WEN=1'b1;
     end
     case(state)
         IDLE:
@@ -58,6 +60,7 @@ always_comb begin
                 nx_state=Fetch_val;
                 nx_Neighbor_info_CNTL2SRAM_interface_out[Current_replay_Iter[1]].A={Current_replay_Iter[0],BUS2Neighbor_info_MEM_CNTL_in.Node_id};
                 nx_Neighbor_info_CNTL2SRAM_interface_out[Current_replay_Iter[1]].CEN=1'b0;
+                nx_Neighbor_info_CNTL2SRAM_interface_out[Current_replay_Iter[1]].WEN=1'b1;
                 nx_PE_tag=BUS2Neighbor_info_MEM_CNTL_in.PE_tag;
             end
             else if(!empty && !Neighbor_ID_FIFO_full)begin
