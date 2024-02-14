@@ -9,7 +9,6 @@ input [`Neighbor_info_bandwidth-1:0] Neighbor_SRAM_DATA,
 output Neighbor_bank2SRAM_Interface Neighbor_bank2SRAM_Interface_out,
 output Neighbor_bank_CNTL2Edge_PE Neighbor_bank_CNTL2Edge_PE_out,
 output logic Busy
-
 );
 typedef enum reg {
 IDLE='d0,
@@ -29,6 +28,7 @@ always_ff @(posedge clk)begin
         reg_PE_tag<=#1 'd0;
         Num_neighbor_Iter<=#1 'd0;
         Neighbor_bank2SRAM_Interface_out.CEN <=#1 1'b1;
+        Neighbor_bank2SRAM_Interface_out.WEN <=#1 1'b1;
         Neighbor_bank2SRAM_Interface_out.A<=#1 'd0;
         Neighbor_bank_CNTL2Edge_PE_out<=#1 'd0;
         cnt<=#1 'd0;
@@ -56,6 +56,7 @@ always_comb begin
             if(Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_in.valid)begin
                 nx_state=Stream;
                 nx_Neighbor_bank2SRAM_Interface.CEN=1'b0;
+                nx_Neighbor_bank2SRAM_Interface.WEN = 1'b1;
                 nx_Neighbor_bank2SRAM_Interface.A=Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_in.Bank_addr[`Neighbor_info_bandwidth-1-2:`start_bit_addr_neighbor];         
                 nx_Num_neighbor_Iter=Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_in.Bank_addr[`start_bit_addr_neighbor-1:0];
                 nx_reg_PE_tag=Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_in.PE_tag;
@@ -63,6 +64,7 @@ always_comb begin
             else begin
                 nx_state=IDLE;
                 nx_Neighbor_bank2SRAM_Interface.CEN=1'b1;
+                nx_Neighbor_bank2SRAM_Interface.WEN=1'b1;
             end
         Stream:
             if(nx_Num_neighbor_Iter<'d3)begin
@@ -75,7 +77,8 @@ always_comb begin
                 nx_Neighbor_bank_CNTL2Edge_PE_out.valid=1'b1;
                 nx_Neighbor_bank_CNTL2Edge_PE_out.Neighbor_num_Iter=nx_Num_neighbor_Iter;
                 nx_cnt='d0;
-                nx_Neighbor_bank2SRAM_Interface.CEN=1'b1;
+                nx_Neighbor_bank2SRAM_Interface.CEN=1'b0;
+                nx_Neighbor_bank2SRAM_Interface.WEN= 1'b1;
             end
             else if(cnt[$clog2(`max_degree_Iter)-1:1]==nx_Num_neighbor_Iter[$clog2(`max_degree_Iter)-1:1])begin
                 nx_state=IDLE;
@@ -87,7 +90,8 @@ always_comb begin
                 nx_Neighbor_bank_CNTL2Edge_PE_out.valid=1'b1;
                 nx_Neighbor_bank_CNTL2Edge_PE_out.Neighbor_num_Iter=nx_Num_neighbor_Iter;
                 nx_cnt='d0;
-                nx_Neighbor_bank2SRAM_Interface.CEN=1'b1;
+                nx_Neighbor_bank2SRAM_Interface.CEN= 1'b0;
+                nx_Neighbor_bank2SRAM_Interface.WEN= 1'b1;
             end
             else if(cnt=='d0)begin
                 Busy=1'b1;
@@ -99,6 +103,7 @@ always_comb begin
                 nx_Neighbor_bank_CNTL2Edge_PE_out.Neighbor_num_Iter=nx_Num_neighbor_Iter;
                 nx_cnt=nx_cnt+'d2;
                 nx_Neighbor_bank2SRAM_Interface.CEN=1'b0;
+                nx_Neighbor_bank2SRAM_Interface.WEN= 1'b1;
                 nx_Neighbor_bank2SRAM_Interface.A=nx_Neighbor_bank2SRAM_Interface.A+1'b1;
             end
             else begin
@@ -111,9 +116,9 @@ always_comb begin
                 nx_Neighbor_bank_CNTL2Edge_PE_out.Neighbor_num_Iter=nx_Num_neighbor_Iter;
                 nx_cnt=nx_cnt+'d2;
                 nx_Neighbor_bank2SRAM_Interface.CEN=1'b0;
+                nx_Neighbor_bank2SRAM_Interface.WEN= 1'b1;
                 nx_Neighbor_bank2SRAM_Interface.A=nx_Neighbor_bank2SRAM_Interface.A+1'b1;
             end
-
     endcase
 end
 endmodule

@@ -6,13 +6,16 @@ module PACKET_SRAM_integration(
     input [`Num_Edge_PE-1:0]PE_IDLE,
     input Edge_PE2IMEM_CNTL Edge_PE2IMEM_CNTL_in,
     input [`packet_size-1:0] Data_SRAM_in,
+    input bank_busy,
+    input stream_end,
+    input vertex_done,
+    output task_complete,
     output PACKET_CNTL2SRAM  PACKET_CNTL_SRAM_out,
     output DP_task2Edge_PE [`Num_Edge_PE-1:0]DP_task2Edge_PE_out,
     output logic Req,
     output logic [$clog2(`Max_replay_Iter)-1:0]  replay_Iter,
     output logic [$clog2(16)-1:0 ]    Num_FV ,
-    output logic [$clog2(16)-1:0 ] Weights_boundary,
-    output logic [1:0] TB_state
+    output logic [$clog2(16)-1:0 ] Weights_boundary
 );
 DP2mem_packet DP2mem_packet_in;
 logic fifo_full;
@@ -21,7 +24,8 @@ com_packet mem2fifo,com2DPpacket;
 logic fifo_stall;
 logic RS_full;
 DP_task2RS DP_task2RS_out;
-logic[1:0] TB_state;
+
+logic cntl_done;
 logic RS_empty;
  PACKET_CNTL PACKET_CNTL_0(
     .clk(clk),
@@ -34,7 +38,7 @@ logic RS_empty;
     .Data_SRAM_in(Data_SRAM_in),
     .PACKET_CNTL_SRAM_out(PACKET_CNTL_SRAM_out),
     .mem2fifo(mem2fifo),
-    .TB_state(TB_state)
+    .cntl_done(cntl_done)
     
 );
 
@@ -55,7 +59,12 @@ decoder decoder_0(
     .RS_empty(RS_empty),
     .grant(grant), 
     .PE_IDLE(PE_IDLE),
+    .bank_busy(bank_busy),
+    .stream_end(stream_end),
     .DP_task2RS_out(DP_task2RS_out),
+    .cntl_done(cntl_done),
+    .vertex_done(vertex_done),
+    .task_complete(task_complete),
     .Req(Req),
     .fifo_stall(fifo_stall),
     .replay_iter_flag(replay_iter_flag),

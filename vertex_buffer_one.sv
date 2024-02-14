@@ -1,7 +1,7 @@
 module vertex_buffer_one(
     input clk, reset,
     // From Vertex PE
-    input Vertex_PE2Bank vertex_data_pkt, 
+    input Vertex2Accu_Bank vertex_data_pkt, 
     input Weight_Cntl2bank vertex_cntl_pkt,
     input req_grant,
  
@@ -31,7 +31,7 @@ module vertex_buffer_one(
         outbuff_pkt.eos = 1'b0;
         outbuff_pkt.data[0] = 'd0
         outbuff_pkt.data[1] = 'd0;
-        outbuff_pkt.nodeid = cur_nodeid;
+        outbuff_pkt.Node_id = cur_nodeid;
         outbuff_pkt.req = 1'b0;
 
         if (state == IDLE && vertex_cntl_pkt.sos && vertex_cntl_pkt.eos) begin
@@ -78,7 +78,7 @@ module vertex_buffer_one(
                 IDLE: begin
                     if (vertex_cntl_pkt.sos) begin
                         buffer[cnt] <= vertex_data_pkt.data + buffer[cnt];
-                        cur_nodeid <= vertex_data_pkt.nodeid;
+                        cur_nodeid <= vertex_data_pkt.Node_id;
                         if (vertex_cntl_pkt.eos) begin
                             state <= OUT_FV_WAIT;
                             // output pkt request

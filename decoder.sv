@@ -5,7 +5,12 @@ module decoder(
     input com_packet com2DPpacket,
     input RS_empty,
     input grant, 
+    input bank_busy,
     input [`Num_Edge_PE-1:0]PE_IDLE,
+    input stream_end,
+    input vertex_done,
+    input cntl_done,
+    output task_complete,
     output DP_task2RS DP_task2RS_out,
     output logic Req,
     output logic fifo_stall,
@@ -15,22 +20,24 @@ module decoder(
     output logic [$clog2(16)-1:0 ] Weights_boundary,
     output  DP2mem_packet DP2mem_packet_out
 );
-parameter IDLE='d0, wait_grant='d1,wait_replay_iter='d2;
-logic [1:0]state,nx_state;
+parameter IDLE='d0, wait_grant='d1,wait_replay_iter='d2,wait_stream='d3,wait_task_complete='d4;
+logic [2:0]state,nx_state;
 logic [$clog2(16)-1:0 ] nx_Weights_boundary,current_Weights_boundary;
 logic [$clog2(`Max_replay_Iter)-1:0] nx_replay_Iter ,current_replay_Iter;
 logic [`packet_size-1:0] nx_packet ,current_packet;
 logic [$clog2(16)-1:0 ] nx_Num_FV,current_Num_FV;
-logic nx_Req;
+logic nx_Req,current_Req;
 logic nx_fifo_stall;
 logic [3:0] Iter;
 logic PE_finish;
+
 
 assign Iter = com2DPpacket.packet[13:10];
 assign PE_finish = (&PE_IDLE);
 assign replay_Iter =current_replay_Iter;
 assign Num_FV =current_Num_FV;
 assign Weights_boundary =current_Weights_boundary;
+assign Req =nx_Req;
 always_ff @( posedge clk ) begin 
     if(reset)begin
         state <= 'd0;
@@ -38,7 +45,7 @@ always_ff @( posedge clk ) begin
         current_replay_Iter <= 'd0;
         current_packet <= 'd0;
         current_Num_FV <= 'd0; 
-        Req<= 'd0;
+        current_Req<= 'd0;
         fifo_stall<= 'd0;
     end
     else begin
@@ -47,7 +54,7 @@ always_ff @( posedge clk ) begin
         current_replay_Iter <= nx_replay_Iter;
         current_packet <= nx_packet;
         current_Num_FV <= nx_Num_FV; 
-        Req<= nx_Req;
+        current_Req<= nx_Req;
         fifo_stall<= nx_fifo_stall;
     end
 end
@@ -59,7 +66,7 @@ always_comb begin
         nx_Num_FV = current_Num_FV;  
         replay_iter_flag =0;
         DP_task2RS_out=0;
-        nx_Req =Req;
+        nx_Req =current_Req;
         nx_fifo_stall = 0;
         DP2mem_packet_out =0;
     if(com2DPpacket.valid && !replay_iter_flag) begin 
@@ -83,7 +90,7 @@ always_comb begin
                         end
                     end
             'b01:   begin 
-
+			
                         nx_packet = com2DPpacket.packet;
                         nx_state =  wait_replay_iter;
                         nx_fifo_stall = 'd1;
@@ -101,12 +108,14 @@ always_comb begin
     end
 
         case(state)
-        IDLE :  begin 
+        IDLE :  begin
+                    if(cntl_done)begin
+                    task_complete='d1;
+                    end
                     replay_iter_flag ='d0;
                     nx_packet = 0 ;
                     
                 end
-                
         wait_grant:   begin 
                         if(grant) begin
                             DP2mem_packet_out.packet = current_packet;
@@ -124,14 +133,14 @@ always_comb begin
 
                       end
         wait_replay_iter:   begin
-                            replay_iter_flag ='d1;
-                            if(RS_empty && PE_finish ) begin
+                            
+                            if(!bank_busy && RS_empty && PE_finish ) begin
                             DP2mem_packet_out.packet = current_packet;
                             DP2mem_packet_out.valid='d1;
-                                nx_state = IDLE;
+                                nx_state = wait_stream;
                                 nx_replay_Iter = nx_replay_Iter+'d1;
                                 
-                                nx_fifo_stall = 'd0;
+                                nx_fifo_stall = 'd1;
                             end
                             else begin
                                 DP2mem_packet_out = 0;
@@ -139,6 +148,28 @@ always_comb begin
                                 nx_state =wait_replay_iter;
                             end
         end
+        wait_stream:     begin
+                            if(stream_end)begin
+                                nx_state =wait_task_complete;
+                                nx_fifo_stall = 'd1;
+                            end
+                            else begin
+                                nx_fifo_stall = 'd1;
+                                nx_state=wait_stream;
+                            end
+                        end
+        wait_task_complete: begin
+                            replay_iter_flag ='d1;
+                            if(vertex_done)begin
+                                nx_state =IDLE;
+                                nx_fifo_stall = 'd0;
+                                
+                            end
+                            else begin
+                                nx_fifo_stall = 'd1;
+                                nx_state=wait_task_complete;
+                            end
+                        end
          default: begin
              nx_state=IDLE;
              nx_fifo_stall=0;

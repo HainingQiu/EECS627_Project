@@ -41,7 +41,7 @@ module edge_buffer_one(
         outbuff_pkt.eos = 1'b0;
         outbuff_pkt.data[0] = 'd0
         outbuff_pkt.data[1] = 'd0;
-        outbuff_pkt.nodeid = cur_nodeid;
+        outbuff_pkt.Node_id = cur_nodeid;
         outbuff_pkt.req = 1'b0;
 
         case (state)
