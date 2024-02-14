@@ -3,7 +3,7 @@ module Output_Bus_arbiter(
     input reset,
     input Edge_PE2Req_Output_SRAM[`Num_Edge_PE-1:0]  Edge_PE2Req_Output_SRAM_in,
     input Bank_Req2Req_Output_SRAM[`Num_Edge_PE-1:0] Edge_Bank2Req_Output_SRAM_in,
-    input Bank_Req2Req_Output_SRAM[`Num_Edge_PE-1:0] Vertex_Bank2Req_Output_SRAM_in,
+    input Bank_Req2Req_Output_SRAM[`Num_Vertex_Unit-1:0] Vertex_Bank2Req_Output_SRAM_in,
     input Output_Sram2Arbiter[`Num_Banks_FV-1:0] Output_Sram2Arbiter,
 
     output Req2Output_SRAM_Bank[`Num_Banks_FV-1:0] Req2Output_SRAM_Bank_out,

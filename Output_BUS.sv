@@ -1,7 +1,7 @@
 module Output_BUS(
     input clk,
     input reset,
-    input Output_bank_CNTL2Edge_PE[`Num_Banks_FV-1:0] Output_bank_CNTL2Edge_PE_in,
+    input FV_bank_CNTL2Edge_PE[`Num_Banks_FV-1:0] Output_bank_CNTL2Edge_PE_in,
     output Output_SRAM2Edge_PE[`Num_Edge_PE-1:0] Output_SRAM2Edge_PE_out
 );
 Output_SRAM2Edge_PE[`Num_Edge_PE-1:0] nx_Output_SRAM2Edge_PE_out;

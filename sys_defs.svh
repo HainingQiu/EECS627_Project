@@ -6,7 +6,7 @@
 // `define Bank_offset_FV_INFO 
 `define Max_Node_id 128
 `define Max_replay_Iter 4
-`define FV_info_bank_width 8 //don't need to store offset, in this case 16bits in FV SRAM, 2^4, save 4 bits
+`define FV_info_bank_width 10 //don't need to store offset, in this case 16bits in FV SRAM, 2^4, save 4 bits
 // `define FV_info_SRAM_addr ;
 `define Max_FV_num 16 //#16 FVs
 `define FV_size 8// one FV is 8 bits
@@ -40,7 +40,6 @@
 //---------------------------Vertex------------------------------//
 `define Max_Num_Weight_layer 16
 `define Mult_per_PE 2
-`define Num_Vertex_PE 4
 typedef struct packed {
     logic sos;
     logic eos;
@@ -317,12 +316,10 @@ typedef struct packed {
 //------------------------------ZGZ-------------------------//
 `define Num_RS2Vertex_PE 4 // RS will issue when 2 nodes are done
 
-
 typedef struct packed {
     logic [`Num_RS2Vertex_PE-1:0][`Mult_per_PE-1:0][`FV_size-1:0] FV_data;
     logic [`Num_RS2Vertex_PE-1:0][$clog2(`Max_Node_id)-1:0] Node_id;
-    // logic valid;
-    // logic fire; //
+    logic fire;
 } RS2Vertex_PE;
 
 typedef struct packed {
