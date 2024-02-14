@@ -5,27 +5,6 @@ module Top(
     output logic task_complete
 );
 
- Edge_PE
-#(parameter PE_tag = 0)(
-input clk,													// global clock
-input reset,												// sync active high reset
-input DP_task2Edge_PE DP_task2Edge_PE_in,					// dispatch task from command buffer
-input FV_SRAM2Edge_PE FV_SRAM2Edge_PE_in,					// feature value from FV SRAM (for current computation)
-input Output_SRAM2Edge_PE Output_SRAM2Edge_PE_in,			// feature value from output SRAM (last computation)
-input NeighborID_SRAM2Edge_PE NeighborID_SRAM2Edge_PE_in,	// neighbor info from neighbor SRAM
-input Grant_Bus_arbiter Grant_Bus_arbiter_in,				// grant request signal
-input Grant_output_Bus_arbiter_in,                             // grant output sram req
-input [$clog2(`Max_replay_Iter)-1:0] Cur_Replay_Iter,		// replay iteration count
-// input [$clog2(`Max_Node_id)-1:0] Last_Node_ID,				// last node ID address
-input Grant_WB_Packet,										// write back packet
-
-output Req_Bus_arbiter Req_Bus_arbiter_out,					// request to arbiter
-output Edge_PE2DP Edge_PE2DP_out,							// idle flag output to dispatch
-output Edge_PE2IMEM_CNTL Edge_PE2IMEM_CNTL_out,				// packet to IMEM
-output logic req_WB_Packet,									// request write back packet
-output Edge_PE2Bank Edge_PE2Bank_out,						// aggregated output to bank
-output Edge_PE2Req_Output_SRAM Req_Output_SRAM_out
-);
 //-------------------------PACKET_SRAM_integration--------------//
 PACKET_CNTL2SRAM  PACKET_CNTL_SRAM_out;
 DP_task2Edge_PE [`Num_Edge_PE-1:0]DP_task2Edge_PE_out;
@@ -88,21 +67,25 @@ logic[`Mult_per_PE-1:0][`FV_size-1:0] Weight_data2Vertex;
 Output_SRAM2Edge_PE[`Num_Edge_PE-1:0] Output_SRAM2Edge_PE_out;
 logic edge_buffer_busy;
 
-for(int i=0;i<`Num_Banks_FV-1;i++)begin
-assign Output_Sram2Arbiter_in[i].eos=EdgePE_rd_out[i].eos;
+genvar i,j,k;
+for(j=0;i<`Num_Banks_FV;j++)begin
+assign Output_Sram2Arbiter_in[j].eos=EdgePE_rd_out[j].eos;
 end
 
 assign FV_FIFO2FV_info_MEM_CNTL_in.full=wfull_S_FV_SRAM_integration;
-assign WB_packet_grants[0];
+
 logic[`Num_Vertex_Unit-1:0] vertex_buffer_grant;
-for(int i=0;i<`Num_Edge_PE;i++)begin
+for(i=0;i<`Num_Edge_PE;i++)begin
     assign Grant_output_Bus_arbiter_in[i]=Ouput_SRAM_Grants[i];
     assign Grant_WB_Packet_edge[i]=WB_packet_grants[i+1:1];
     assign reqs_WB_Packet[i+1]=req_WB_Packet_Edge[i];
     assign edge_req_grant[i]=Ouput_SRAM_Grants[i+`Num_Edge_PE];
     assign vertex_buffer_grant[i]=Ouput_SRAM_Grants[i+`Num_Edge_PE+`Num_Edge_PE];
 end
-
+for(k=0;i<`Num_Edge_PE;k++)begin
+assign vertex_data_pkt[k].data=Vertex_output[k];
+assign vertex_data_pkt[k].Node_id=Node_id_out[k];
+end
 assign Grant_WB_Packet_Decoder=WB_packet_grants[0];
 ////////////////////////////////////////////////////////////////////////////
 PACKET_SRAM_integration PACKET_SRAM_integration_U(
@@ -135,10 +118,10 @@ IMem_Sram IMem_Sram_U(
 );
 //--------------------------------------------------------------------Edge_PE-----------------------------------------------------------------//
 generate
-    genvar i;
-    for(i=0;i<`Num_Edge_PE;i=i+1)begin: Edge_PE
+    genvar l;
+    for(l=0;l<`Num_Edge_PE;l=l+1)begin: Edge_PE
         Edge_PE
-        #(.PE_tag(i))
+        #(.PE_tag(l))
         Edge_PE_U(
         .clk(clk),													// global clock
         .reset(reset),												// sync active high reset
@@ -152,12 +135,12 @@ generate
         // input [$clog2(`Max_Node_id)-1:0] Last_Node_ID,				// last node ID address
         .Grant_WB_Packet(Grant_WB_Packet_edge),										// write back packet
 
-        .Req_Bus_arbiter_out(Req_Bus_arbiter_out[i]),			    // request to arbiter
-        .Edge_PE2DP_out[Edge_PE2DP_out[i]],							// idle flag output to dispatch
-        .Edge_PE2IMEM_CNTL_out(Edge_PE2IMEM_CNTL_out[i]),				// packet to IMEM
+        .Req_Bus_arbiter_out(Req_Bus_arbiter_out[l]),			    // request to arbiter
+        .Edge_PE2DP_out(Edge_PE2DP_out[l]),							// idle flag output to dispatch
+        .Edge_PE2IMEM_CNTL_out(Edge_PE2IMEM_CNTL_out[l]),				// packet to IMEM
         .req_WB_Packet(req_WB_Packet[`Num_Edge_PE-1+1:1]),			// request write back packet
-        .Edge_PE2Bank_out(Edge_PE2Bank_out[i]),						// aggregated output to bank
-        .Req_Output_SRAM_out(Edge_PE_Req_Output_SRAM_out[i]) 
+        .Edge_PE2Bank_out(Edge_PE2Bank_out[l]),						// aggregated output to bank
+        .Req_Output_SRAM_out(Edge_PE_Req_Output_SRAM_out[l]) 
         );
     end 
 endgenerate
@@ -251,24 +234,21 @@ Vertex_RS  Vertex_RS_U(
 );
 //------------------------------------------Vertex_PE----------------------------------------------//
 generate
-    genvar i;
-    for(i=0;i<`Num_Vertex_PE;i=i+1)begin: Vertex_PE
+    genvar m;
+    for(m=0;m<`Num_Vertex_PE;m=m+1)begin: Vertex_PE
     Vertex_PE Vertex_PE_U(
     .clk(clk),
     .reset(reset),
     .Weight_data_in(Weight_data2Vertex),
-    .FV_RS(RS2Vertex_PE_out[i].FV_data),
-    .Node_id(RS2Vertex_PE_out[i].Node_id),
+    .FV_RS(RS2Vertex_PE_out[m].FV_data),
+    .Node_id(RS2Vertex_PE_out[m].Node_id),
 
     .Vertex_output(Vertex_output),
     .Node_id_out(Node_id_out)
 );
 end 
 endgenerate
-for(int i=0;i<`Num_Edge_PE;i++)begin
-assign vertex_data_pkt[i].data=Vertex_output[i];
-assign vertex_data_pkt[i].Node_id=Node_id_out[i];
-end
+
 //------------------------------------------------------Weight_CNTL-----------------------------------------//
 Weight_CNTL Weight_CNTL_U(
     .clk(clk),
@@ -283,7 +263,7 @@ Weight_CNTL Weight_CNTL_U(
     .RS_IDLE(Vertex_complete)
 );
 
-Big_FV_wrapper_0 Big_FV_wrapper_0(
+Big_FV_wrapper_0 Big_FV_wrapper_0_U(
     .clk(clk),
     .reset(reset),
     .Cur_Replay_Iter(Current_replay_Iter),
@@ -294,7 +274,7 @@ Big_FV_wrapper_0 Big_FV_wrapper_0(
     .Big_FV2Sm_FV(Big_FV2Sm_FV),
     .EdgePE_rd_out(EdgePE_rd_out) 
 );
-Big_FV_wrapper_1 Big_FV_wrapper_1(
+Big_FV_wrapper_1 Big_FV_wrapper_1_U(
     .clk(clk),
     .reset(reset),
     .Cur_Replay_Iter(Current_replay_Iter),
@@ -305,7 +285,7 @@ Big_FV_wrapper_1 Big_FV_wrapper_1(
     .Big_FV2Sm_FV(Big_FV2Sm_FV),
     .EdgePE_rd_out(EdgePE_rd_out) 
 );
-Output_BUS Output_BUS(
+Output_BUS Output_BUS_U(
     .clk(clk),
     .reset(reset),
     .Output_bank_CNTL2Edge_PE_in(EdgePE_rd_out),
