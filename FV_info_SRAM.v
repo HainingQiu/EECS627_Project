@@ -15,13 +15,13 @@
 //           			IBM CMRF8SF-LPVT Process
 //      version:		2008Q3V1
 //      comment:		
-//      configuration:	 -instname "FV_info_SRAM" -words 256 -bits 8 -frequency 1 -ring_width 2.0 -mux 8 -write_mask off -wp_size 8 -top_layer met4 -power_type rings -horiz met3 -vert met4 -cust_comment "" -bus_notation on -left_bus_delim "[" -right_bus_delim "]" -pwr_gnd_rename "VDD:VDD,GND:VSS" -prefix "" -pin_space 0.0 -name_case upper -check_instname on -diodes on -inside_ring_type GND -drive 6 -asvm on -corners ff_1p32v_m40c,ff_1p65v_125c,tt_1p2v_25c,ss_1p08v_125c
+//      configuration:	 -instname "FV_info_SRAM" -words 256 -bits 10 -frequency 10 -ring_width 2.0 -mux 8 -write_mask off -wp_size 8 -top_layer met4 -power_type rings -horiz met3 -vert met4 -cust_comment "" -bus_notation on -left_bus_delim "[" -right_bus_delim "]" -pwr_gnd_rename "VDD:VDD,GND:VSS" -prefix "" -pin_space 0.0 -name_case upper -check_instname on -diodes on -inside_ring_type GND -drive 6 -asvm on -corners ff_1p32v_m40c,ff_1p65v_125c,tt_1p2v_25c,ss_1p08v_125c
 //
 //      Verilog model for Synchronous Single-Port Ram
 //
 //      Instance Name:              FV_info_SRAM
 //      Words:                      256
-//      Bits:                       8
+//      Bits:                       10
 //      Mux:                        8
 //      Drive:                      6
 //      Write Mask:                 Off
@@ -31,7 +31,7 @@
 //      Redundant Columns:          0
 //      Test Muxes                  Off
 //
-//      Creation Date:  2024-02-12 21:52:45Z
+//      Creation Date:  2024-02-14 21:20:50Z
 //      Version: 	2008Q3V1
 //
 //      Modeling Assumptions: This model supports full gate level simulation
@@ -48,7 +48,7 @@
 //
 //      Known Work Arounds: N/A
 //
-// `timescale 1 ns/1 ps
+`timescale 1 ns/1 ps
 `celldefine
   module FV_info_SRAM (
                 Q,
@@ -58,7 +58,7 @@
                 A,
                 D
                 );
-   parameter                BITS = 8;
+   parameter                BITS = 10;
    parameter                WORD_DEPTH = 256;
    parameter                ADDR_WIDTH = 8;
    parameter                WORDX = {BITS{1'bx}};
@@ -66,7 +66,7 @@
    parameter                ADDRX = {ADDR_WIDTH{1'bx}};
    parameter                ADDR1 = {ADDR_WIDTH{1'b1}};
    parameter                WEN_WIDTH = 1;
-   parameter                WP_SIZE    = 8 ;
+   parameter                WP_SIZE    = 10 ;
    parameter                RCOLS = 0;
    parameter                MASKX = {WEN_WIDTH{1'bx}};
    parameter                MASK1 = {WEN_WIDTH{1'b1}};
@@ -79,12 +79,12 @@
    parameter                RCA_WIDTH = 1;
    parameter                RED_COLUMNS = 2;
 	
-   output [7:0]             Q;
+   output [9:0]             Q;
    input                    CLK;
    input                    CEN;
    input                    WEN;
    input [7:0]              A;
-   input [7:0]              D;
+   input [9:0]              D;
 
    reg [BITS+RED_COLUMNS-1:0]             mem [0:WORD_DEPTH-1];
    reg [BITS+RED_COLUMNS-1:0]             rows [(MUX*4)-1:0];   // added 2 bits for column redundancy
@@ -101,6 +101,8 @@
    reg                      NOT_A1;
    reg                      NOT_A0;
    reg [ADDR_WIDTH-1:0]     NOT_A;
+   reg                      NOT_D9;
+   reg                      NOT_D8;
    reg                      NOT_D7;
    reg                      NOT_D6;
    reg                      NOT_D5;
@@ -162,6 +164,8 @@
                NOT_A1,
                NOT_A0};
       NOT_D = {
+               NOT_D9,
+               NOT_D8,
                NOT_D7,
                NOT_D6,
                NOT_D5,
@@ -1021,6 +1025,8 @@
       end
    endfunction
 
+   buf (Q[9], _Q[9]);
+   buf (Q[8], _Q[8]);
    buf (Q[7], _Q[7]);
    buf (Q[6], _Q[6]);
    buf (Q[5], _Q[5]);
@@ -1040,6 +1046,8 @@
    buf (_A[2], A[2]);
    buf (_A[1], A[1]);
    buf (_A[0], A[0]);
+   buf (_D[9], D[9]);
+   buf (_D[8], D[8]);
    buf (_D[7], D[7]);
    buf (_D[6], D[6]);
    buf (_D[5], D[5]);
@@ -1066,6 +1074,8 @@
 	    NOT_A2 or
 	    NOT_A1 or
 	    NOT_A0 or
+	    NOT_D9 or
+	    NOT_D8 or
 	    NOT_D7 or
 	    NOT_D6 or
 	    NOT_D5 or
@@ -1148,6 +1158,10 @@
       $setuphold(posedge CLK &&& flag, negedge A[1], 1.000, 0.500, NOT_A1);
       $setuphold(posedge CLK &&& flag, posedge A[0], 1.000, 0.500, NOT_A0);
       $setuphold(posedge CLK &&& flag, negedge A[0], 1.000, 0.500, NOT_A0);
+      $setuphold(posedge CLK &&& D_flag, posedge D[9], 1.000, 0.500, NOT_D9);
+      $setuphold(posedge CLK &&& D_flag, negedge D[9], 1.000, 0.500, NOT_D9);
+      $setuphold(posedge CLK &&& D_flag, posedge D[8], 1.000, 0.500, NOT_D8);
+      $setuphold(posedge CLK &&& D_flag, negedge D[8], 1.000, 0.500, NOT_D8);
       $setuphold(posedge CLK &&& D_flag, posedge D[7], 1.000, 0.500, NOT_D7);
       $setuphold(posedge CLK &&& D_flag, negedge D[7], 1.000, 0.500, NOT_D7);
       $setuphold(posedge CLK &&& D_flag, posedge D[6], 1.000, 0.500, NOT_D6);
@@ -1170,6 +1184,8 @@
       $width(negedge CLK, 1.000, 0, NOT_CLK_MINL);
       $period(posedge CLK, 3.000, NOT_CLK_PER);
 
+      (CLK => Q[9])=(1.000, 1.000);
+      (CLK => Q[8])=(1.000, 1.000);
       (CLK => Q[7])=(1.000, 1.000);
       (CLK => Q[6])=(1.000, 1.000);
       (CLK => Q[5])=(1.000, 1.000);
