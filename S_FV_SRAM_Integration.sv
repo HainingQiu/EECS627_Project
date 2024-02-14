@@ -1,10 +1,10 @@
-`include "sys_defs.svh"
+// `include "sys_defs.svh"
 module S_FV_SRAM_integration(
     input clk,
     input reset,
-    input winc,
+    // input winc,
 	input FV_info2FV_FIFO	wdata,
-    input [$clog2(`Max_FV_num)-1:0] Num_FV,
+    input [$clog2(`Max_FV_num):0] Num_FV,
     input FV_MEM2FV_Bank[`Num_Banks_all_FV-1:0]  FV_MEM2FV_Bank_in,
 
     output FV_SRAM2Edge_PE[`Num_Edge_PE-1:0] FV_SRAM2Edge_PE_out,
@@ -48,7 +48,7 @@ FV_Sync_FIFO FV_Sync_FIFO_U(
 
 generate
     genvar i;
-    for(i=0;i<`Num_Banks_FV;i=i+1)begin:decode_Instantiations
+    for(i=0;i<`Num_Banks_FV;i=i+1)begin: FV_Bank_MEMCntl_Instantiations
         FV_Bank_MEMCntl FV_Bank_MEMCntl_U(
             .clk(clk),
             .reset(reset),
@@ -58,7 +58,7 @@ generate
             .FV_SRAM_DATA(FV_SRAM_DATA[i]),
 
             .FV_bank2SRAM_Interface_out(FV_bank2SRAM_Interface_out[i]),
-            .FV_bank_CNTL2Edge_PE_out(FV_bank_CNTL2Edge_PE_in),
+            .FV_bank_CNTL2Edge_PE_out(FV_bank_CNTL2Edge_PE_in[i]),
             .Busy(Bank_busy[i])
             
         );
@@ -69,12 +69,12 @@ generate
     //genvar i;
     for(i=0;i<`Num_Banks_FV;i=i+1)begin:SRAM_Instantiations
         SMALL_FV_SRAM SMALL_FV_SRAM(
-            .Q(FV_bank2SRAM_Interface_out[i].Q),
+            .Q(FV_SRAM_DATA[i] ),
             .CLK(clk),
             .CEN(FV_bank2SRAM_Interface_out[i].CEN),
             .WEN(FV_bank2SRAM_Interface_out[i].WEN),
             .A(FV_bank2SRAM_Interface_out[i].A),
-            .D(FV_SRAM_DATA[i])
+            .D(FV_bank2SRAM_Interface_out[i].D)
         );
         end 
 endgenerate
@@ -84,6 +84,6 @@ FV_BUS FV_WR_BUS(
     .clk(clk),
     .reset(reset),
     .FV_bank_CNTL2Edge_PE_in(FV_bank_CNTL2Edge_PE_in),
-    .FV_SRAM2Edge_PE_out(FV_SRAM_DATA)
+    .FV_SRAM2Edge_PE_out(FV_SRAM2Edge_PE_out)
 );
 endmodule

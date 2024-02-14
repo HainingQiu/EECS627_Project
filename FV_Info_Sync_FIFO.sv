@@ -1,5 +1,5 @@
 
-module dual_port_RAM(
+module FV_Info_Sync_FIFO_dual_port_RAM(
 	 input wclk
 	,input wenc
 	,input [$clog2(`Num_Edge_PE)-1:0] waddr  //深度对2取对数，得到地址的位宽。
@@ -10,7 +10,7 @@ module dual_port_RAM(
 	,output FIFO2FV_info_MEM_CNTL rdata 		//数据输出
 );
 
-logic  BUS2FV_info_FIFO[`Num_Edge_PE-1:0] RAM_MEM;
+BUS2FV_info_FIFO[`Num_Edge_PE-1:0] RAM_MEM;
 
 always @(posedge wclk) begin
 	if(wenc)
@@ -18,10 +18,11 @@ always @(posedge wclk) begin
 end 
 
 always @(posedge rclk) begin
-	if(renc)
+	if(renc)begin
 		rdata.valid <=#1 RAM_MEM[raddr].valid;
 		rdata.Node_id <=#1 RAM_MEM[raddr].Node_id;
 		rdata.PE_tag <=#1 RAM_MEM[raddr].PE_tag;
+	end
 	else begin
 		rdata<=#1 'd0;
 	end
@@ -44,8 +45,8 @@ module FV_Info_Sync_FIFO(
 reg [$clog2(`Num_Edge_PE):0] wr_ptr, rd_ptr;
 assign wfull={~wr_ptr[$clog2(`Num_Edge_PE)],wr_ptr[$clog2(`Num_Edge_PE)-1:0]}==rd_ptr;
 assign rempty=wr_ptr==rd_ptr;
-always@(posedge clk or negedge rst_n)begin
-	if(!rst_n)begin
+always@(posedge clk )begin
+	if(rst)begin
 		wr_ptr<='d0;
 	end
 	else if(winc&& !wfull)begin
@@ -55,8 +56,8 @@ always@(posedge clk or negedge rst_n)begin
 		wr_ptr<=wr_ptr;
 	end
 end
-always@(posedge clk or negedge rst_n)begin
-	if(!rst_n)begin
+always@(posedge clk)begin
+	if(rst)begin
 		rd_ptr<='d0;
 	end
 	else if(rinc&& !rempty)begin
@@ -67,16 +68,14 @@ always@(posedge clk or negedge rst_n)begin
 	end
 end
 
-dual_port_RAM #(.DEPTH(DEPTH),
-				.WIDTH(WIDTH))
-tb_dual_port_RAM(
+FV_Info_Sync_FIFO_dual_port_RAM tb_dual_port_RAM(
 	.wclk(clk),
 	.wenc(~wfull&&winc),
-	.waddr(wr_ptr),  //深度对2取对数，得到地址的位宽。
+	.waddr(wr_ptr[$clog2(`Num_Edge_PE)-1:0]),  //深度对2取对数，得到地址的位宽。
 	.wdata(wdata),     	//数据写入
 	.rclk(clk),
 	.renc(~rempty&&rinc),
-	.raddr(rd_ptr),  //深度对2取对数，得到地址的位宽。
+	.raddr(rd_ptr[$clog2(`Num_Edge_PE)-1:0]),  //深度对2取对数，得到地址的位宽。
 	.rdata(rdata)		//数据输出
 );
 

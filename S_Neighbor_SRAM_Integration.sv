@@ -1,8 +1,8 @@
-`include "sys_defs.svh"
+
 module S_Neighbor_SRAM_integration(
     input clk,
     input reset,
-    input winc,
+    // input winc,
 	input Neighbor_info2Neighbor_FIFO	wdata,
 
     output NeighborID_SRAM2Edge_PE[`Num_Edge_PE-1:0] NeighborID_SRAM2Edge_PE_out,
@@ -43,16 +43,16 @@ Neighbor_MEM_CNTL Neighbor_MEM_CNTL_U(
 
 generate
     genvar i;
-    for(i=0;i<`Num_Banks_Neighbor;i=i+1)begin:decode_Instantiations
+    for(i=0;i<`Num_Banks_Neighbor;i=i+1)begin:Neighbor_Bank_MEMCntl
     Neighbor_Bank_MEMCntl Neighbor_Bank_MEMCntl_U(
         .clk(clk),
         .reset(reset),
         .Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_in(Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_out[i]),
         // input FV_MEM2FV_Bank  FV_MEM2FV_Bank_in,
-        .Neighbor_SRAM_DATA(Neighbor_SRAM_DATA),
+        .Neighbor_SRAM_DATA(Neighbor_SRAM_DATA[i]),
 
         .Neighbor_bank2SRAM_Interface_out(Neighbor_bank2SRAM_Interface_out[i]),
-        .Neighbor_bank_CNTL2Edge_PE_out(Neighbor_bank_CNTL2Edge_PE_out),
+        .Neighbor_bank_CNTL2Edge_PE_out(Neighbor_bank_CNTL2Edge_PE_out[i]),
         .Busy(Bank_busy[i])
     );
         end 
@@ -62,10 +62,10 @@ generate
     //genvar i;
     for(i=0;i<`Num_Banks_FV;i=i+1)begin:SRAM_Instantiations
         Neighbor_SRAM Neighbor_SRAM(
-            .Q(Neighbor_bank2SRAM_Interface_out[i].Q),
+            .Q('d0),
             .CLK(clk),
             .CEN(Neighbor_bank2SRAM_Interface_out[i].CEN),
-            .WEN(Neighbor_bank2SRAM_Interface_out[i].WEN),
+            .WEN('d0),
             .A(Neighbor_bank2SRAM_Interface_out[i].A),
             .D(Neighbor_SRAM_DATA[i])
         );

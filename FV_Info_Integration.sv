@@ -1,4 +1,4 @@
-`include "sys_defs.svh"
+// `include "sys_defs.svh"
 module FV_info_Integration(
 input clk,
 input reset,
@@ -16,7 +16,7 @@ FIFO2FV_info_MEM_CNTL FIFO2FV_info_MEM_CNTL_in;
 FV_info_MEM_CNTL2FIFO FV_info_MEM_CNTL2FIFO_out;
 FV_Info_Sync_FIFO FV_Info_Sync_FIFO_U(
 	.clk(clk), 
-	.rst(rst),
+	.rst(reset),
 	.winc(BUS2FV_info_FIFO_in.valid),
 	.rinc(FV_info_MEM_CNTL2FIFO_out.rinc),
 	.wdata(BUS2FV_info_FIFO_in),
@@ -27,7 +27,7 @@ FV_Info_Sync_FIFO FV_Info_Sync_FIFO_U(
 );
 FV_info_MEMcntl FV_info_MEMcntl_U0(
     .clk(clk),
-    .reset(clk),
+    .reset(reset),
     .empty(rempty),
     .FIFO2FV_info_MEM_CNTL_in(FIFO2FV_info_MEM_CNTL_in),
     .FV_FIFO2FV_info_MEM_CNTL_in(FV_FIFO2FV_info_MEM_CNTL_in),

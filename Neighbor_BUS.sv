@@ -1,4 +1,4 @@
-`include "sys_defs.svh"
+
 module Neighbor_BUS(
     input clk,
     input reset,
@@ -8,7 +8,7 @@ module Neighbor_BUS(
 NeighborID_SRAM2Edge_PE[`Num_Edge_PE-1:0] nx_NeighborID_SRAM2Edge_PE_out;
 
 always_ff@(posedge clk)begin
-    if(!reset)begin
+    if(reset)begin
         NeighborID_SRAM2Edge_PE_out<=#1 'd0;
     end
     else begin
@@ -18,12 +18,12 @@ end
 always_comb begin
     nx_NeighborID_SRAM2Edge_PE_out='d0;
     for (int i=0;i<`Num_Banks_FV;i++)begin
-        if(Neighbor_bank_CNTL2Edge_PE_in[i].valid)begin
+
             nx_NeighborID_SRAM2Edge_PE_out[Neighbor_bank_CNTL2Edge_PE_in[i].PE_tag].sos=Neighbor_bank_CNTL2Edge_PE_in[i].sos;
             nx_NeighborID_SRAM2Edge_PE_out[Neighbor_bank_CNTL2Edge_PE_in[i].PE_tag].eos=Neighbor_bank_CNTL2Edge_PE_in[i].eos;
             nx_NeighborID_SRAM2Edge_PE_out[Neighbor_bank_CNTL2Edge_PE_in[i].PE_tag].Neighbor_ids=Neighbor_bank_CNTL2Edge_PE_in[i].data;
             nx_NeighborID_SRAM2Edge_PE_out[Neighbor_bank_CNTL2Edge_PE_in[i].PE_tag].Neighbor_num_Iter=Neighbor_bank_CNTL2Edge_PE_in[i].data;
-        end
+
     end
 end
 

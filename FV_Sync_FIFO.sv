@@ -1,4 +1,4 @@
-`include "sys_defs.svh"
+// `include "sys_defs.svh"
 module dual_port_RAM(
 	 input wclk
 	,input wenc
@@ -30,7 +30,7 @@ endmodule
 
 module FV_Sync_FIFO(
 	input 					clk		, 
-	input 					rst_n,
+	input 					rst,
 	input 					winc	,
 	input 			 		rinc	,
 	input FV_info2FV_FIFO	wdata	,
@@ -42,8 +42,8 @@ module FV_Sync_FIFO(
 reg [$clog2(`DEPTH_FV_FIFO):0] wr_ptr, rd_ptr;
 assign wfull={~wr_ptr[$clog2(`DEPTH_FV_FIFO)],wr_ptr[$clog2(`DEPTH_FV_FIFO)-1:0]}==rd_ptr;
 assign rempty=wr_ptr==rd_ptr;
-always@(posedge clk or negedge rst_n)begin
-	if(!rst_n)begin
+always@(posedge clk)begin
+	if(rst)begin
 		wr_ptr<='d0;
 	end
 	else if(winc&& !wfull)begin
@@ -53,8 +53,8 @@ always@(posedge clk or negedge rst_n)begin
 		wr_ptr<=wr_ptr;
 	end
 end
-always@(posedge clk or negedge rst_n)begin
-	if(!rst_n)begin
+always@(posedge clk)begin
+	if(rst)begin
 		rd_ptr<='d0;
 	end
 	else if(rinc&& !rempty)begin
@@ -65,16 +65,14 @@ always@(posedge clk or negedge rst_n)begin
 	end
 end
 
-dual_port_RAM #(.DEPTH(DEPTH),
-				.WIDTH(WIDTH))
-tb_dual_port_RAM(
+dual_port_RAM tb_dual_port_RAM(
 	.wclk(clk),
 	.wenc(~wfull&&winc),
-	.waddr(wr_ptr),
+	.waddr(wr_ptr[$clog2(`DEPTH_FV_FIFO)-1:0]),
 	.wdata(wdata),
 	.rclk(clk),
 	.renc(~rempty&&rinc),
-	.raddr(rd_ptr),
+	.raddr(rd_ptr[$clog2(`DEPTH_FV_FIFO)-1:0]),
 	.rdata(rdata)
 );
 
