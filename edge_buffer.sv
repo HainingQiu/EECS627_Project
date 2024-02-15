@@ -24,12 +24,14 @@ module edge_buffer(
 
     output Bank2RS RS_pkt_out,
     output logic busy,
-    output Bank2out_buff [`Num_Edge_PE-1:0] outbuff_pkt
+    output Bank_Req2Req_Output_SRAM [`Num_Edge_PE-1:0] outbuff_pkt
 );
-
+logic[`Num_Edge_PE-1:0] bank_busy;
+Bank2RS[`Num_Edge_PE-1:0] rs_pkt;
     assign busy = |bank_busy;
     generate
-        for (int i = 0; i < `Num_Edge_PE; i++) begin
+        genvar i;
+        for (i = 0; i < `Num_Edge_PE; i++) begin
             edge_buffer_one buffer1 (
                 .clk(clk),
                 .reset(reset),
@@ -74,6 +76,7 @@ module round_robin_arbiter (
     input		reset,
     input		clk,
     input	[3:0]	req,
+    input   rs_busy,
     output	[3:0]	grant
 );
 
@@ -83,14 +86,15 @@ logic	[3:0]	mask_grant;
 logic	[3:0]	grant_comb;
 
 logic	[3:0]	no_mask_req;
-logic	[3:0]	nomask_grant;
-
+// logic	[3:0]	nomask_grant;
+logic   [3:0]   no_mask_grant;
 always @ (posedge clk or negedge reset)
 begin
-	if (!reset)
+	if (reset)begin
 		rotate_ptr[3:0] <= 4'b1111;
         grant[3:0] <= 4'b0;
-	else
+    end
+	else begin
         grant[3:0] <= grant_comb[3:0] & (~{4{rs_busy}});
 		case (1'b1) // synthesis parallel_case
 			grant_comb[0]: rotate_ptr[3:0] <= 4'b1111;
@@ -98,6 +102,7 @@ begin
 			grant_comb[2]: rotate_ptr[3:0] <= 4'b0011;
 			grant_comb[3]: rotate_ptr[3:0] <= 4'b0001;
 		endcase
+    end
 end
 
 assign mask_req[3:0] = req[3:0] & rotate_ptr[3:0];
@@ -126,7 +131,7 @@ end
 
 // not or
 assign no_mask_req = ~|mask_req[3:0];
-assign grant_comb[3:0] = (nomask_grant[3:0] & {4{no_mask_req}}) | mask_grant[3:0];
+assign grant_comb[3:0] = (no_mask_grant[3:0] & {4{no_mask_req}}) | mask_grant[3:0];
 
 
 

@@ -62,13 +62,13 @@ generate
             .Busy(Bank_busy[i])
             
         );
-        end 
-endgenerate
+    end 
+//endgenerate
 // SMALL_FV_SRAM bank width iss 16 bits, depth is 256
-generate
+//generate
     //genvar i;
     for(i=0;i<`Num_Banks_FV;i=i+1)begin:SRAM_Instantiations
-        SMALL_FV_SRAM SMALL_FV_SRAM(
+        SMALL_FV_SRAM SMALL_FV_SRAM_U(
             .Q(FV_SRAM_DATA[i] ),
             .CLK(clk),
             .CEN(FV_bank2SRAM_Interface_out[i].CEN),
@@ -76,7 +76,7 @@ generate
             .A(FV_bank2SRAM_Interface_out[i].A),
             .D(FV_bank2SRAM_Interface_out[i].D)
         );
-        end 
+    end 
 endgenerate
 
 FV_BUS FV_WR_BUS(

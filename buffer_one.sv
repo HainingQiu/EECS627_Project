@@ -1,4 +1,4 @@
-`include "sys_defs.svh"
+// `include "sys_defs.svh"
 
 module buffer_one(
     input clk, reset,

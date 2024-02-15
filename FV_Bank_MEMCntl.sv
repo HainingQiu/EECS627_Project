@@ -92,7 +92,7 @@ always_comb begin
                 nx_FV_bank_CNTL2Edge_PE_out.eos=1'b1;
                 nx_FV_bank_CNTL2Edge_PE_out.FV_data=Num_FV[0]?{8'd0,FV_SRAM_DATA[7:0]}:FV_SRAM_DATA;
                 nx_FV_bank_CNTL2Edge_PE_out.PE_tag=nx_reg_PE_tag;
-                nx_FV_bank_CNTL2Edge_PE_out.valid=1'b1;
+                // nx_FV_bank_CNTL2Edge_PE_out.valid=1'b1;
                 nx_FV_bank2SRAM_Interface_out.CEN=1'b0;
                 nx_FV_bank2SRAM_Interface_out.WEN=1'b1;
                 nx_cnt='d0;
@@ -104,7 +104,7 @@ always_comb begin
                 nx_FV_bank_CNTL2Edge_PE_out.eos=1'b1;
                 nx_FV_bank_CNTL2Edge_PE_out.FV_data=Num_FV[0]?{8'd0,FV_SRAM_DATA[7:0]}:FV_SRAM_DATA;
                 nx_FV_bank_CNTL2Edge_PE_out.PE_tag=nx_reg_PE_tag;
-                nx_FV_bank_CNTL2Edge_PE_out.valid=1'b1;
+                // nx_FV_bank_CNTL2Edge_PE_out.valid=1'b1;
                 nx_cnt='d0;
                 nx_FV_bank2SRAM_Interface_out.CEN=1'b0;
                 nx_FV_bank2SRAM_Interface_out.WEN=1'b1;
@@ -115,7 +115,7 @@ always_comb begin
                 nx_FV_bank_CNTL2Edge_PE_out.eos=1'b0;
                 nx_FV_bank_CNTL2Edge_PE_out.FV_data=FV_SRAM_DATA;
                 nx_FV_bank_CNTL2Edge_PE_out.PE_tag=nx_reg_PE_tag;
-                nx_FV_bank_CNTL2Edge_PE_out.valid=1'b1;
+                // nx_FV_bank_CNTL2Edge_PE_out.valid=1'b1;
                 nx_FV_bank2SRAM_Interface_out.CEN=1'b0;
                 nx_FV_bank2SRAM_Interface_out.WEN=1'b1;
                 nx_FV_bank2SRAM_Interface_out.A=nx_FV_bank2SRAM_Interface_out.A+1'b1;
@@ -127,7 +127,7 @@ always_comb begin
                 nx_FV_bank_CNTL2Edge_PE_out.eos=1'b0;
                 nx_FV_bank_CNTL2Edge_PE_out.FV_data=FV_SRAM_DATA;
                 nx_FV_bank_CNTL2Edge_PE_out.PE_tag=nx_reg_PE_tag;
-                nx_FV_bank_CNTL2Edge_PE_out.valid=1'b1;
+                // nx_FV_bank_CNTL2Edge_PE_out.valid=1'b1;
                 nx_cnt=nx_cnt+'d2;
                 nx_FV_bank2SRAM_Interface_out.CEN=1'b0;
                 nx_FV_bank2SRAM_Interface_out.WEN=1'b1;

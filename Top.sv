@@ -66,7 +66,7 @@ Bank2RS [`Num_Edge_PE-1:0] RS_pkt_out;
 logic[`Mult_per_PE-1:0][`FV_size-1:0] Weight_data2Vertex;
 Output_SRAM2Edge_PE[`Num_Edge_PE-1:0] Output_SRAM2Edge_PE_out;
 logic edge_buffer_busy;
-
+logic [`Num_Edge_PE-1:0]edge_req_grant;
 genvar i,j,k;
 for(j=0;i<`Num_Banks_FV;j++)begin
 assign Output_Sram2Arbiter_in[j].eos=EdgePE_rd_out[j].eos;
@@ -202,7 +202,7 @@ Output_Bus_arbiter Output_Bus_arbiter_U(
     .Edge_PE2Req_Output_SRAM_in(Edge_PE_Req_Output_SRAM_out),
     .Edge_Bank2Req_Output_SRAM_in(Edge_Bank2Req_Output_SRAM_in),
     .Vertex_Bank2Req_Output_SRAM_in(vertex_outbuff_pkt),
-    .Output_Sram2Arbiter(Output_Sram2Arbiter),
+    .Output_Sram2Arbiter(Output_Sram2Arbiter_in),
 
     .Req2Output_SRAM_Bank_out(Req2Output_SRAM_Bank_out),
     .Ouput_SRAM_Grants(Ouput_SRAM_Grants)
@@ -235,7 +235,7 @@ Vertex_RS  Vertex_RS_U(
 //------------------------------------------Vertex_PE----------------------------------------------//
 generate
     genvar m;
-    for(m=0;m<`Num_Vertex_PE;m=m+1)begin: Vertex_PE
+    for(m=0;m<`Num_Vertex_Unit;m=m+1)begin: Vertex_PE
     Vertex_PE Vertex_PE_U(
     .clk(clk),
     .reset(reset),

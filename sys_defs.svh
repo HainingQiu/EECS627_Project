@@ -14,6 +14,7 @@
 
 // `define FV_info_SRAM_addr ;
 `define Max_FV_num 16 //#16 FVs
+`define MAX_FV_num `Max_FV_num
 `define FV_size 8// one FV is 8 bits
 `define FV_bandwidth 16
 `define Neighbor_ID_bandwidth 14

@@ -1,7 +1,7 @@
 `define NODE_PER_ITER_BANK `Max_Node_id/(`Num_Banks_all_FV*`Max_replay_Iter)
 
-`include "sys_defs.svh"
-`timescale 1 ns/1 ps
+// `include "sys_defs.svh"
+// `timescale 1 ns/1 ps
 
 module Big_FV_BankCntl_1(
     input clk,

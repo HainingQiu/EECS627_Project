@@ -1,5 +1,5 @@
-`include "sys_defs.svh"
-`timescale 1 ns/1 ps
+// `include "sys_defs.svh"
+// `timescale 1 ns/1 ps
 
 module Big_FV_wrapper(
     input clk,

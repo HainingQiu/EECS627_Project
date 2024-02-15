@@ -3,7 +3,7 @@ module SMALL_FV_SRAM_tb();
 
 localparam	BITS = 16;
 localparam	WORD_DEPTH = 256;
-localparam	ADDR_WIDTH = 8;
+localparam	ADDR_WIDTH = 8;// `timescale 1 ns/1 ps
 
 logic [BITS-1:0] D, Q;		// SRAM I/O port
 logic [ADDR_WIDTH-1:0] A;	// SRAM address port

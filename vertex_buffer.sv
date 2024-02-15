@@ -10,12 +10,13 @@ module vertex_buffer(
     output logic empty,
     output Bank_Req2Req_Output_SRAM [`Num_Vertex_Unit-1:0] outbuff_pkt
 );
-
+logic[`Num_Vertex_Unit-1:0] bank_busy;
     assign busy = |bank_busy;
     assign empty = ~|bank_busy;
 
     generate
-        for (int i = 0; i < `Num_Vertex_Unit; i++) begin
+        genvar i;
+        for (i = 0; i < `Num_Vertex_Unit; i++) begin
             vertex_buffer_one buffer2 (
                 .clk(clk),
                 .reset(reset),

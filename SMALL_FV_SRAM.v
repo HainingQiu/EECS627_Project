@@ -49,7 +49,7 @@
 //      Known Work Arounds: N/A
 //
 // `timescale 1 ns/1 ps
-`celldefine
+//`celldefine
   module SMALL_FV_SRAM (
                 Q,
                 CLK,
@@ -1246,4 +1246,4 @@
    endspecify
 
 endmodule
-`endcelldefine
+//`endcelldefine
