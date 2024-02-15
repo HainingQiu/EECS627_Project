@@ -33,7 +33,7 @@ module edge_buffer_one(
     localparam OUT_FV_WAIT = 5;
     localparam OUT_FV = 6;
 
-    assign busy = !(state == IDLE);
+    assign bank_busy = !(state == IDLE);
 
     always_comb begin
         outbuff_pkt.Grant_valid = 1'b0;

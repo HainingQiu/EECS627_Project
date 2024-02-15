@@ -22,7 +22,7 @@ module vertex_buffer_one(
     localparam OUT_FV_WAIT = 2;
     localparam OUT_FV = 3; 
 
-    assign busy = !(state == IDLE);
+    assign bank_busy = !(state == IDLE);
 
 
     always_comb begin
