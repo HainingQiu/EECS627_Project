@@ -41,24 +41,24 @@ assign Weights_boundary =current_Weights_boundary;
 assign Req =nx_Req;
 always_ff @( posedge clk ) begin 
     if(reset)begin
-        state <= 'd0;
-        current_Weights_boundary <= 'd0;
-        current_replay_Iter <= 'd0;
-        current_packet <= 'd0;
-        current_Num_FV <= 'd0; 
-        current_Req<= 'd0;
-        fifo_stall<= 'd0;
-        current_replay_iter_flag<= 'd0;
+        state <= #1 'd0;
+        current_Weights_boundary <= #1 'd0;
+        current_replay_Iter <= #1 'd0;
+        current_packet <= #1 'd0;
+        current_Num_FV <= #1 'd0; 
+        current_Req<= #1 'd0;
+        fifo_stall<= #1 'd0;
+        current_replay_iter_flag<= #1 'd0;
     end
     else begin
-        state <= nx_state;
-        current_Weights_boundary <= nx_Weights_boundary;
-        current_replay_Iter <= nx_replay_Iter;
-        current_packet <= nx_packet;
-        current_Num_FV <= nx_Num_FV; 
-        current_Req<= nx_Req;
-        fifo_stall<= nx_fifo_stall;
-        current_replay_iter_flag<=replay_iter_flag;
+        state <= #1 nx_state;
+        current_Weights_boundary <= #1 nx_Weights_boundary;
+        current_replay_Iter <= #1 nx_replay_Iter;
+        current_packet <= #1 nx_packet;
+        current_Num_FV <= #1 nx_Num_FV; 
+        current_Req<= #1 nx_Req;
+        fifo_stall<= #1 nx_fifo_stall;
+        current_replay_iter_flag<= #1 replay_iter_flag;
     end
 end
 always_comb begin

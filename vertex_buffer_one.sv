@@ -68,25 +68,25 @@ module vertex_buffer_one(
 
     always_ff @(posedge clk) begin
         if (reset) begin
-            buffer <= 0;
-            state <= IDLE;
-            cnt <= 'd0;
-            output_FV_num <= 'd0;
-            cur_nodeid <= 'd0;
+            buffer <= #1  0;
+            state <= #1  IDLE;
+            cnt <= #1  'd0;
+            output_FV_num <= #1 'd0;
+            cur_nodeid <= #1  'd0;
         end else begin
             case (state)
                 IDLE: begin
                     if (vertex_cntl_pkt.sos) begin
-                        buffer[cnt] <= vertex_data_pkt.data + buffer[cnt];
-                        cur_nodeid <= vertex_data_pkt.Node_id;
+                        buffer[cnt] <= #1 vertex_data_pkt.data + buffer[cnt];
+                        cur_nodeid <= #1 vertex_data_pkt.Node_id;
                         if (vertex_cntl_pkt.eos) begin
-                            state <= OUT_FV_WAIT;
+                            state <= #1 OUT_FV_WAIT;
                             // output pkt request
-                            output_FV_num <= cnt + 1;
+                            output_FV_num <= #1 cnt + 1;
                         end else begin
-                            state <= STREAM_IN;
+                            state <= #1 STREAM_IN;
                             if (vertex_cntl_pkt.change) begin
-                                cnt <= cnt+1;
+                                cnt <= #1 cnt+1;
                             end
                         end
                     end
@@ -95,26 +95,26 @@ module vertex_buffer_one(
                 STREAM_IN: begin
                     if (vertex_cntl_pkt.eos) begin
                         // output_pkt.req = 1'b1;
-                        state <= OUT_FV_WAIT;
-                        output_FV_num <= cnt + 1;
+                        state <= #1 OUT_FV_WAIT;
+                        output_FV_num <= #1 cnt + 1;
                     end else if (vertex_cntl_pkt.change) begin
-                        cnt <= cnt+1;
+                        cnt <= #1 cnt+1;
                     end
-                    buffer[cnt] <= vertex_data_pkt.data + buffer[cnt];
+                    buffer[cnt] <= #1 vertex_data_pkt.data + buffer[cnt];
                 end
 
                 OUT_FV_WAIT: begin
                     if (req_grant) begin
-                        state <= OUT_FV;
-                        cnt <= cnt + 2;
+                        state <= #1 OUT_FV;
+                        cnt <= #1 cnt + 2;
                     end
                 end
 
                 OUT_FV: begin
                     if (cnt + 2 >= output_FV_num) begin
-                        state <= IDLE;
-                        buffer <= 0;
-                        cnt <= 'd0;
+                        state <= #1 IDLE;
+                        buffer <= #1 0;
+                        cnt <= #1 'd0;
                     end
                 end
             endcase

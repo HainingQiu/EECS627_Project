@@ -192,21 +192,21 @@ module Big_FV_BankCntl_0(
 
     always_ff @(posedge clk) begin
         if (reset) begin
-            cnt <= 'd0;
-            state <= IDLE;
+            cnt <= #1 'd0;
+            state <= #1 IDLE;
             // Big_FV2Sm_FV <= 0;
-            cur_iter <= 'd0;
-            node_cnt <= 'd0;
-            total_FV_num <= 'd0;
-            PE_tag <= 'd0;
+            cur_iter <= #1 'd0;
+            node_cnt <= #1 'd0;
+            total_FV_num <= #1 'd0;
+            PE_tag <= #1 'd0;
         end else begin
             // total_FV_line <= nx_total_FV_line;
-            state <= nx_state;
-            cnt <= nx_cnt;
-            node_cnt <= nx_node_cnt;
-            cur_iter <= nx_iter;
-            total_FV_num <= nx_total_FV_num;
-            PE_tag <= nx_PE_tag;
+            state <= #1 nx_state;
+            cnt <= #1 nx_cnt;
+            node_cnt <= #1 nx_node_cnt;
+            cur_iter <= #1 nx_iter;
+            total_FV_num <= #1 nx_total_FV_num;
+            PE_tag <= #1 nx_PE_tag;
         end
     end
 
