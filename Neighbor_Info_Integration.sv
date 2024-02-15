@@ -44,7 +44,7 @@ Neighbor_Info_CNTL Neighbor_Info_CNTL_U(
 // Neighbor_Info_SRAM bank size: width is 17,depth is 256;
 generate
     genvar i;
-    for(i=0;i<`num_bank_neighbor_info;i=i+1)begin:Neighbor_Info_SRAM
+    for(i=0;i<`num_bank_neighbor_info;i=i+1)begin:Nb_Info_SRAM_init
         Neighbor_Info_SRAM Neighbor_Info_SRAM_U(
             .Q(8'd0),
             .CLK(clk),

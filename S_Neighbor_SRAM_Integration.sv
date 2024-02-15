@@ -56,12 +56,12 @@ generate
         .Busy(Bank_busy[i])
     );
         end 
-endgenerate
+//endgenerate
 //Neighbor_SRAM bank size is Width is 14 bits, depth is 1024
-generate
+//generate
     //genvar i;
     for(i=0;i<`Num_Banks_FV;i=i+1)begin:SRAM_Instantiations
-        Neighbor_SRAM Neighbor_SRAM(
+        Neighbor_SRAM Neighbor_SRAM_U(
             .Q('d0),
             .CLK(clk),
             .CEN(Neighbor_bank2SRAM_Interface_out[i].CEN),
