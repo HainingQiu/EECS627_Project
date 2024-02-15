@@ -12,7 +12,7 @@ output BUS2Neighbor_info_MEM_CNTL BUS2Neighbor_info_MEM_CNTL_out
 );
 logic [`Num_Edge_PE-1:0] local_req, local_grant;
 BUS2FV_info_FIFO nx_BUS2FV_info_MEM_CNTL_out;
-Req_Bus_arbiter granted_Req_Bus_arbiter_in;
+// Req_Bus_arbiter granted_Req_Bus_arbiter_in;
 Req_Bus_arbiter[`Num_Edge_PE-1:0] reg_Req_Bus_arbiter_in;
 BUS2Neighbor_info_MEM_CNTL nx_BUS2Neighbor_info_MEM_CNTL_out;
 // BUS2Output_SRAM_MEM_CNTL nx_BUS2Output_SRAM_MEM_CNTL_out;
@@ -42,7 +42,7 @@ always_comb begin
 
     
     for(int i=0; i<`Num_Edge_PE;i++)begin
-        if(granted_Req_Bus_arbiter_in[i])begin
+        if(Grant_Bus_arbiter_out[i])begin
             case(reg_Req_Bus_arbiter_in[i].req_type)
                 'b0: begin
 					nx_BUS2Neighbor_info_MEM_CNTL_out.valid=1'b1;

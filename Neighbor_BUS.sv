@@ -18,11 +18,13 @@ end
 always_comb begin
     nx_NeighborID_SRAM2Edge_PE_out='d0;
     for (int i=0;i<`Num_Banks_FV;i++)begin
-
+        if(Neighbor_bank_CNTL2Edge_PE_in[i].valid)begin
             nx_NeighborID_SRAM2Edge_PE_out[Neighbor_bank_CNTL2Edge_PE_in[i].PE_tag].sos=Neighbor_bank_CNTL2Edge_PE_in[i].sos;
             nx_NeighborID_SRAM2Edge_PE_out[Neighbor_bank_CNTL2Edge_PE_in[i].PE_tag].eos=Neighbor_bank_CNTL2Edge_PE_in[i].eos;
             nx_NeighborID_SRAM2Edge_PE_out[Neighbor_bank_CNTL2Edge_PE_in[i].PE_tag].Neighbor_ids=Neighbor_bank_CNTL2Edge_PE_in[i].data;
             nx_NeighborID_SRAM2Edge_PE_out[Neighbor_bank_CNTL2Edge_PE_in[i].PE_tag].Neighbor_num_Iter=Neighbor_bank_CNTL2Edge_PE_in[i].data;
+        end
+
 
     end
 end

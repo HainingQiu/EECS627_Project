@@ -128,7 +128,8 @@ module Big_FV_BankCntl_1(
                 // FV2SRAM_out.FV_data = 'd0;
 
                 if ((cnt == 1) && (node_cnt == 0)) begin
-                    Big_FV2Sm_FV.sos = 1'b1;   
+                    Big_FV2Sm_FV.sos = 1'b1; 
+                    nx_cnt = cnt + 1;  
                 end else if ((cnt << 1) >= total_FV_num) begin
                     if (node_cnt == (`NODE_PER_ITER_BANK-1)) begin // `FV_SRAM_bank_cache_line-1
                         Big_FV2Sm_FV.eos = 1'b1;

@@ -287,6 +287,7 @@ typedef struct packed {
     logic eos;
     logic [$clog2(`Num_Edge_PE)-1:0] PE_tag;
     logic [`FV_bandwidth-1:0] FV_data;
+    logic valid;
 } FV_bank_CNTL2Edge_PE;
 typedef struct packed {
     logic sos;
