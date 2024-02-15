@@ -83,7 +83,7 @@ always_ff@(posedge clk)begin
         //     end
         // end
         Weight_Buffer<=#1 'd0;
-        state<=#1 'd0;
+        state<=#1 IDLE;
         Cur_Weight_layer<=#1 'd0;
         Cur_FV_num<=#1 'd0;
         Weight_data2Vertex<=#1 'd0;

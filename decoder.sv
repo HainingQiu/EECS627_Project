@@ -16,7 +16,7 @@ module decoder(
     output logic fifo_stall,
     output logic replay_iter_flag,
     output logic [$clog2(`Max_replay_Iter)-1:0]  replay_Iter,
-    output logic [$clog2(16)-1:0 ]    Num_FV ,
+    output logic [$clog2(16):0 ]    Num_FV ,
     output logic [$clog2(16)-1:0 ] Weights_boundary,
     output  DP2mem_packet DP2mem_packet_out
 );

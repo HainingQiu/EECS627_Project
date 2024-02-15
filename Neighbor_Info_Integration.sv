@@ -49,7 +49,7 @@ generate
             .Q(Data_SRAM_in[i]),
             .CLK(clk),
             .CEN(Neighbor_info_CNTL2SRAM_interface_out[i].CEN),
-            .WEN('d1),
+            .WEN(1'b1),
             .A(Neighbor_info_CNTL2SRAM_interface_out[i].A),
             .D(17'd0)
         );

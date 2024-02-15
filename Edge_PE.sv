@@ -325,7 +325,7 @@ always_comb begin
             else if(NonCal_replay_Iter)begin
                 nx_state=Complete;
                 req_WB_Packet=1'b1;
-                nx_Edge_PE2IMEM_CNTL_out.packet={'b00,nx_req_neighbor_Iter,nx_DP_Priority,nx_Target_node};
+                nx_Edge_PE2IMEM_CNTL_out.packet={2'b00,nx_req_neighbor_Iter,nx_DP_Priority,nx_Target_node};
                 nx_Edge_PE2IMEM_CNTL_out.valid=1'b1;
                 nx_Edge_PE2Bank_out.Done_aggr=1'b0;
                 nx_Edge_PE2Bank_out.WB_en=1'b1;

@@ -31,10 +31,10 @@ module acc_buffer(
             buffer_one buffer1 (
                 .clk(clk),
                 .reset(reset),
-                .edge_pkt(edge_PE_pkt[i]),
+                .edge_pkt(edge_pkt[i]),
                 .req_grant(req_grant[i]),
 
-                .rs_pkt(rs_pkt[i]),
+                .rs_pkt(RS_pkt[i]),
                 .outbuff_pkt(outbuff_pkt[i])
             );
         end 

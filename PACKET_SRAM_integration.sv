@@ -4,17 +4,17 @@ module PACKET_SRAM_integration(
     input reset,
     input grant,
     input [`Num_Edge_PE-1:0]PE_IDLE,
-    input Edge_PE2IMEM_CNTL Edge_PE2IMEM_CNTL_in,
+    input Edge_PE2IMEM_CNTL[`Num_Edge_PE-1:0] Edge_PE2IMEM_CNTL_in,
     input [`packet_size-1:0] Data_SRAM_in,
     input bank_busy,
     input stream_end,
     input vertex_done,
-    output task_complete,
+    output logic task_complete,
     output PACKET_CNTL2SRAM  PACKET_CNTL_SRAM_out,
     output DP_task2Edge_PE [`Num_Edge_PE-1:0]DP_task2Edge_PE_out,
     output logic Req,
     output logic [$clog2(`Max_replay_Iter)-1:0]  replay_Iter,
-    output logic [$clog2(16)-1:0 ]    Num_FV ,
+    output logic [$clog2(16):0 ]    Num_FV ,
     output logic [$clog2(16)-1:0 ] Weights_boundary
 );
 DP2mem_packet DP2mem_packet_in;
@@ -37,8 +37,8 @@ logic RS_empty;
     .replay_iter_flag(replay_iter_flag),
     .Data_SRAM_in(Data_SRAM_in),
     .PACKET_CNTL_SRAM_out(PACKET_CNTL_SRAM_out),
-    .mem2fifo(mem2fifo),
-    .cntl_done(cntl_done)
+    .mem2fifo(mem2fifo)
+    // .cntl_done(cntl_done)
     
 );
 

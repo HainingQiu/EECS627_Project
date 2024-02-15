@@ -52,8 +52,8 @@ logic [`Num_Edge_PE+1-1:0] WB_packet_grants;
 Vertex2Accu_Bank [`Num_Edge_PE-1:0] vertex_data_pkt;
 Weight_Cntl2bank Weight_Cntl2bank_out;
 Weight_Cntl2RS Weight_Cntl2RS_out;
-logic [`FV_size-1:0] Vertex_output;
-logic [$clog2(`Max_Node_id)-1:0] Node_id_out;
+logic [`Num_Vertex_Unit-1:0][`FV_size-1:0] Vertex_output;
+logic [`Num_Vertex_Unit-1:0][$clog2(`Max_Node_id)-1:0] Node_id_out;
 //---------------------------Vertex accu buffer------------------------//
 Bank_Req2Req_Output_SRAM [`Num_Vertex_Unit-1:0] vertex_outbuff_pkt;
 logic Vertex_buffer_empty;
@@ -71,7 +71,7 @@ logic Req_CNTL_Packet;
 logic[`Num_Edge_PE-1:0] req_WB_Packet_Edge;
 logic[`Num_Edge_PE-1+1:0] reqs_WB_Packet;
 Bank_Req2Req_Output_SRAM[`Num_Edge_PE-1:0] Edge_Bank2Req_Output_SRAM_in;
-Bank2RS [`Num_Edge_PE-1:0] RS_pkt_out;
+Bank2RS  RS_pkt_out;
 logic[`Mult_per_PE-1:0][`FV_size-1:0] Weight_data2Vertex;
 Output_SRAM2Edge_PE[`Num_Edge_PE-1:0] Output_SRAM2Edge_PE_out;
 logic edge_buffer_busy;
@@ -79,6 +79,8 @@ logic [`Num_Edge_PE-1:0]edge_req_grant;
 logic [`Num_Vertex_Unit-1:0] vertex_buffer_grant;
 logic[`Num_Edge_PE-1:0] PE_IDLE;
 logic stream_end;
+FV_MEM2FV_Bank[`Num_Banks_all_FV-1:0] Big_FV2Sm_FV_1;
+FV_bank_CNTL2Edge_PE[`Num_Banks_all_FV-1:0] EdgePE_rd_out_0;
 // generate 
 //     genvar i,j,k,l;
 
@@ -91,7 +93,7 @@ always_comb begin
 
     for(int i=0;i<`Num_Edge_PE;i++)begin
         Grant_output_Bus_arbiter_in[i]=Ouput_SRAM_Grants[i];
-        Grant_WB_Packet_edge[i]=WB_packet_grants[i+1:1];
+        Grant_WB_Packet_edge[i]=WB_packet_grants[i+1];
         reqs_WB_Packet[i+1]=req_WB_Packet_Edge[i];
         edge_req_grant[i]=Ouput_SRAM_Grants[i+`Num_Edge_PE];
         PE_IDLE[i]=Edge_PE2DP_out[i].IDLE_flag;
@@ -159,12 +161,12 @@ PACKET_SRAM_integration PACKET_SRAM_integration_U(
 );//----------------------------//
 //WIDTH=16 Depth 256 for IMEM_SRAM//
 IMem_Sram IMem_Sram_U(
-    .Q(PACKET_CNTL_SRAM_out.SRAM_DATA),
+    .Q(Data_SRAM_in ),
     .CLK(clk),
-    .CEN(0),
+    .CEN(1'b0),
     .WEN(PACKET_CNTL_SRAM_out.wen),
     .A(PACKET_CNTL_SRAM_out.SRAM_addr),
-    .D(Data_SRAM_in)
+    .D(PACKET_CNTL_SRAM_out.SRAM_DATA)
 );
 //--------------------------------------------------------------------Edge_PE-----------------------------------------------------------------//
 generate
@@ -183,12 +185,12 @@ generate
         .Grant_output_Bus_arbiter_in(Grant_output_Bus_arbiter_in[l]),                             // grant output sram req
         .Cur_Replay_Iter(Current_replay_Iter),		// replay iteration count
         // input [$clog2(`Max_Node_id)-1:0] Last_Node_ID,				// last node ID address
-        .Grant_WB_Packet(Grant_WB_Packet_edge),										// write back packet
+        .Grant_WB_Packet(Grant_WB_Packet_edge[l]),										// write back packet
 
         .Req_Bus_arbiter_out(Req_Bus_arbiter_out[l]),			    // request to arbiter
         .Edge_PE2DP_out(Edge_PE2DP_out[l]),							// idle flag output to dispatch
         .Edge_PE2IMEM_CNTL_out(Edge_PE2IMEM_CNTL_out[l]),				// packet to IMEM
-        .req_WB_Packet(req_WB_Packet_Edge),			// request write back packet
+        .req_WB_Packet(req_WB_Packet_Edge[l]),			// request write back packet
         .Edge_PE2Bank_out(Edge_PE2Bank_out[l]),						// aggregated output to bank
         .Req_Output_SRAM_out(Edge_PE_Req_Output_SRAM_out[l]) 
         );
@@ -293,8 +295,8 @@ generate
     .FV_RS(FV_data[m]),
     .Node_id(Node_id[m]),
 
-    .Vertex_output(Vertex_output),
-    .Node_id_out(Node_id_out)
+    .Vertex_output(Vertex_output[m]),
+    .Node_id_out(Node_id_out[m])
 );
 end 
 endgenerate
@@ -317,22 +319,22 @@ Big_FV_wrapper_0 Big_FV_wrapper_0_U(
     .clk(clk),
     .reset(reset),
     .Cur_Replay_Iter(Current_replay_Iter),
-    .Cur_Update_Iter('d0),
+    .Cur_Update_Iter({$clog2(`Max_update_Iter){1'b0}}),
     .FV_num(Num_FV), 
     .req_pkt(Req2Output_SRAM_Bank_out),
 
     .Big_FV2Sm_FV(Big_FV2Sm_FV),
-    .EdgePE_rd_out('d0) 
+    .EdgePE_rd_out(EdgePE_rd_out_0) 
 );
 Big_FV_wrapper_1 Big_FV_wrapper_1_U(
     .clk(clk),
     .reset(reset),
     .Cur_Replay_Iter(Current_replay_Iter),
-    .Cur_Update_Iter('d0),
+    .Cur_Update_Iter({$clog2(`Max_update_Iter){1'b0}}),
     .FV_num(Num_FV), 
     .req_pkt(Req2Output_SRAM_Bank_out),
 
-    .Big_FV2Sm_FV('d0),
+    .Big_FV2Sm_FV(Big_FV2Sm_FV_1),
     .EdgePE_rd_out(EdgePE_rd_out) 
 );
 Output_BUS Output_BUS_U(

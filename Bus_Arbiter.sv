@@ -37,7 +37,7 @@ always_comb begin
     // nx_BUS2Output_SRAM_MEM_CNTL_out='d0;
     for (int i = 0; i < `Num_Edge_PE; i++) begin
 	local_req[i] = Req_Bus_arbiter_in[i].req;
-	local_grant[i] = Grant_Bus_arbiter_out[i].Grant;
+	Grant_Bus_arbiter_out[i].Grant  = local_grant[i];
     end
 
     

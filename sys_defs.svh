@@ -43,7 +43,7 @@
 `define Num_Vertex_Unit 4
 `define Num_Total_reqs2Output `Num_Vertex_Unit+2*`Num_Edge_PE
 //------------------------LST--------------------------//
-`define Max_packet_line 16
+`define Max_packet_line 256
 `define com_fifo_size 8
 `define RS_entry 4
 //----------------------WSW-----------------------------//
@@ -188,7 +188,7 @@ typedef struct packed {
 
 } BUS2Output_SRAM_MEM_CNTL;
 typedef struct packed {
-    logic[$clog2(`Max_Node_id)-1:0] A;
+    logic[$clog2(`Max_Node_id):0] A;
     logic CEN;
     logic WEN;
 } FV_info_CNTL2SRAM_Interface;

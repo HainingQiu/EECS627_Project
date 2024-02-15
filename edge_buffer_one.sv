@@ -43,80 +43,79 @@ module edge_buffer_one(
         outbuff_pkt.data[1] = 'd0;
         outbuff_pkt.Node_id = cur_nodeid;
         outbuff_pkt.req = 1'b0;
-
-        case (state)
-            COMPLETE: begin
-                if (edge_pkt.WB_en)
+        rs_req='d0;
+        if(state==COMPLETE)begin
+            if (edge_pkt.WB_en) 
                     outbuff_pkt.req = 1'b1;
-            end
-            OUT_FV_WAIT: begin
-                 if (req_grant) begin
-                    outbuff_pkt.Grant_valid = 1'b1;
-                    outbuff_pkt.sos = 1'b1;
-                    outbuff_pkt.eos = 1'b0;
-                    outbuff_pkt.data[0] = buffer[cnt];
-                    outbuff_pkt.data[1] = buffer[cnt+1];
-                    outbuff_pkt.req = 1'b0;
-                end else begin
-                    outbuff_pkt.req = 1'b1;
-                end
-            end
-            OUT_FV: begin
-                outbuff_pkt.sos = 1'b0;
-                outbuff_pkt.Grant_valid = 1'b1;
-                if (cnt + 2 == iter_FV_num) begin
-                    outbuff_pkt.eos = 1'b1;
-                end else begin
-                    outbuff_pkt.eos = 1'b0;
-                end
-                outbuff_pkt.data[0] = buffer[cnt];
-                outbuff_pkt.data[1] = buffer[cnt+1];
-            end
-        endcase
-    end
-
-    always_comb begin
-
-        case (state)
-            COMPLETE: begin
-                if (edge_pkt.Done_aggr)
+            if (edge_pkt.Done_aggr)
                     rs_req = 1'b1;
+
+        end
+        else if(state==OUT_FV)begin
+
+            outbuff_pkt.sos = 1'b0;
+            outbuff_pkt.Grant_valid = 1'b1;
+            if (cnt + 2 == iter_FV_num) begin
+                outbuff_pkt.eos = 1'b1;
+            end else begin
+                outbuff_pkt.eos = 1'b0;
             end
-            // OUT_RS_WAIT: begin
-            //     // if (rs_req_grant) begin
-            //     //     rs_pkt.sos = 1'b1;
-            //     //     rs_pkt.FV_data[0] = buffer[cnt];
-            //     //     rs_pkt.FV_data[1] = buffer[cnt+1];
-            //     //     rs_pkt.Node_id = cur_nodeid;
-            //     //     if (cnt + 2 == iter_FV_num) begin
-            //     //         rs_pkt.eos = 1'b1;
-            //     //     end else begin
-            //     //         rs_pkt.eos <= 1'b0;
-            //     //         cnt <= cnt + 2;
-            //     //         state <= OUT_RS;
-            //     //     end
-            //     // end else begin
-            //     //     rs_req = 1'b1;
-            //     // end
-            // end
-            // OUT_RS: begin
-            //     rs_pkt.sos = 1'b0;
-            //     if (cnt + 2 == iter_FV_num) begin
-            //         rs_pkt.eos = 1'b1;
-            //     end else begin
-            //         rs_pkt.eos = 1'b0;
-            //     end
-            //     rs_pkt.FV_data[0] = buffer[cnt];
-            //     rs_pkt.FV_data[1] = buffer[cnt+1];
-            // end
-            default: begin
-                rs_pkt.sos = 1'b0;
-                rs_pkt.eos = 1'b0;
-                rs_pkt.FV_data = 'd0;
-                rs_pkt.Node_id = 'd0;
-            end
-        endcase
+            outbuff_pkt.data[0] = buffer[cnt];
+            outbuff_pkt.data[1] = buffer[cnt+1];
+        end
+        // case (state)
+        //     COMPLETE: begin
+
+            
+        //     end
+        //     OUT_FV_WAIT: begin
+        //          if (req_grant) begin
+        //             outbuff_pkt.Grant_valid = 1'b1;
+        //             outbuff_pkt.sos = 1'b1;
+        //             outbuff_pkt.eos = 1'b0;
+        //             outbuff_pkt.data[0] = buffer[cnt];
+        //             outbuff_pkt.data[1] = buffer[cnt+1];
+        //             outbuff_pkt.req = 1'b0;
+        //         end else begin
+        //             outbuff_pkt.req = 1'b1;
+        //         end
+        //     end
+        //     OUT_FV: begin
+        //         outbuff_pkt.sos = 1'b0;
+        //         outbuff_pkt.Grant_valid = 1'b1;
+        //         if (cnt + 2 == iter_FV_num) begin
+        //             outbuff_pkt.eos = 1'b1;
+        //         end else begin
+        //             outbuff_pkt.eos = 1'b0;
+        //         end
+        //         outbuff_pkt.data[0] = buffer[cnt];
+        //         outbuff_pkt.data[1] = buffer[cnt+1];
+        //     end
+        //     default: begin
+        //         rs_pkt.sos = 1'b0;
+        //         rs_pkt.eos = 1'b0;
+        //         rs_pkt.FV_data = 'd0;
+        //         rs_pkt.Node_id = 'd0;
+        //         outbuff_pkt='d0;
+        //     end
+        // endcase
     end
+
+    // always_comb begin
+
+    //     case (state)
+    //         COMPLETE: begin
+    //             if (edge_pkt.Done_aggr)
+    //                 rs_req = 1'b1;
+    //         end
+    //         default: begin
+    //             rs_pkt.sos = 1'b0;
+    //             rs_pkt.eos = 1'b0;
+    //             rs_pkt.FV_data = 'd0;
+    //             rs_pkt.Node_id = 'd0;
+    //         end
+    //     endcase
+    // end
     /*
         Start of Iteration i
         1. Streaming aggregation value of previous iterations
