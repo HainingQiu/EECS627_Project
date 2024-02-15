@@ -24,7 +24,6 @@ com_packet mem2fifo,com2DPpacket;
 logic fifo_stall;
 logic RS_full;
 DP_task2RS DP_task2RS_out;
-
 logic cntl_done;
 logic RS_empty;
  PACKET_CNTL PACKET_CNTL_0(
@@ -33,7 +32,8 @@ logic RS_empty;
     .DP2mem_packet_in(DP2mem_packet_in),
     .Edge_PE2IMEM_CNTL_in(Edge_PE2IMEM_CNTL_in),
     .full(fifo_full),
-    .replay_Iter(replay_Iter),
+    .cntl_done(cntl_done),
+    .stream_end(stream_end),
     .replay_iter_flag(replay_iter_flag),
     .Data_SRAM_in(Data_SRAM_in),
     .PACKET_CNTL_SRAM_out(PACKET_CNTL_SRAM_out),

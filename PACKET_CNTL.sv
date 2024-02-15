@@ -13,12 +13,13 @@ module PACKET_CNTL(
     input DP2mem_packet DP2mem_packet_in,
     input Edge_PE2IMEM_CNTL Edge_PE2IMEM_CNTL_in,
     input full,
-    input [$clog2(`Max_replay_Iter)-1:0]  replay_Iter,
+    input cntl_done,
+    input stream_end,
     input replay_iter_flag,
     input [`packet_size-1:0] Data_SRAM_in,
     output PACKET_CNTL2SRAM  PACKET_CNTL_SRAM_out,
-    output com_packet mem2fifo,
-    output cntl_done
+    output com_packet mem2fifo
+
     
 );
 //0 wr 1read
@@ -48,36 +49,37 @@ always_comb begin
     PACKET_CNTL_SRAM_out.SRAM_DATA =0;
     mem2fifo =0;
 case(state)
-  IDLE: nx_state = reset ? IDLE : stream;
+  IDLE: nx_state = stream_end ? IDLE : stream;
  stream:  begin
-        if(DP2mem_packet_in.valid)begin 
+        if(!replay_iter_flag)begin
+            if(DP2mem_packet_in.valid)begin 
 
-            PACKET_CNTL_SRAM_out.wen='d0;
-            PACKET_CNTL_SRAM_out.SRAM_addr=current_wr_addr;
-            PACKET_CNTL_SRAM_out.SRAM_DATA =DP2mem_packet_in.packet;
-            nx_wr_addr=nx_wr_addr +'d1;
-        end
-        else if (Edge_PE2IMEM_CNTL_in.valid) begin
-            PACKET_CNTL_SRAM_out.wen='d0;
-            PACKET_CNTL_SRAM_out.SRAM_addr=current_wr_addr;
-            PACKET_CNTL_SRAM_out.SRAM_DATA =Edge_PE2IMEM_CNTL_in.packet;
-            nx_wr_addr=nx_wr_addr +'d1;
-        end
-        else if (!full) begin
-            PACKET_CNTL_SRAM_out.wen='d1;
+                PACKET_CNTL_SRAM_out.wen='d0;
+                PACKET_CNTL_SRAM_out.SRAM_addr=current_wr_addr;
+                PACKET_CNTL_SRAM_out.SRAM_DATA =DP2mem_packet_in.packet;
+                nx_wr_addr=nx_wr_addr +'d1;
+            end
+            else if (Edge_PE2IMEM_CNTL_in.valid) begin
+                PACKET_CNTL_SRAM_out.wen='d0;
+                PACKET_CNTL_SRAM_out.SRAM_addr=current_wr_addr;
+                PACKET_CNTL_SRAM_out.SRAM_DATA =Edge_PE2IMEM_CNTL_in.packet;
+                nx_wr_addr=nx_wr_addr +'d1;
+            end
+            else if (!full) begin
+                PACKET_CNTL_SRAM_out.wen='d1;
 
-            PACKET_CNTL_SRAM_out.SRAM_addr=current_re_addr;
-            PACKET_CNTL_SRAM_out.SRAM_DATA ='d0;
-            nx_re_addr=nx_re_addr +'d1;
-            mem2fifo.valid='d1;
-            mem2fifo.packet = Data_SRAM_in;     
+                PACKET_CNTL_SRAM_out.SRAM_addr=current_re_addr;
+                PACKET_CNTL_SRAM_out.SRAM_DATA ='d0;
+                nx_re_addr=nx_re_addr +'d1;
+                mem2fifo.valid='d1;
+                mem2fifo.packet = Data_SRAM_in;     
+            end
         end
-        if( replay_iter_flag && replay_Iter=='d0) begin
+        if( cntl_done) begin
             nx_state =stall;
         end
     end
    stall : begin
-           cntl_done='d1;
            PACKET_CNTL_SRAM_out=0;
            mem2fifo =0;
    end
