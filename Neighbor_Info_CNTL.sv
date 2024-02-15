@@ -22,17 +22,17 @@ state_t state,nx_state;
 
 logic[$clog2(`Num_Edge_PE)-1:0] reg_PE_tag,nx_PE_tag;
 // logic nx_rinc2Neighbor_FIFO;
-Neighbor_info_CNTL2SRAM_interface[`num_bank_neighbor_info-1:0] nx_Neighbor_info_CNTL2SRAM_interface_out;
+Neighbor_info_CNTL2SRAM_interface[`num_bank_neighbor_info-1:0] reg_Neighbor_info_CNTL2SRAM_interface_out;
 Neighbor_info2Neighbor_FIFO nx_Neighbor_info2Neighbor_FIFO_out;
 always_ff@(posedge clk)begin
     if(reset)begin
         state<=#1 IDLE;
         reg_PE_tag<=#1 'd0;
-        for(int i=0;i<`num_bank_neighbor_info;i++)begin
-            Neighbor_info_CNTL2SRAM_interface_out[i].A<=#1 'd0;
-            Neighbor_info_CNTL2SRAM_interface_out[i].CEN<=#1 'd1;
-            Neighbor_info_CNTL2SRAM_interface_out[i].WEN<=#1 'd1;
-        end
+        // for(int i=0;i<`num_bank_neighbor_info;i++)begin
+        //     reg_Neighbor_info_CNTL2SRAM_interface_out[i].A<=#1 'd0;
+        //     reg_Neighbor_info_CNTL2SRAM_interface_out[i].CEN<=#1 'd1;
+        //     reg_Neighbor_info_CNTL2SRAM_interface_out[i].WEN<=#1 'd1;
+        // end
 
         Neighbor_info2Neighbor_FIFO_out<=#1 'd0;
 
@@ -40,7 +40,7 @@ always_ff@(posedge clk)begin
     else begin
         state<=#1 nx_state;
         reg_PE_tag<=#1 nx_PE_tag;
-        Neighbor_info_CNTL2SRAM_interface_out<=#1 nx_Neighbor_info_CNTL2SRAM_interface_out;
+        // reg_Neighbor_info_CNTL2SRAM_interface_out<=#1 Neighbor_info_CNTL2SRAM_interface_out;
         Neighbor_info2Neighbor_FIFO_out<=#1 nx_Neighbor_info2Neighbor_FIFO_out;
     end
 end
@@ -49,18 +49,18 @@ always_comb begin
     rinc2Neighbor_FIFO='d0;
     nx_Neighbor_info2Neighbor_FIFO_out='d0;
     for(int i=0;i<`num_bank_neighbor_info;i++)begin
-        nx_Neighbor_info_CNTL2SRAM_interface_out[i].A= 'd0;
-        nx_Neighbor_info_CNTL2SRAM_interface_out[i].CEN= 'd1;
-        nx_Neighbor_info_CNTL2SRAM_interface_out[Current_replay_Iter[1]].WEN=1'b1;
+        Neighbor_info_CNTL2SRAM_interface_out[i].A= 'd0;
+        Neighbor_info_CNTL2SRAM_interface_out[i].CEN= 'd1;
+        Neighbor_info_CNTL2SRAM_interface_out[Current_replay_Iter[1]].WEN=1'b1;
     end
     case(state)
         IDLE:
 
             if(BUS2Neighbor_info_MEM_CNTL_in.valid)begin
                 nx_state=Fetch_val;
-                nx_Neighbor_info_CNTL2SRAM_interface_out[Current_replay_Iter[1]].A={Current_replay_Iter[0],BUS2Neighbor_info_MEM_CNTL_in.Node_id};
-                nx_Neighbor_info_CNTL2SRAM_interface_out[Current_replay_Iter[1]].CEN=1'b0;
-                nx_Neighbor_info_CNTL2SRAM_interface_out[Current_replay_Iter[1]].WEN=1'b1;
+                Neighbor_info_CNTL2SRAM_interface_out[Current_replay_Iter[1]].A={Current_replay_Iter[0],BUS2Neighbor_info_MEM_CNTL_in.Node_id};
+                Neighbor_info_CNTL2SRAM_interface_out[Current_replay_Iter[1]].CEN=1'b0;
+                Neighbor_info_CNTL2SRAM_interface_out[Current_replay_Iter[1]].WEN=1'b1;
                 nx_PE_tag=BUS2Neighbor_info_MEM_CNTL_in.PE_tag;
             end
             else if(!empty && !Neighbor_ID_FIFO_full)begin
