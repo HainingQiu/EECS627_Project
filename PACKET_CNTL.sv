@@ -14,7 +14,7 @@ module PACKET_CNTL(
     input Edge_PE2IMEM_CNTL[`Num_Edge_PE-1:0] Edge_PE2IMEM_CNTL_in,
     input full,
     input cntl_done,
-    input stream_end,
+    output logic wr_en,
     input replay_iter_flag,
     input [`packet_size-1:0] Data_SRAM_in,
     output PACKET_CNTL2SRAM  PACKET_CNTL_SRAM_out,
@@ -30,11 +30,13 @@ logic [$clog2(`Max_packet_line)-1:0] nx_re_addr,current_re_addr;
 logic [$clog2(`Max_packet_line)-1:0] nx_wr_addr,current_wr_addr;
 PACKET_CNTL2SRAM  PACKET_CNTL_SRAM_out;
 logic Edge_PE_WB_valid;
+logic nx_wr_en;
 always_ff@(posedge clk)begin
     if(reset )begin
       current_re_addr <=#1 'd0;
       current_wr_addr <=#1 'd0;
       state<=#1 IDLE;
+      wr_en<=#1 'd0;
     //   PACKET_CNTL_SRAM_out.wen<='d1;
     //   PACKET_CNTL_SRAM_out.SRAM_addr<=0;
     //   PACKET_CNTL_SRAM_out.SRAM_DATA <=0;
@@ -43,6 +45,7 @@ always_ff@(posedge clk)begin
       current_re_addr <=#1 'd0;
       current_wr_addr <=#1 'd0;
       state<=#1 IDLE;
+        wr_en<=#1 'd0;
     //   PACKET_CNTL_SRAM_out.wen<='d1;
     //   PACKET_CNTL_SRAM_out.SRAM_addr<=0;
     //   PACKET_CNTL_SRAM_out.SRAM_DATA <=0;
@@ -51,6 +54,7 @@ always_ff@(posedge clk)begin
       current_re_addr <=#1 nx_re_addr;
       current_wr_addr <=#1 nx_wr_addr;
       state<=#1 nx_state;
+      wr_en<=#1 nx_wr_en;
     //   PACKET_CNTL_SRAM_out<= PACKET_CNTL_SRAM_out;
     end
 end
@@ -70,17 +74,21 @@ always_comb begin
 
     end
 case(state)
-  IDLE: nx_state = reset ? IDLE : stream;
+  IDLE: begin nx_state = reset ? IDLE : stream;
+  nx_wr_en=0;
+  end
  stream:  begin
-
+            
             if(DP2mem_packet_in.valid)begin 
 
                 PACKET_CNTL_SRAM_out.wen='d0;
                 PACKET_CNTL_SRAM_out.SRAM_addr=current_wr_addr;
                 PACKET_CNTL_SRAM_out.SRAM_DATA =DP2mem_packet_in.packet;
                 nx_wr_addr=nx_wr_addr +'d1;
+                nx_wr_en='d0;
             end
             else if (Edge_PE_WB_valid) begin
+                 nx_wr_en='d0;
                 PACKET_CNTL_SRAM_out.wen='d0;
                 PACKET_CNTL_SRAM_out.SRAM_addr=current_wr_addr;
 
@@ -93,6 +101,7 @@ case(state)
                 end
             end
             else if (!full && !replay_iter_flag) begin
+                nx_wr_en='d1;
                 PACKET_CNTL_SRAM_out.wen='d1;
 
                 PACKET_CNTL_SRAM_out.SRAM_addr=current_re_addr;
@@ -108,6 +117,7 @@ case(state)
    stall : begin
            PACKET_CNTL_SRAM_out=0;
            mem2fifo =0;
+            nx_wr_en=0;
    end
 
 

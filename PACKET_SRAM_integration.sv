@@ -26,6 +26,7 @@ logic RS_full;
 DP_task2RS DP_task2RS_out;
 logic cntl_done;
 logic RS_empty;
+logic wr_en;
  PACKET_CNTL PACKET_CNTL_0(
     .clk(clk),
     .reset(reset),
@@ -33,7 +34,7 @@ logic RS_empty;
     .Edge_PE2IMEM_CNTL_in(Edge_PE2IMEM_CNTL_in),
     .full(fifo_full),
     .cntl_done(cntl_done),
-    .stream_end(stream_end),
+    .wr_en(wr_en),
     .replay_iter_flag(replay_iter_flag),
     .Data_SRAM_in(Data_SRAM_in),
     .PACKET_CNTL_SRAM_out(PACKET_CNTL_SRAM_out),
@@ -45,7 +46,7 @@ logic RS_empty;
 Command_FIFO Command_FIFO_0(
 	.clk(clk)		, 
 	.reset(reset)	,
-	.winc(mem2fifo.valid)	,
+	.winc(wr_en)	,
 	.rinc( ~fifo_stall & ~RS_full )	,
 	.replay_iter_flag(replay_iter_flag),
 	.wdata(mem2fifo)	,
