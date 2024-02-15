@@ -1,6 +1,7 @@
 `ifndef __SYS_DEFS_SVH__
 `define __SYS_DEFS_SVH__
 
+`define Curr_Node_Id 32
 `define packet_size 16
 `define Num_Edge_PE 4
 `define Num_Banks_FV_INFO 1 //this is fv//neigbor info each replay_iteration info has one bank for simple
@@ -11,6 +12,7 @@
 `define Max_replay_Iter 4
 `define Max_update_Iter 4
 `define FV_info_bank_width 10 //don't need to store offset, in this case 16bits in FV SRAM, 2^4, save 4 bits
+`define NODE_PER_ITER_BANK `Curr_Node_Id/(`Num_Banks_all_FV*`Max_replay_Iter)
 
 // `define FV_info_SRAM_addr ;
 `define Max_FV_num 16 //#16 FVs
