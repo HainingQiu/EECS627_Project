@@ -46,12 +46,12 @@ generate
     genvar i;
     for(i=0;i<`num_bank_neighbor_info;i=i+1)begin:Nb_Info_SRAM_init
         Neighbor_Info_SRAM Neighbor_Info_SRAM_U(
-            .Q(8'd0),
+            .Q(Data_SRAM_in[i]),
             .CLK(clk),
             .CEN(Neighbor_info_CNTL2SRAM_interface_out[i].CEN),
-            .WEN('d0),
+            .WEN('d1),
             .A(Neighbor_info_CNTL2SRAM_interface_out[i].A),
-            .D(Data_SRAM_in[i])
+            .D(17'd0)
         );
         end 
 endgenerate

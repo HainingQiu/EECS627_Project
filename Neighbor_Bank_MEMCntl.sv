@@ -4,7 +4,7 @@ input clk,
 input reset,
 input Neighbor_MEM_CNTL2Neighbor_Bank_CNTL Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_in,
 // input FV_MEM2FV_Bank  FV_MEM2FV_Bank_in,
-input [`Neighbor_info_bandwidth-1:0] Neighbor_SRAM_DATA,
+input [`Neighbor_ID_bandwidth-1:0] Neighbor_SRAM_DATA,
 
 output Neighbor_bank2SRAM_Interface Neighbor_bank2SRAM_Interface_out,
 output Neighbor_bank_CNTL2Edge_PE Neighbor_bank_CNTL2Edge_PE_out,

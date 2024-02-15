@@ -40,12 +40,12 @@ FV_info_MEMcntl FV_info_MEMcntl_U0(
 //do not know how to load from tb
 // FV_Info_SRAM bank size: width is 8,depth is 128;
 FV_info_SRAM FV_info_SRAM_U(
-    .Q('d0),
+    .Q(FV_Info_SRAM2CNTL_in.D ),
     .CLK(clk),
     .CEN(FV_info_CNTL2SRAM_Interface_out.CEN),
-    .WEN(1'b0),
+    .WEN(1'b1),
     .A(FV_info_CNTL2SRAM_Interface_out.A),
-    .D(FV_Info_SRAM2CNTL_in.D)
+    .D(10'd0)
 );
 
 endmodule

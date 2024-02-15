@@ -12,7 +12,7 @@ logic rinc_Neighbor_CNTL2FIFO;
 Neighbor_info2Neighbor_FIFO rdata;
 logic empty;
 Neighbor_MEM_CNTL2Neighbor_Bank_CNTL[`Num_Banks_Neighbor-1:0] Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_out;
-logic [`Num_Banks_Neighbor-1:0][`Neighbor_info_bandwidth-1:0 ] Neighbor_SRAM_DATA;
+logic [`Num_Banks_Neighbor-1:0][`Neighbor_ID_bandwidth-1:0 ] Neighbor_SRAM_DATA;
 logic [`Num_Banks_Neighbor-1:0] Bank_busy;
 Neighbor_bank2SRAM_Interface[`Num_Banks_Neighbor-1:0] Neighbor_bank2SRAM_Interface_out;
 Neighbor_bank_CNTL2Edge_PE[`Num_Banks_Neighbor-1:0] Neighbor_bank_CNTL2Edge_PE_out;
@@ -62,12 +62,12 @@ generate
     //genvar i;
     for(i=0;i<`Num_Banks_FV;i=i+1)begin:SRAM_Instantiations
         Neighbor_SRAM Neighbor_SRAM_U(
-            .Q('d0),
+            .Q(Neighbor_SRAM_DATA[i]),
             .CLK(clk),
             .CEN(Neighbor_bank2SRAM_Interface_out[i].CEN),
-            .WEN('d0),
+            .WEN(1'b1),
             .A(Neighbor_bank2SRAM_Interface_out[i].A),
-            .D(Neighbor_SRAM_DATA[i])
+            .D(14'd0)
         );
         end 
 endgenerate

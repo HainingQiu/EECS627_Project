@@ -1,4 +1,9 @@
-// `timescale 1 ns/1 ps
+                        //  rs_pkt.sos <= 1'b0;
+                        //     rs_pkt.eos <= 1'b0;
+                        //     rs_pkt.FV_data[0] <= buffer[cnt];
+                        //     rs_pkt.FV_data[1] <= buffer[cnt+1];
+                        //     rs_pkt.Node_id <= cur_nodeid;
+                        // `timescale 1 ns/1 ps
 module Top(
     input clk,
     input reset,
@@ -170,12 +175,12 @@ generate
         Edge_PE_U(
         .clk(clk),													// global clock
         .reset(reset),												// sync active high reset
-        .DP_task2Edge_PE_in(DP_task2Edge_PE_out),					// dispatch task from command buffer
-        .FV_SRAM2Edge_PE_in(FV_info2FV_FIFO_out),					// feature value from FV SRAM (for current computation)
-        .Output_SRAM2Edge_PE_in(Output_SRAM2Edge_PE_out),			// feature value from output SRAM (last computation)
-        .NeighborID_SRAM2Edge_PE_in(NeighborID_SRAM2Edge_PE_out),	// neighbor info from neighbor SRAM
-        .Grant_Bus_arbiter_in(Grant_Bus_arbiter_out),				// grant request signal
-        .Grant_output_Bus_arbiter_in(Grant_output_Bus_arbiter_in),                             // grant output sram req
+        .DP_task2Edge_PE_in(DP_task2Edge_PE_out[l]),					// dispatch task from command buffer
+        .FV_SRAM2Edge_PE_in(FV_SRAM2Edge_PE_out[l]),					// feature value from FV SRAM (for current computation)
+        .Output_SRAM2Edge_PE_in(Output_SRAM2Edge_PE_out[l]),			// feature value from output SRAM (last computation)
+        .NeighborID_SRAM2Edge_PE_in(NeighborID_SRAM2Edge_PE_out[l]),	// neighbor info from neighbor SRAM
+        .Grant_Bus_arbiter_in(Grant_Bus_arbiter_out[l]),				// grant request signal
+        .Grant_output_Bus_arbiter_in(Grant_output_Bus_arbiter_in[l]),                             // grant output sram req
         .Cur_Replay_Iter(Current_replay_Iter),		// replay iteration count
         // input [$clog2(`Max_Node_id)-1:0] Last_Node_ID,				// last node ID address
         .Grant_WB_Packet(Grant_WB_Packet_edge),										// write back packet

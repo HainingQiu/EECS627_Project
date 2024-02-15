@@ -6,7 +6,7 @@ module Big_FV_wrapper_0(
     input reset,
     input [$clog2(`Max_replay_Iter)-1:0] Cur_Replay_Iter,
     input [$clog2(`Max_update_Iter)-1:0] Cur_Update_Iter,
-    input [$clog2(`Max_FV_num)-1:0] FV_num, 
+    input [$clog2(`Max_FV_num):0] FV_num, 
     input Req2Output_SRAM_Bank [`Num_Banks_all_FV-1:0] req_pkt,
 
     output FV_MEM2FV_Bank [`Num_Banks_all_FV-1:0] Big_FV2Sm_FV,

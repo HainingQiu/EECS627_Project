@@ -27,6 +27,7 @@ module edge_buffer(
     output Bank_Req2Req_Output_SRAM [`Num_Edge_PE-1:0] outbuff_pkt
 );
 logic[`Num_Edge_PE-1:0] bank_busy;
+logic[`Num_Edge_PE-1:0]  rs_req,rs_req_grant;
 Bank2RS[`Num_Edge_PE-1:0] rs_pkt;
     assign busy = |bank_busy;
     generate
@@ -35,7 +36,7 @@ Bank2RS[`Num_Edge_PE-1:0] rs_pkt;
             edge_buffer_one buffer1 (
                 .clk(clk),
                 .reset(reset),
-                .edge_pkt(edge_PE_pkt[i]),
+                .edge_pkt(edge_pkt[i]),
                 .req_grant(req_grant[i]),
                 .rs_req_grant(rs_req_grant[i]),
 
