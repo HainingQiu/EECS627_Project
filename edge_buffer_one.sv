@@ -129,110 +129,110 @@ module edge_buffer_one(
     always_ff @(posedge clk) begin
         if (reset) begin
             for (int i = 0; i < `MAX_FV_num; i++) begin
-                buffer[i] <= 'd0;
+                buffer[i] <= #1 'd0;
             end
-            iter_FV_num <= 'd0;
-            cur_nodeid <= 'd0;
-            cnt <= 'd0;
-            state <= IDLE;
-            rs_pkt <= 0;
+            iter_FV_num <= #1 'd0;
+            cur_nodeid <= #1 'd0;
+            cnt <= #1 'd0;
+            state <= #1 IDLE;
+            rs_pkt <= #1 0;
         end else begin
             case (state)
                 IDLE: begin
-                    rs_pkt <= 0;
+                    rs_pkt <= #1 0;
                     if (edge_pkt.sos) begin
-                        buffer[cnt] <= edge_pkt.FV_data[0] + buffer[cnt];
-                        buffer[cnt+1] <= edge_pkt.FV_data[1] + buffer[cnt+1];
-                        cur_nodeid <= edge_pkt.Node_id;
-                        cnt <= cnt + 2;
+                        buffer[cnt] <= #1 edge_pkt.FV_data[0] + buffer[cnt];
+                        buffer[cnt+1] <= #1 edge_pkt.FV_data[1] + buffer[cnt+1];
+                        cur_nodeid <= #1 edge_pkt.Node_id;
+                        cnt <= #1 cnt + 2;
                         if (edge_pkt.eos) begin
-                            state <= COMPLETE;
-                            iter_FV_num <= cnt + 2;
+                            state <= #1 COMPLETE;
+                            iter_FV_num <= #1 cnt + 2;
                         end else begin
-                            state <= STREAM_IN;
+                            state <= #1 STREAM_IN;
                         end
                     end
                 end
                 STREAM_IN: begin
                      if (edge_pkt.eos) begin
-                        iter_FV_num <= cnt + 2;
-                        cnt <= '0;
-                        state <= COMPLETE;
+                        iter_FV_num <= #1 cnt + 2;
+                        cnt <= #1 '0;
+                        state <= #1 COMPLETE;
                     end else begin
-                        cnt <= cnt + 2;
+                        cnt <= #1 cnt + 2;
                     end
-                    buffer[cnt] <= edge_pkt.FV_data[0] + buffer[cnt];
-                    buffer[cnt+1] <= edge_pkt.FV_data[1] + buffer[cnt+1];
+                    buffer[cnt] <= #1 edge_pkt.FV_data[0] + buffer[cnt];
+                    buffer[cnt+1] <= #1 edge_pkt.FV_data[1] + buffer[cnt+1];
                 end
                 COMPLETE: begin
                     if (edge_pkt.Done_aggr) begin // finish aggregation of all nodes, send to RS
-                        state <= OUT_RS_WAIT;
+                        state <= #1 OUT_RS_WAIT;
                     end else if (edge_pkt.WB_en) begin
-                        state <= OUT_FV_WAIT;
+                        state <= #1 OUT_FV_WAIT;
                     end else begin
-                        state <= IDLE;
+                        state <= #1 IDLE;
                     end
                 end
                 OUT_RS_WAIT: begin
                     if (rs_req_grant) begin
-                        rs_pkt.sos <= 1'b1;
-                        rs_pkt.FV_data[0] <= buffer[cnt];
-                        rs_pkt.FV_data[1] <= buffer[cnt+1];
-                        rs_pkt.Node_id <= cur_nodeid;
+                        rs_pkt.sos <= #1 1'b1;
+                        rs_pkt.FV_data[0] <= #1 buffer[cnt];
+                        rs_pkt.FV_data[1] <= #1 buffer[cnt+1];
+                        rs_pkt.Node_id <= #1 cur_nodeid;
                         if (cnt + 2 == iter_FV_num) begin
-                            cnt <= 'd0;
-                            state <= IDLE;
-                            buffer <= 0;
-                            rs_pkt.sos <= 1'b0;
-                            rs_pkt.eos <= 1'b1;
-                            rs_pkt.FV_data[0] <= buffer[cnt];
-                            rs_pkt.FV_data[1] <= buffer[cnt+1];
-                            rs_pkt.Node_id <= cur_nodeid;
+                            cnt <= #1 'd0;
+                            state <= #1 IDLE;
+                            buffer <= #1 0;
+                            rs_pkt.sos <= #1 1'b0;
+                            rs_pkt.eos <= #1 1'b1;
+                            rs_pkt.FV_data[0] <= #1 buffer[cnt];
+                            rs_pkt.FV_data[1] <= #1 buffer[cnt+1];
+                            rs_pkt.Node_id <= #1 cur_nodeid;
                         end else begin
-                            cnt <= cnt + 2;
-                            state <= OUT_RS;
-                            rs_pkt.sos <= 1'b0;
-                            rs_pkt.eos <= 1'b0;
-                            rs_pkt.FV_data[0] <= buffer[cnt];
-                            rs_pkt.FV_data[1] <= buffer[cnt+1];
-                            rs_pkt.Node_id <= cur_nodeid;
+                            cnt <= #1 cnt + 2;
+                            state <= #1 OUT_RS;
+                            rs_pkt.sos <= #1 1'b0;
+                            rs_pkt.eos <= #1 1'b0;
+                            rs_pkt.FV_data[0] <= #1 buffer[cnt];
+                            rs_pkt.FV_data[1] <= #1 buffer[cnt+1];
+                            rs_pkt.Node_id <= #1 cur_nodeid;
                         end
                     end
                 end
                 OUT_RS: begin
                     if (cnt + 2 == iter_FV_num) begin
-                        state <= IDLE;
-                        buffer <= 0;
-                        cnt <= 'd0;
-                        rs_pkt.sos <= 1'b0;
-                        rs_pkt.eos <= 1'b1;
-                        rs_pkt.FV_data[0] <= buffer[cnt];
-                        rs_pkt.FV_data[1] <= buffer[cnt+1];
-                        rs_pkt.Node_id <= cur_nodeid;
+                        state <= #1 IDLE;
+                        buffer <= #1 0;
+                        cnt <= #1 'd0;
+                        rs_pkt.sos <= #1 1'b0;
+                        rs_pkt.eos <= #1 1'b1;
+                        rs_pkt.FV_data[0] <= #1 buffer[cnt];
+                        rs_pkt.FV_data[1] <= #1 buffer[cnt+1];
+                        rs_pkt.Node_id <= #1 cur_nodeid;
                         
                     end
                     else begin
-                            cnt <= cnt + 2;
-                            state <= OUT_RS;
-                            rs_pkt.sos <= 1'b0;
-                            rs_pkt.eos <= 1'b0;
-                            rs_pkt.FV_data[0] <= buffer[cnt];
-                            rs_pkt.FV_data[1] <= buffer[cnt+1];
-                            rs_pkt.Node_id <= cur_nodeid;
+                        cnt <= #1 cnt + 2;
+                        state <= #1 OUT_RS;
+                        rs_pkt.sos <= #1 1'b0;
+                        rs_pkt.eos <= #1 1'b0;
+                        rs_pkt.FV_data[0] <= #1 buffer[cnt];
+                        rs_pkt.FV_data[1] <= #1 buffer[cnt+1];
+                        rs_pkt.Node_id <= #1 cur_nodeid;
                         
                     end
                 end
                 OUT_FV_WAIT: begin
                     if (req_grant) begin
-                        cnt <= cnt + 2;
-                        state <= OUT_FV;
+                        cnt <= #1 cnt + 2;
+                        state <= #1 OUT_FV;
                     end
                 end
                 OUT_FV: begin
                     if (cnt + 2 == iter_FV_num) begin
-                        state <= IDLE;
-                        buffer <= 0;
-                        cnt <= 'd0;
+                        state <= #1 IDLE;
+                        buffer <= #1 0;
+                        cnt <= #1 'd0;
                     end 
                 end
             endcase

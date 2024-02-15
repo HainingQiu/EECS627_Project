@@ -14,7 +14,7 @@ Neighbor_info2Neighbor_FIFO[`DEPTH_FV_FIFO-1:0] RAM_MEM;
 
 always @(posedge wclk) begin
 	if(wenc)
-		RAM_MEM[waddr] <= wdata;
+		RAM_MEM[waddr] <= #1  wdata;
 end 
 
 always @(posedge rclk) begin
@@ -44,24 +44,24 @@ assign wfull={~wr_ptr[$clog2(`Num_Banks_Neighbor)],wr_ptr[$clog2(`Num_Banks_Neig
 assign rempty=wr_ptr==rd_ptr;
 always@(posedge clk )begin
 	if(rst)begin
-		wr_ptr<='d0;
+		wr_ptr<= #1 'd0;
 	end
 	else if(winc&& !wfull)begin
-		wr_ptr<=wr_ptr+1'b1;
+		wr_ptr<= #1 wr_ptr+1'b1;
 	end
 	else begin
-		wr_ptr<=wr_ptr;
+		wr_ptr<= #1 wr_ptr;
 	end
 end
 always@(posedge clk )begin
 	if(rst)begin
-		rd_ptr<='d0;
+		rd_ptr<= #1 'd0;
 	end
 	else if(rinc&& !rempty)begin
-		rd_ptr<=rd_ptr+1'b1;
+		rd_ptr<= #1 rd_ptr+1'b1;
 	end
 	else begin
-		rd_ptr<=rd_ptr;
+		rd_ptr<= #1 rd_ptr;
 	end
 end
 

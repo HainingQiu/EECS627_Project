@@ -18,13 +18,13 @@ assign RS_empty = ~(|nx_entry_valid);
 logic [`RS_entry-1:0][2:0] Iter;
 always_ff @(posedge clk ) begin
     if(reset)begin
-        current_entry <= 'd0;
-        current_entry_valid <= 'd0;
+        current_entry <= #1  'd0;
+        current_entry_valid <= #1  'd0;
 
     end
     else begin
-        current_entry <= nx_entry;
-        current_entry_valid <= nx_entry_valid;
+        current_entry <= #1  nx_entry;
+        current_entry_valid <= #1  nx_entry_valid;
     end
     
 end

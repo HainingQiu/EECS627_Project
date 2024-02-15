@@ -54,7 +54,7 @@ logic [$clog2(`max_degree_Iter)-1:0] fv_req_ptr,nx_fv_req_ptr;
 logic[$clog2(`max_degree_Iter)-1:0] reg_Neighbor_num_Iter,nx_reg_Neighbor_num_Iter;
 logic Cal_replay_Iter,NonCal_replay_Iter;
 Edge_PE2DP nx_Edge_PE2DP_out;
-logic [$clog2(`Max_replay_Iter)-1:0] fence_nx_Replay_Iter;
+// logic [$clog2(`Max_replay_Iter)-1:0] fence_nx_Replay_Iter;
 always_ff@(posedge clk)begin
     if(reset)begin
         state<=#1 IDLE;
