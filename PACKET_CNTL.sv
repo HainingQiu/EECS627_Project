@@ -28,7 +28,7 @@ parameter IDLE='d0, stream='d1,stall='d2;
 logic [1:0]state,nx_state;
 logic [$clog2(`Max_packet_line)-1:0] nx_re_addr,current_re_addr;
 logic [$clog2(`Max_packet_line)-1:0] nx_wr_addr,current_wr_addr;
-PACKET_CNTL2SRAM  PACKET_CNTL_SRAM_out;
+
 logic Edge_PE_WB_valid;
 logic nx_wr_en;
 always_ff@(posedge clk)begin
