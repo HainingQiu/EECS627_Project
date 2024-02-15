@@ -1,3 +1,4 @@
+// `timescale 1 ns/1 ps
 module Top(
     input clk,
     input reset,
@@ -27,7 +28,8 @@ FV_info2FV_FIFO FV_info2FV_FIFO_out;
 //----------------------S_FV_SRAM_integration out-------------------------//
 FV_SRAM2Edge_PE[`Num_Edge_PE-1:0] FV_SRAM2Edge_PE_out;
 logic wfull_S_FV_SRAM_integration;
-FV_FIFO2FV_info_MEM_CNTL V_FIFO2FV_info_MEM_CNTL_in;
+
+FV_FIFO2FV_info_MEM_CNTL FV_FIFO2FV_info_MEM_CNTL_in;
 //----------------------Neighbor_info_Integration out----------------------//
 Neighbor_info2Neighbor_FIFO Neighbor_info2Neighbor_FIFO_out;
 //----------------------S_Neighbor_SRAM_integration-----------------------//
@@ -38,7 +40,7 @@ logic[`Num_Total_reqs2Output-1:0] Ouput_SRAM_Grants;
 logic[`Num_Edge_PE-1:0] Grant_output_Bus_arbiter_in;// Output Edge_PE grants
 Req2Output_SRAM_Bank[`Num_Banks_FV-1:0] Req2Output_SRAM_Bank_out;
 FV_bank_CNTL2Edge_PE [`Num_Banks_all_FV-1:0] EdgePE_rd_out ;
-Output_Sram2Arbiter Output_Sram2Arbiter_in;
+Output_Sram2Arbiter[`Num_Edge_PE-1:0] Output_Sram2Arbiter_in;
 //------------------------WB_packet arbiter---------------------------//
 logic [`Num_Edge_PE+1-1:0] WB_packet_grants;
 //-----------------------------Vertex_PE------------------------------//
@@ -67,36 +69,76 @@ logic[`Mult_per_PE-1:0][`FV_size-1:0] Weight_data2Vertex;
 Output_SRAM2Edge_PE[`Num_Edge_PE-1:0] Output_SRAM2Edge_PE_out;
 logic edge_buffer_busy;
 logic [`Num_Edge_PE-1:0]edge_req_grant;
-genvar i,j,k;
-for(j=0;i<`Num_Banks_FV;j++)begin
-assign Output_Sram2Arbiter_in[j].eos=EdgePE_rd_out[j].eos;
+logic [`Num_Vertex_Unit-1:0] vertex_buffer_grant;
+logic[`Num_Edge_PE-1:0] PE_IDLE;
+logic stream_end;
+// generate 
+//     genvar i,j,k,l;
+
+always_comb begin
+// genvar j,i,k,l;
+    for(int j=0;j<`Num_Banks_FV;j++)begin
+         Output_Sram2Arbiter_in[j].eos=EdgePE_rd_out[j].eos;
+         stream_end=stream_end&Big_FV2Sm_FV[j].eos;
+    end
+
+    for(int i=0;i<`Num_Edge_PE;i++)begin
+        Grant_output_Bus_arbiter_in[i]=Ouput_SRAM_Grants[i];
+        Grant_WB_Packet_edge[i]=WB_packet_grants[i+1:1];
+        reqs_WB_Packet[i+1]=req_WB_Packet_Edge[i];
+        edge_req_grant[i]=Ouput_SRAM_Grants[i+`Num_Edge_PE];
+        PE_IDLE[i]=Edge_PE2DP_out[i].IDLE_flag;
+        
+    end
+    for(int l=0;l<`Num_Vertex_Unit;l++)begin
+        vertex_buffer_grant[l]=Ouput_SRAM_Grants[l+`Num_Edge_PE+`Num_Edge_PE];
+        
+    end
+
+    for(int k=0;k<`Num_Edge_PE;k++)begin
+        vertex_data_pkt[k].data=Vertex_output[k];
+        vertex_data_pkt[k].Node_id=Node_id_out[k];
+    end
+
 end
 
+    // for(j=0;i<`Num_Banks_FV;j++)begin
+    //     assign Output_Sram2Arbiter_in[j].eos=EdgePE_rd_out[j].eos;
+    // end
+
+    // for(i=0;i<`Num_Edge_PE;i++)begin
+    //     assign Grant_output_Bus_arbiter_in[i]=Ouput_SRAM_Grants[i];
+    //     assign Grant_WB_Packet_edge[i]=WB_packet_grants[i+1:1];
+    //     assign reqs_WB_Packet[i+1]=req_WB_Packet_Edge[i];
+    //     assign edge_req_grant[i]=Ouput_SRAM_Grants[i+`Num_Edge_PE];
+        
+    // end
+    // for(l=0;i<`Num_Vertex_Unit;l++)begin
+    //     assign vertex_buffer_grant[l]=Ouput_SRAM_Grants[l+`Num_Edge_PE+`Num_Edge_PE];
+        
+    // end
+
+    // for(k=0;i<`Num_Edge_PE;k++)begin
+    //     assign vertex_data_pkt[k].data=Vertex_output[k];
+    //     assign vertex_data_pkt[k].Node_id=Node_id_out[k];
+    // end
+
+// endgenerate
 assign FV_FIFO2FV_info_MEM_CNTL_in.full=wfull_S_FV_SRAM_integration;
 
-logic[`Num_Vertex_Unit-1:0] vertex_buffer_grant;
-for(i=0;i<`Num_Edge_PE;i++)begin
-    assign Grant_output_Bus_arbiter_in[i]=Ouput_SRAM_Grants[i];
-    assign Grant_WB_Packet_edge[i]=WB_packet_grants[i+1:1];
-    assign reqs_WB_Packet[i+1]=req_WB_Packet_Edge[i];
-    assign edge_req_grant[i]=Ouput_SRAM_Grants[i+`Num_Edge_PE];
-    assign vertex_buffer_grant[i]=Ouput_SRAM_Grants[i+`Num_Edge_PE+`Num_Edge_PE];
-end
-for(k=0;i<`Num_Edge_PE;k++)begin
-assign vertex_data_pkt[k].data=Vertex_output[k];
-assign vertex_data_pkt[k].Node_id=Node_id_out[k];
-end
+// logic[`Num_Vertex_Unit-1:0] vertex_buffer_grant;
+
 assign Grant_WB_Packet_Decoder=WB_packet_grants[0];
 ////////////////////////////////////////////////////////////////////////////
 PACKET_SRAM_integration PACKET_SRAM_integration_U(
     .clk(clk),														
     .reset(reset),	
     .grant(Grant_WB_Packet_Decoder),
-    .PE_IDLE(Edge_PE2DP_out.IDLE_flag),
+    .PE_IDLE(PE_IDLE),
     .Edge_PE2IMEM_CNTL_in(Edge_PE2IMEM_CNTL_out), // not connected
     .Data_SRAM_in(Data_SRAM_in),
     .bank_busy(edge_buffer_busy),
-    .stream_end(EdgePE_rd_out.eos),
+    .stream_end(stream_end),
     .vertex_done(Vertex_buffer_empty),
     .task_complete(task_complete),
     .PACKET_CNTL_SRAM_out(PACKET_CNTL_SRAM_out),
@@ -104,8 +146,8 @@ PACKET_SRAM_integration PACKET_SRAM_integration_U(
     .Req(reqs_WB_Packet[0]),
     .replay_Iter(Current_replay_Iter),
     .Num_FV(Num_FV),
-    .Weights_boundary(Weights_boundary),
-    .TB_state(TB_state)
+    .Weights_boundary(Weights_boundary)
+    // .TB_state(TB_state)
 );//----------------------------//
 //WIDTH=16 Depth 256 for IMEM_SRAM//
 IMem_Sram IMem_Sram_U(
@@ -159,7 +201,7 @@ Bus_Arbiter Req_Bus_Arbiter_U
 FV_info_Integration FV_info_Integration_U(
     .clk(clk),
     .reset(reset),
-    .FV_FIFO2FV_info_MEM_CNTL_in(V_FIFO2FV_info_MEM_CNTL_in),
+    .FV_FIFO2FV_info_MEM_CNTL_in(wfull_S_FV_SRAM_integration),
     .BUS2FV_info_FIFO_in(BUS2FV_info_MEM_CNTL_out),
 
     .FV_info2FV_FIFO_out(FV_info2FV_FIFO_out)
@@ -272,7 +314,7 @@ Big_FV_wrapper_0 Big_FV_wrapper_0_U(
     .req_pkt(Req2Output_SRAM_Bank_out),
 
     .Big_FV2Sm_FV(Big_FV2Sm_FV),
-    .EdgePE_rd_out(EdgePE_rd_out) 
+    .EdgePE_rd_out('d0) 
 );
 Big_FV_wrapper_1 Big_FV_wrapper_1_U(
     .clk(clk),
@@ -282,7 +324,7 @@ Big_FV_wrapper_1 Big_FV_wrapper_1_U(
     .FV_num(Num_FV), 
     .req_pkt(Req2Output_SRAM_Bank_out),
 
-    .Big_FV2Sm_FV(Big_FV2Sm_FV),
+    .Big_FV2Sm_FV('d0),
     .EdgePE_rd_out(EdgePE_rd_out) 
 );
 Output_BUS Output_BUS_U(

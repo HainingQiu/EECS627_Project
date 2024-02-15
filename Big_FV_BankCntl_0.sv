@@ -191,7 +191,7 @@ module Big_FV_BankCntl_0(
 
 
     always_ff @(posedge clk) begin
-        if (!reset) begin
+        if (reset) begin
             cnt <= 'd0;
             state <= IDLE;
             // Big_FV2Sm_FV <= 0;

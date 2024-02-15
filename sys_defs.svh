@@ -55,7 +55,7 @@ typedef struct packed {
     logic sos;
     logic eos;
     logic [1:0][`FV_size-1:0] FV_data;
-    logic [$clog2(`Max_Node_id)-1:0] nodeid;
+    logic [$clog2(`Max_Node_id)-1:0] Node_id;
 } Bank2RS;
 
 // typedef struct packed {
@@ -195,6 +195,7 @@ typedef struct packed {
 typedef struct packed {
     logic[$clog2(`Max_Node_id):0] A;
     logic CEN;
+    logic WEN;
 } Neighbor_info_CNTL2SRAM_interface;
 typedef struct packed {
     logic valid;
@@ -230,6 +231,7 @@ typedef struct packed {
 
     // logic [`Neighbor_bank_bandwidth-1:0]Q;
     logic CEN;
+    logic WEN;
 } Neighbor_bank2SRAM_Interface;
 
 

@@ -1,19 +1,19 @@
 `define NUM_PE 4
 `define BIT_WIDTH $clog2(`NUM_PE)
 
-typedef struct packed {
-    logic sos; // start of streaming
-    logic eos;//  end of streaming
-    logic [1:0][`FV_size-1:0] FV_data;
-    logic Done_aggr;
-    logic WB_en;
-} Edge_PE2Bank;
+// typedef struct packed {
+//     logic sos; // start of streaming
+//     logic eos;//  end of streaming
+//     logic [1:0][`FV_size-1:0] FV_data;
+//     logic Done_aggr;
+//     logic WB_en;
+// } Edge_PE2Bank;
 
-typedef struct packed {
-    logic sos;
-    logic eos;
-    logic [1:0][`FV_size-1:0] FV_data;
-} out_buff2Bank;
+// typedef struct packed {
+//     logic sos;
+//     logic eos;
+//     logic [1:0][`FV_size-1:0] FV_data;
+// } out_buff2Bank;
 
 
 module acc_buffer(
@@ -26,7 +26,8 @@ module acc_buffer(
 );
 
     generate
-        for (int i = 0; i < `Num_Edge_PE; i++) begin
+        genvar i;
+        for (i = 0; i < `Num_Edge_PE; i++) begin:buffer_DUT
             buffer_one buffer1 (
                 .clk(clk),
                 .reset(reset),

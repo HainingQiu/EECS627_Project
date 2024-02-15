@@ -1,7 +1,7 @@
 // `include "sys_defs.svh"
 // `timescale 1 ns/1 ps
 
-module Big_FV_wrapper(
+module Big_FV_wrapper_1(
     input clk,
     input reset,
     input [$clog2(`Max_replay_Iter)-1:0] Cur_Replay_Iter,
@@ -26,7 +26,7 @@ module Big_FV_wrapper(
 
     generate // ping buffer cntl + sram
         genvar i;
-        for (i = 0; i < `Num_Banks_all_FV; i++) begin
+        for (i = 0; i < `Num_Banks_all_FV; i++) begin:Big_FV_BankCntl_1_DUT
             Big_FV_BankCntl_1 Big_FV_BankCntl_i_1 (
                 .clk(clk),
                 .reset(reset),
@@ -42,7 +42,7 @@ module Big_FV_wrapper(
             );
         end 
    
-        genvar i;
+
         for (i = 0; i < `Num_Banks_all_FV; i++) begin : ping_buffer
             BIG_FV_SRAM BIG_FV_SRAM_u(
                 .Q(FV_SRAM_DATA[i]), // output 

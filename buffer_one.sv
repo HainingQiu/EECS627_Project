@@ -55,7 +55,7 @@ module buffer_one(
                     if (edge_pkt.sos) begin
                         buffer[cnt] <= edge_pkt.FV_data[0] + buffer[cnt];
                         buffer[cnt+1] <= edge_pkt.FV_data[1] + buffer[cnt+1];
-                        cur_nodeid <= edge_pkt.nodeid;
+                        cur_nodeid <= edge_pkt.Node_id;
                         cnt <= cnt + 2;
                         if (edge_pkt.eos) begin
                             state <= COMPLETE;
@@ -81,7 +81,7 @@ module buffer_one(
                         rs_pkt.sos <= 1'b1;
                         rs_pkt.FV_data[0] <= buffer[cnt];
                         rs_pkt.FV_data[1] <= buffer[cnt+1];
-                        rs_pkt.nodeid <= cur_nodeid;
+                        rs_pkt.Node_id <= cur_nodeid;
                         if (cnt + 2 == iter_FV_num) begin
                             rs_pkt.eos <= 1'b1;
                             cnt <= 'd0;
@@ -119,7 +119,7 @@ module buffer_one(
                         outbuff_pkt.eos <= 1'b0;
                         outbuff_pkt.data[0] <= buffer[cnt];
                         outbuff_pkt.data[1] <= buffer[cnt+1];
-                        outbuff_pkt.nodeid <= cur_nodeid;
+                        outbuff_pkt.Node_id <= cur_nodeid;
                         cnt <= cnt + 2;
                         state <= OUT_FV;
                     end else begin

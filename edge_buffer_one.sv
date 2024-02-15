@@ -1,4 +1,4 @@
-`include "sys_defs.svh"
+// `include "sys_defs.svh"
 
 module edge_buffer_one(
     input clk, reset,
@@ -87,7 +87,7 @@ module edge_buffer_one(
                     rs_pkt.sos = 1'b1;
                     rs_pkt.FV_data[0] = buffer[cnt];
                     rs_pkt.FV_data[1] = buffer[cnt+1];
-                    rs_pkt.nodeid = cur_nodeid;
+                    rs_pkt.Node_id = cur_nodeid;
                     if (cnt + 2 == iter_FV_num) begin
                         rs_pkt.eos = 1'b1;
                     end else begin
@@ -113,7 +113,7 @@ module edge_buffer_one(
                 rs_pkt.sos = 1'b0;
                 rs_pkt.eos = 1'b0;
                 rs_pkt.FV_data = 'd0;
-                rs_pkt.nodeid = 'd0;
+                rs_pkt.Node_id = 'd0;
             end
         endcase
     end
@@ -128,7 +128,7 @@ module edge_buffer_one(
     */
 
     always_ff @(posedge clk) begin
-        if (!reset) begin
+        if (reset) begin
             for (int i = 0; i < `MAX_FV_num; i++) begin
                 buffer[i] <= 'd0;
             end
@@ -144,7 +144,7 @@ module edge_buffer_one(
                     if (edge_pkt.sos) begin
                         buffer[cnt] <= edge_pkt.FV_data[0] + buffer[cnt];
                         buffer[cnt+1] <= edge_pkt.FV_data[1] + buffer[cnt+1];
-                        cur_nodeid <= edge_pkt.nodeid;
+                        cur_nodeid <= edge_pkt.Node_id;
                         cnt <= cnt + 2;
                         if (edge_pkt.eos) begin
                             state <= COMPLETE;

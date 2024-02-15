@@ -16,7 +16,7 @@ logic[`Num_Vertex_Unit-1:0] bank_busy;
 
     generate
         genvar i;
-        for (i = 0; i < `Num_Vertex_Unit; i++) begin
+        for (i = 0; i < `Num_Vertex_Unit; i++) begin:vertex_buffer_one_DUT
             vertex_buffer_one buffer2 (
                 .clk(clk),
                 .reset(reset),

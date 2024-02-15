@@ -31,7 +31,7 @@ Bank2RS[`Num_Edge_PE-1:0] rs_pkt;
     assign busy = |bank_busy;
     generate
         genvar i;
-        for (i = 0; i < `Num_Edge_PE; i++) begin
+        for (i = 0; i < `Num_Edge_PE; i++) begin:edge_buffer_one_DUT
             edge_buffer_one buffer1 (
                 .clk(clk),
                 .reset(reset),

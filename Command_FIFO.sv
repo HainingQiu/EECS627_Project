@@ -1,7 +1,7 @@
 
 
 
-module dual_port_RAM(
+module Command_FIFO_dual_port_RAM(
 	 input wclk
 	,input wenc
 	,input [$clog2(`com_fifo_size)-1:0] waddr  //???2????????????
@@ -68,7 +68,7 @@ always@(posedge clk or negedge reset)begin
 	end
 end
 
-dual_port_RAM  tb_dual_port_RAM(
+Command_FIFO_dual_port_RAM  tb_dual_port_RAM(
 	.wclk(clk),
 	.wenc(~wfull&&winc),
 	.waddr(wr_ptr[$clog2(`com_fifo_size)-1:0]),  //???2????????????
