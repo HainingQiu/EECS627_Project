@@ -18,7 +18,8 @@ module decoder(
     output logic [$clog2(`Max_replay_Iter)-1:0]  replay_Iter,
     output logic [$clog2(16):0 ]    Num_FV ,
     output logic [$clog2(16)-1:0 ] Weights_boundary,
-    output  DP2mem_packet DP2mem_packet_out
+    output  DP2mem_packet DP2mem_packet_out,
+    output logic stream_begin
 );
 parameter IDLE='d0, wait_grant='d1,wait_replay_iter='d2,wait_stream='d3,wait_task_complete='d4;
 logic [2:0]state,nx_state;
@@ -32,7 +33,7 @@ logic [3:0] Iter;
 logic PE_finish;
 logic current_replay_iter_flag;
 
-
+logic nx_stream_begin;
 assign Iter = com2DPpacket.packet[13:10];
 assign PE_finish = (&PE_IDLE);
 assign replay_Iter =current_replay_Iter;
@@ -47,7 +48,7 @@ always_ff @( posedge clk ) begin
         current_packet <= #1 'd0;
         current_Num_FV <= #1 'd0; 
         current_Req<= #1 'd0;
-    
+        stream_begin<= #1 'd0;
         current_replay_iter_flag<= #1 'd0;
     end
     else begin
@@ -57,7 +58,7 @@ always_ff @( posedge clk ) begin
         current_packet <= #1 nx_packet;
         current_Num_FV <= #1 nx_Num_FV; 
         current_Req<= #1 nx_Req;
-        
+        stream_begin<= #1 nx_stream_begin;
         current_replay_iter_flag<= #1 replay_iter_flag;
     end
 end
@@ -74,6 +75,7 @@ always_comb begin
         DP2mem_packet_out =0;
         cntl_done=0;
         task_complete='d0;
+        nx_stream_begin=0;
     if(com2DPpacket.valid && !replay_iter_flag) begin 
         case(com2DPpacket.packet[`packet_size-1:`packet_size-2])
             'b00 :   begin 
@@ -103,6 +105,7 @@ always_comb begin
                     end
             'b10:   begin
                         nx_Num_FV= com2DPpacket.packet[$clog2(16):0 ];
+                        nx_stream_begin='d1;
                     end
             'b11:   begin 
                         nx_Weights_boundary = com2DPpacket.packet[$clog2(16)-1:0 ];

@@ -8,7 +8,7 @@ module Big_FV_wrapper_1(
     input [$clog2(`Max_update_Iter)-1:0] Cur_Update_Iter,
     input [$clog2(`Max_FV_num):0] FV_num, 
     input Req2Output_SRAM_Bank [`Num_Banks_all_FV-1:0] req_pkt,
-
+    input stream_begin,
     output FV_MEM2FV_Bank [`Num_Banks_all_FV-1:0] Big_FV2Sm_FV,
     output FV_bank_CNTL2Edge_PE [`Num_Banks_all_FV-1:0] EdgePE_rd_out 
 );
@@ -35,7 +35,7 @@ module Big_FV_wrapper_1(
                 .FV_SRAM_data(FV_SRAM_DATA[i]),
                 .FV_num(FV_num),
                 .req_pkt(req_pkt[i]),
-
+                .stream_begin(stream_begin),
                 .FV2SRAM_out(FV2SRAM_out[i]),
                 .Big_FV2Sm_FV(Big_FV2Sm_FV[i]), 
                 .EdgePE_rd_out(EdgePE_rd_out[i])

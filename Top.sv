@@ -58,6 +58,7 @@ logic [`Num_Vertex_Unit-1:0][$clog2(`Max_Node_id)-1:0] Node_id_out;
 Bank_Req2Req_Output_SRAM [`Num_Vertex_Unit-1:0] vertex_outbuff_pkt;
 logic Vertex_buffer_empty;
 //------------------------Wires------------------------------------------//
+logic stream_begin;
 logic[`packet_size-1:0] Data_SRAM_in;
 logic RS_unavailable, RS_empty;
 RS2Vertex_PE RS2Vertex_PE_out;
@@ -86,6 +87,7 @@ FV_bank_CNTL2Edge_PE[`Num_Banks_all_FV-1:0] EdgePE_rd_out_0;
 
 always_comb begin
 // genvar j,i,k,l;
+stream_end='d1;
     for(int j=0;j<`Num_Banks_FV;j++)begin
          Output_Sram2Arbiter_in[j].eos=EdgePE_rd_out[j].eos;
          stream_end=stream_end&Big_FV2Sm_FV[j].eos;
@@ -156,7 +158,8 @@ PACKET_SRAM_integration PACKET_SRAM_integration_U(
     .Req(reqs_WB_Packet[0]),
     .replay_Iter(Current_replay_Iter),
     .Num_FV(Num_FV),
-    .Weights_boundary(Weights_boundary)
+    .Weights_boundary(Weights_boundary),
+    .stream_begin(stream_begin)
     // .TB_state(TB_state)
 );//----------------------------//
 //WIDTH=16 Depth 256 for IMEM_SRAM//
@@ -322,6 +325,7 @@ Big_FV_wrapper_0 Big_FV_wrapper_0_U(
     .Cur_Update_Iter({$clog2(`Max_update_Iter){1'b0}}),
     .FV_num(Num_FV), 
     .req_pkt(Req2Output_SRAM_Bank_out),
+    .stream_begin(stream_begin),
 
     .Big_FV2Sm_FV(Big_FV2Sm_FV),
     .EdgePE_rd_out(EdgePE_rd_out_0) 
@@ -333,6 +337,7 @@ Big_FV_wrapper_1 Big_FV_wrapper_1_U(
     .Cur_Update_Iter({$clog2(`Max_update_Iter){1'b0}}),
     .FV_num(Num_FV), 
     .req_pkt(Req2Output_SRAM_Bank_out),
+    .stream_begin(stream_begin),
 
     .Big_FV2Sm_FV(Big_FV2Sm_FV_1),
     .EdgePE_rd_out(EdgePE_rd_out) 

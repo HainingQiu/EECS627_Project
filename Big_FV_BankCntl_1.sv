@@ -8,6 +8,7 @@ module Big_FV_BankCntl_1(
     input [$clog2(`Max_update_Iter)-1:0] Cur_Update_Iter,
     input [`FV_bandwidth-1:0] FV_SRAM_data,
     input [$clog2(`Max_FV_num):0] FV_num,
+    input stream_begin,
 
     // input [`FV_bandwidth-1:0] FV_WB_data, 
     input Req2Output_SRAM_Bank req_pkt, // data write back to output buffer, either from acc_buff or vertex_buff
@@ -82,7 +83,7 @@ module Big_FV_BankCntl_1(
         case (state)
             IDLE: begin
                 if (Cur_Update_Iter[0]) begin
-                    if ((cur_iter == 0) || change) begin
+                    if (stream_begin|| change) begin
                         nx_state = STREAM_ITER_FV;
                         
                         FV2SRAM_out.CEN = 1'b0;

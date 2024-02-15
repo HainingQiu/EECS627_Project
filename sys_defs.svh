@@ -13,6 +13,7 @@
 `define Max_update_Iter 4
 `define FV_info_bank_width 10 //don't need to store offset, in this case 16bits in FV SRAM, 2^4, save 4 bits
 `define NODE_PER_ITER_BANK `Curr_Node_Id/(`Num_Banks_all_FV*`Max_replay_Iter)
+`define MAX_NODE_PER_ITER_BANK `Max_Node_id/(`Num_Banks_all_FV*`Max_replay_Iter)
 
 // `define FV_info_SRAM_addr ;
 `define Max_FV_num 16 //#16 FVs

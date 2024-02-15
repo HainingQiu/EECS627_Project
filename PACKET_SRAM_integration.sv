@@ -15,7 +15,8 @@ module PACKET_SRAM_integration(
     output logic Req,
     output logic [$clog2(`Max_replay_Iter)-1:0]  replay_Iter,
     output logic [$clog2(16):0 ]    Num_FV ,
-    output logic [$clog2(16)-1:0 ] Weights_boundary
+    output logic [$clog2(16)-1:0 ] Weights_boundary,
+    output logic stream_begin
 );
 DP2mem_packet DP2mem_packet_in;
 logic fifo_full;
@@ -72,7 +73,8 @@ decoder decoder_0(
     .replay_Iter(replay_Iter),
     .Num_FV(Num_FV) ,
     .Weights_boundary(Weights_boundary),
-    .DP2mem_packet_out(DP2mem_packet_in)
+    .DP2mem_packet_out(DP2mem_packet_in),
+    .stream_begin(stream_begin)
 );
 RS RS_0(
     .clk(clk),
