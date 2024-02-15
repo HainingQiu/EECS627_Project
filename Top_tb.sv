@@ -12,7 +12,13 @@ always #5 clk = ~clk;
 initial begin
 
 init();
-
+forever begin
+	if(task_complete)begin
+		@(posedge clk);
+		$finish; 
+	end
+	@(posedge clk);
+end
 end
 
 task automatic init();
