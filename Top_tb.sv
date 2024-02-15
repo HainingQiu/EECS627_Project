@@ -61,7 +61,10 @@ $readmemb("./data/nb_bank3.txt",
 		  iTop_DUT.S_Neighbor_SRAM_integration_U.
 		  SRAM_Instantiations[3].Neighbor_SRAM_U.mem);
 
-///// Weight SRAM /////
+
+@(posedge clk);
+reset = 0; // go
+
 
 endtask
 
