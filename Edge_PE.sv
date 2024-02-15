@@ -100,6 +100,7 @@ always_comb begin
     nx_DP_Priority=DP_Priority;
     nx_req_neighbor_Iter=req_neighbor_Iter;
     nx_cnt_neighbor_info=cnt_neighbor_info;
+    nx_Edge_PE2DP_out='d0;
     // nx_Req_Output_SRAM_out='d0;
     Req_Output_SRAM_out='d0;
     case(Cur_Replay_Iter)

@@ -41,7 +41,7 @@ always_ff @(posedge clk)begin
         reg_PE_tag<=#1 nx_reg_PE_tag;
         Num_neighbor_Iter<=#1 nx_Num_neighbor_Iter;
         // Neighbor_bank2SRAM_Interface_out<=#1 nx_Neighbor_bank2SRAM_Interface;
-        reg_Neighbor_bank2SRAM_Interface<=#1 Neighbor_bank2SRAM_Interface;
+        reg_Neighbor_bank2SRAM_Interface<=#1 Neighbor_bank2SRAM_Interface_out;
         Neighbor_bank_CNTL2Edge_PE_out<=#1 nx_Neighbor_bank_CNTL2Edge_PE_out;
         cnt<=#1 nx_cnt;
     end
@@ -59,7 +59,7 @@ always_comb begin
         IDLE: 
             if(Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_in.valid)begin
                 nx_state=Stream;
-                Neighbor_bank2SRAM_Interface.CEN=1'b0;
+                Neighbor_bank2SRAM_Interface_out.CEN=1'b0;
                 Neighbor_bank2SRAM_Interface_out.WEN = 1'b1;
                 Neighbor_bank2SRAM_Interface_out.A=Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_in.Bank_addr[`Neighbor_info_bandwidth-1-2:`start_bit_addr_neighbor];         
                 nx_Num_neighbor_Iter=Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_in.Bank_addr[`start_bit_addr_neighbor-1:0];
