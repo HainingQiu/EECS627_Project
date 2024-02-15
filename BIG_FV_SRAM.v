@@ -49,7 +49,7 @@
 //      Known Work Arounds: N/A
 //
 
-`celldefine
+
   module BIG_FV_SRAM (
                 Q,
                 CLK,

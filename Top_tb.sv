@@ -1,3 +1,4 @@
+`include "sys_defs.svh"
 module Top_tb();
 
 logic clk, reset;
@@ -12,20 +13,23 @@ always #5 clk = ~clk;
 initial begin
 
 init();
-forever begin
-	if(task_complete)begin
-		@(posedge clk);
-		$finish; 
-	end
-	@(posedge clk);
-end
+//forever begin
+//	if(task_complete)begin
+//		@(posedge clk);
+		
+//	end
+//	@(posedge clk);
+//end
+repeat (100) @(negedge clk);
+$finish; 
 end
 //
 task automatic init();
 
 clk = 0;
 reset = 1; // avtive high sync reset
-
+@(negedge clk);
+reset = 0; // go
 ///// FV SRAM Initialization /////
 $readmemb("./data/feature_value_bank0.txt",
 		  iTop_DUT.Big_FV_wrapper_0_U.ping_buffer[0].BIG_FV_SRAM_u.mem);
@@ -68,8 +72,7 @@ $readmemb("./data/nb_bank3.txt",
 		  SRAM_Instantiations[3].Neighbor_SRAM_U.mem);
 
 
-@(posedge clk);
-reset = 0; // go
+
 
 
 endtask

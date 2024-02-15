@@ -49,7 +49,7 @@
 //      Known Work Arounds: N/A
 //
 // `timescale 1 ns/1 ps
-`celldefine
+//`celldefine
   module IMem_Sram (
                 Q,
                 CLK,

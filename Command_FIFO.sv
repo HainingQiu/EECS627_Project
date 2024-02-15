@@ -16,7 +16,9 @@ module Command_FIFO_dual_port_RAM(
  com_packet [`com_fifo_size-1:0]   RAM_MEM;
 
 always @(posedge wclk) begin
-	if(wenc && !replay_iter_flag)
+	if(wenc )
+        RAM_MEM[waddr] <= wdata;
+        else if(!replay_iter_flag)
 		RAM_MEM[waddr] <= wdata;
 end 
 
@@ -46,9 +48,12 @@ reg [$clog2(`com_fifo_size):0] wr_ptr, rd_ptr;
 assign wfull={~wr_ptr[$clog2(`com_fifo_size)],wr_ptr[$clog2(`com_fifo_size)-1:0]}==rd_ptr;
 assign rempty=wr_ptr==rd_ptr;
 always@(posedge clk )begin
-	if(reset | replay_iter_flag)begin
+	if(reset )begin
 		wr_ptr<='d0;
 	end
+        else if (replay_iter_flag)begin
+		wr_ptr<='d0;
+        end
 	else if(winc && !wfull)begin
 		wr_ptr<=wr_ptr+1'b1;
 	end
@@ -57,9 +62,12 @@ always@(posedge clk )begin
 	end
 end
 always@(posedge clk or negedge reset)begin
-	if(reset | replay_iter_flag)begin
+	if(reset )begin
 		rd_ptr<='d0;
 	end
+        else if (replay_iter_flag)begin
+		rd_ptr<='d0;
+        end
 	else if(rinc && !rempty)begin
 		rd_ptr<=rd_ptr+1'b1;
 	end

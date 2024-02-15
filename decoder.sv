@@ -25,7 +25,7 @@ logic [2:0]state,nx_state;
 logic [$clog2(16)-1:0 ] nx_Weights_boundary,current_Weights_boundary;
 logic [$clog2(`Max_replay_Iter)-1:0] nx_replay_Iter ,current_replay_Iter;
 logic [`packet_size-1:0] nx_packet ,current_packet;
-logic [$clog2(16)-1:0 ] nx_Num_FV,current_Num_FV;
+logic [$clog2(16):0 ] nx_Num_FV,current_Num_FV;
 logic nx_Req,current_Req;
 logic nx_fifo_stall;
 logic [3:0] Iter;
@@ -101,10 +101,12 @@ always_comb begin
 
                     end
             'b10:   begin
-                        nx_Num_FV= com2DPpacket.packet[$clog2(16)-1:0 ];
+                        nx_Num_FV= com2DPpacket.packet[$clog2(16):0 ];
                     end
             'b11:   begin 
                         nx_Weights_boundary = com2DPpacket.packet[$clog2(16)-1:0 ];
+			nx_state =  wait_stream;
+			nx_fifo_stall = 'd1;
                         
                     end
 

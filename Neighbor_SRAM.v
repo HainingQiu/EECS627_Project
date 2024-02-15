@@ -49,7 +49,7 @@
 //      Known Work Arounds: N/A
 //
 // `timescale 1 ns/1 ps
-`celldefine
+
   module Neighbor_SRAM (
                 Q,
                 CLK,
