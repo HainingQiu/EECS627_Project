@@ -77,7 +77,7 @@ module round_robin_arbiter (
     input		clk,
     input	[3:0]	req,
     input   rs_busy,
-    output	[3:0]	grant
+    output	logic[3:0]	grant
 );
 
 logic	[3:0]	rotate_ptr;

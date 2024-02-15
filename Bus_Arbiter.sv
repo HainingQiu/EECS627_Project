@@ -35,6 +35,11 @@ always_comb begin
     nx_BUS2FV_info_MEM_CNTL_out='d0;
     nx_BUS2Neighbor_info_MEM_CNTL_out='d0;
     // nx_BUS2Output_SRAM_MEM_CNTL_out='d0;
+    for (int i = 0; i < `Num_Edge_PE; i++) begin
+	local_req[i] = Req_Bus_arbiter_in[i].req;
+	local_grant[i] = Grant_Bus_arbiter_out[i].Grant;
+    end
+
     
     for(int i=0; i<`Num_Edge_PE;i++)begin
         if(granted_Req_Bus_arbiter_in[i])begin
@@ -72,10 +77,6 @@ end
 // local packed array
 
 
-for (genvar i = 0; i < `Num_Edge_PE; i++) begin
-	assign local_req[i] = Req_Bus_arbiter_in[i].req;
-	assign local_grant[i] = Grant_Bus_arbiter_out[i].Grant;
-end
 
 rr_arbiter
 #(.num_reqs(`Num_Edge_PE))

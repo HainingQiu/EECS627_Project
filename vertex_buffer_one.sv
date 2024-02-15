@@ -86,7 +86,7 @@ module vertex_buffer_one(
                         end else begin
                             state <= STREAM_IN;
                             if (vertex_cntl_pkt.change) begin
-                                cnt <= cnt++;
+                                cnt <= cnt+1;
                             end
                         end
                     end
@@ -98,7 +98,7 @@ module vertex_buffer_one(
                         state <= OUT_FV_WAIT;
                         output_FV_num <= cnt + 1;
                     end else if (vertex_cntl_pkt.change) begin
-                        cnt <= cnt++;
+                        cnt <= cnt+1;
                     end
                     buffer[cnt] <= vertex_data_pkt.data + buffer[cnt];
                 end

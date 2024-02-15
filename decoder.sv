@@ -10,7 +10,7 @@ module decoder(
     input stream_end,
     input vertex_done,
     input cntl_done,
-    output task_complete,
+    output logic task_complete,
     output DP_task2RS DP_task2RS_out,
     output logic Req,
     output logic fifo_stall,

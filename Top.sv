@@ -56,6 +56,8 @@ logic Vertex_buffer_empty;
 logic[`packet_size-1:0] Data_SRAM_in;
 logic RS_unavailable, RS_empty;
 RS2Vertex_PE RS2Vertex_PE_out;
+logic [`Num_RS2Vertex_PE-1:0][`Mult_per_PE-1:0][`FV_size-1:0] FV_data;
+logic [`Num_RS2Vertex_PE-1:0][$clog2(`Max_Node_id)-1:0] Node_id;
 logic Vertex_complete;
 FV_MEM2FV_Bank [`Num_Banks_all_FV-1:0] Big_FV2Sm_FV;
 logic [`Num_Edge_PE-1:0] Grant_WB_Packet_edge;
@@ -92,7 +94,8 @@ always_comb begin
     end
     for(int l=0;l<`Num_Vertex_Unit;l++)begin
         vertex_buffer_grant[l]=Ouput_SRAM_Grants[l+`Num_Edge_PE+`Num_Edge_PE];
-        
+        FV_data[l]=RS2Vertex_PE_out.FV_data[l];
+        Node_id[l]=RS2Vertex_PE_out.Node_id[l];
     end
 
     for(int k=0;k<`Num_Edge_PE;k++)begin
@@ -180,7 +183,7 @@ generate
         .Req_Bus_arbiter_out(Req_Bus_arbiter_out[l]),			    // request to arbiter
         .Edge_PE2DP_out(Edge_PE2DP_out[l]),							// idle flag output to dispatch
         .Edge_PE2IMEM_CNTL_out(Edge_PE2IMEM_CNTL_out[l]),				// packet to IMEM
-        .req_WB_Packet(req_WB_Packet[`Num_Edge_PE-1+1:1]),			// request write back packet
+        .req_WB_Packet(req_WB_Packet_Edge),			// request write back packet
         .Edge_PE2Bank_out(Edge_PE2Bank_out[l]),						// aggregated output to bank
         .Req_Output_SRAM_out(Edge_PE_Req_Output_SRAM_out[l]) 
         );
@@ -282,8 +285,8 @@ generate
     .clk(clk),
     .reset(reset),
     .Weight_data_in(Weight_data2Vertex),
-    .FV_RS(RS2Vertex_PE_out[m].FV_data),
-    .Node_id(RS2Vertex_PE_out[m].Node_id),
+    .FV_RS(FV_data[m]),
+    .Node_id(Node_id[m]),
 
     .Vertex_output(Vertex_output),
     .Node_id_out(Node_id_out)
