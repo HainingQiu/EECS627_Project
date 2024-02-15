@@ -14,7 +14,7 @@ initial begin
 init();
 
 end
-
+//
 task automatic init();
 
 clk = 0;

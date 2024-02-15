@@ -1,4 +1,4 @@
-`include "sys_defs.svh"
+// `include "sys_defs.svh"
 module Bus_Arbiter
 (
 input clk,															// global clock
@@ -10,7 +10,7 @@ output BUS2FV_info_FIFO BUS2FV_info_MEM_CNTL_out,
 output BUS2Neighbor_info_MEM_CNTL BUS2Neighbor_info_MEM_CNTL_out
 // output BUS2Output_SRAM_MEM_CNTL BUS2Output_SRAM_MEM_CNTL_out
 );
-
+logic [`Num_Edge_PE-1:0] local_req, local_grant;
 BUS2FV_info_FIFO nx_BUS2FV_info_MEM_CNTL_out;
 Req_Bus_arbiter granted_Req_Bus_arbiter_in;
 Req_Bus_arbiter[`Num_Edge_PE-1:0] reg_Req_Bus_arbiter_in;
@@ -70,7 +70,7 @@ end
 //may don't need this
 
 // local packed array
-logic [`Num_Edge_PE-1:0] local_req, local_grant;
+
 
 for (genvar i = 0; i < `Num_Edge_PE; i++) begin
 	assign local_req[i] = Req_Bus_arbiter_in[i].req;
