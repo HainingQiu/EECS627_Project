@@ -99,7 +99,7 @@ always_comb begin
     nx_Target_node=Target_node;
     nx_DP_Priority=DP_Priority;
     nx_req_neighbor_Iter=req_neighbor_Iter;
-    nx_cnt_neighbor_info=cnt_neighbor_info;
+    // nx_cnt_neighbor_info=cnt_neighbor_info;
     nx_Edge_PE2DP_out='d0;
     // nx_Req_Output_SRAM_out='d0;
     Req_Output_SRAM_out='d0;
@@ -143,7 +143,7 @@ always_comb begin
                 nx_state=Req_Neighbor_FV;
                 nx_Neighbor_ids[nx_cnt_neighbor_info]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[6:0];
                 nx_Neighbor_ids[nx_cnt_neighbor_info+'d1]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[13:7];
-                nx_cnt_neighbor_info='d0;
+                nx_cnt_neighbor_info=nx_cnt_neighbor_info+'d2;
             end
             else if(NeighborID_SRAM2Edge_PE_in.sos)begin
                 nx_state=Stream_Neighbor_ID;
@@ -160,7 +160,7 @@ always_comb begin
                 nx_state=Req_Neighbor_FV;
                 nx_Neighbor_ids[nx_cnt_neighbor_info]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[6:0];
                 nx_Neighbor_ids[nx_cnt_neighbor_info+1'b1]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[13:7];
-                nx_cnt_neighbor_info='d0;
+                nx_cnt_neighbor_info=nx_cnt_neighbor_info+'d2;
                 
             end
             else begin

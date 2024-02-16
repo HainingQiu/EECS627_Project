@@ -61,8 +61,10 @@ always_comb begin
             else if(FV_MEM_CNTL2FV_Bank_CNTL_in.valid)begin
                 nx_state=Stream;
                 FV_bank2SRAM_Interface_out.CEN=1'b0;
+                FV_bank2SRAM_Interface_out.WEN=1'b1;
                 FV_bank2SRAM_Interface_out.A=FV_MEM_CNTL2FV_Bank_CNTL_in.FV_Bank_addr;
                 nx_reg_PE_tag=FV_MEM_CNTL2FV_Bank_CNTL_in.PE_tag;
+                nx_cnt=nx_cnt+'d2;
             end 
             else begin
                 nx_state=IDLE;
@@ -109,7 +111,7 @@ always_comb begin
                 FV_bank2SRAM_Interface_out.CEN=1'b0;
                 FV_bank2SRAM_Interface_out.WEN=1'b1;
             end
-            else if(cnt=='d0)begin
+            else if(cnt=='d2)begin
                 Busy=1'b1;
                 nx_FV_bank_CNTL2Edge_PE_out.sos=1'b1;
                 nx_FV_bank_CNTL2Edge_PE_out.eos=1'b0;

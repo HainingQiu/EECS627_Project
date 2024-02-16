@@ -64,6 +64,7 @@ always_comb begin
                 Neighbor_bank2SRAM_Interface_out.A=Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_in.Bank_addr[`Neighbor_info_bandwidth-1-2:`start_bit_addr_neighbor];         
                 nx_Num_neighbor_Iter=Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_in.Bank_addr[`start_bit_addr_neighbor-1:0];
                 nx_reg_PE_tag=Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_in.PE_tag;
+                nx_cnt=nx_cnt+'d2;
             end 
             else begin
                 nx_state=IDLE;
@@ -97,7 +98,7 @@ always_comb begin
                 Neighbor_bank2SRAM_Interface_out.CEN= 1'b0;
                 Neighbor_bank2SRAM_Interface_out.WEN= 1'b1;
             end
-            else if(cnt=='d0)begin
+            else if(cnt=='d2)begin
                 Busy=1'b1;
                 nx_Neighbor_bank_CNTL2Edge_PE_out.sos=1'b1;
                 nx_Neighbor_bank_CNTL2Edge_PE_out.eos=1'b0;

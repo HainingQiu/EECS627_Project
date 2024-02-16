@@ -20,7 +20,7 @@ init();
 //	end
 //	@(posedge clk);
 //end
-repeat (100) @(negedge clk);
+repeat (200) @(negedge clk);
 $finish; 
 end
 //
