@@ -51,11 +51,15 @@ module Big_FV_BankCntl_0(
 
 
     logic [$clog2(`FV_MEM_cache_line)-1:0] stream_addr;
+    logic [$clog2(`FV_MEM_cache_line)-1:0] prev_addr;
     // assign stream_addr = cnt + node_offset + iter_offset;
     assign stream_addr = {cur_iter, node_cnt[$clog2(`MAX_NODE_PER_ITER_BANK)-1:0], cnt[$clog2(`Max_FV_num/2)-1:0]};
 
     logic [$clog2(`Num_Edge_PE)-1:0] nx_PE_tag;
     logic [$clog2(`Num_Edge_PE)-1:0] PE_tag;
+
+    FV_MEM2FV_Bank nx_Big_FV2Sm_FV;
+    FV_bank_CNTL2Edge_PE nx_EdgePE_rd_out;
 
  
 
@@ -65,16 +69,16 @@ module Big_FV_BankCntl_0(
         FV2SRAM_out.addr = 'd0;
         FV2SRAM_out.FV_data = 'd0;
 
-        Big_FV2Sm_FV.sos = 1'b0; 
-        Big_FV2Sm_FV.eos = 1'b0;
-        Big_FV2Sm_FV.FV_data = 'd0;
-        Big_FV2Sm_FV.A = 'd0;
+        nx_Big_FV2Sm_FV.sos = 1'b0; 
+        nx_Big_FV2Sm_FV.eos = 1'b0;
+        nx_Big_FV2Sm_FV.FV_data = 'd0;
+        nx_Big_FV2Sm_FV.A = 'd0;
 
-        EdgePE_rd_out.sos = 1'b0;
-        EdgePE_rd_out.eos = 1'b0;
-        EdgePE_rd_out.FV_data = 'd0;
-        EdgePE_rd_out.PE_tag = 'd0;
-        EdgePE_rd_out.valid='d0;
+        nx_EdgePE_rd_out.sos = 1'b0;
+        nx_EdgePE_rd_out.eos = 1'b0;
+        nx_EdgePE_rd_out.FV_data = 'd0;
+        nx_EdgePE_rd_out.PE_tag = 'd0;
+        nx_EdgePE_rd_out.valid='d0;
         
         nx_state = state;
         nx_iter = cur_iter;
@@ -129,17 +133,19 @@ module Big_FV_BankCntl_0(
                 // FV2SRAM_out.WEN = 1'b1;
                 FV2SRAM_out.addr = stream_addr;
                 // FV2SRAM_out.FV_data = 'd0;
-                Big_FV2Sm_FV.A = {2'b00,node_cnt[$clog2(`MAX_NODE_PER_ITER_BANK)-1:0], cnt[$clog2(`Max_FV_num/2)-1:0]-1};
+                nx_Big_FV2Sm_FV.A = {2'b00, prev_addr[$clog2(`FV_MEM_cache_line)-3:0]};
+                // {2'b00, node_cnt[$clog2(`MAX_NODE_PER_ITER_BANK)-1:0], cnt[$clog2(`Max_FV_num/2)-1:0]-1};
+                // cnt[$clog2(`Max_FV_num/2)-1:0]-1;
 
                 if ((cnt == 1) && (node_cnt == 0)) begin
-                    Big_FV2Sm_FV.sos = 1'b1;
+                    nx_Big_FV2Sm_FV.sos = 1'b1;
                     nx_cnt = cnt + 1;   
                 end 
                 
                 if ({cnt,1'b0} >= total_FV_num) begin
                     // FV2SRAM_out.CEN = 1'b0; 
                     if (node_cnt == (`NODE_PER_ITER_BANK-1)) begin // `FV_SRAM_bank_cache_line-1
-                        Big_FV2Sm_FV.eos = 1'b1;
+                        nx_Big_FV2Sm_FV.eos = 1'b1;
                         nx_state = IDLE;
                         nx_cnt = 'd0;
                         nx_node_cnt = 'd0;
@@ -158,7 +164,7 @@ module Big_FV_BankCntl_0(
                 end
                 
                 // Configure output to small FV
-                Big_FV2Sm_FV.FV_data = FV_SRAM_data;
+                nx_Big_FV2Sm_FV.FV_data = FV_SRAM_data;
                 // Big_FV2Sm_FV.A = node_offset+cnt-1;
 
             end
@@ -174,19 +180,19 @@ module Big_FV_BankCntl_0(
                 nx_cnt = cnt + 1;
             end
             FV_RD_TO_EDGE: begin
-                    EdgePE_rd_out.valid='d1;
+                nx_EdgePE_rd_out.valid='d1;
                 if (cnt == 1) begin
-                    EdgePE_rd_out.sos = 1'b1;
+                    nx_EdgePE_rd_out.sos = 1'b1;
                 end else begin
-                    EdgePE_rd_out.sos = 1'b0;
+                    nx_EdgePE_rd_out.sos = 1'b0;
                 end
 
                 if ({cnt,1'b0} >= total_FV_num) begin // `FV_SRAM_bank_cache_line-1
-                    EdgePE_rd_out.eos = 1'b1;
+                    nx_EdgePE_rd_out.eos = 1'b1;
                     nx_state = IDLE;
                     nx_cnt = 'd0;
                 end else begin
-                    EdgePE_rd_out.eos = 1'b0;
+                    nx_EdgePE_rd_out.eos = 1'b0;
                     nx_cnt = cnt + 1;
 
                     FV2SRAM_out.CEN = 1'b0;
@@ -195,9 +201,8 @@ module Big_FV_BankCntl_0(
                     FV2SRAM_out.addr = {req_pkt.Node_id[$clog2(`Max_Node_id)-1:2],cnt[$clog2(`Max_FV_num/2)-1:0]};
                     FV2SRAM_out.FV_data = 'd0;
                 end
-                EdgePE_rd_out.FV_data = FV_SRAM_data;
-                EdgePE_rd_out.PE_tag = PE_tag;
-  
+                nx_EdgePE_rd_out.FV_data = FV_SRAM_data;
+                nx_EdgePE_rd_out.PE_tag = PE_tag;
             end
         endcase
     
@@ -213,6 +218,9 @@ module Big_FV_BankCntl_0(
             node_cnt <= #1 'd0;
             total_FV_num <= #1 'd0;
             PE_tag <= #1 'd0;
+            prev_addr <= FV2SRAM_out.addr; // {2'b00, stream_addr[$clog2(`FV_MEM_cache_line)-3:0]};
+            Big_FV2Sm_FV <= 'd0;
+            EdgePE_rd_out <= 'd0;
         end else begin
             // total_FV_line <= nx_total_FV_line;
             state <= #1 nx_state;
@@ -221,6 +229,9 @@ module Big_FV_BankCntl_0(
             cur_iter <= #1 nx_iter;
             total_FV_num <= #1 nx_total_FV_num;
             PE_tag <= #1 nx_PE_tag;
+            prev_addr <= FV2SRAM_out.addr; // {2'b00, stream_addr[$clog2(`FV_MEM_cache_line)-3:0]};
+            Big_FV2Sm_FV <= nx_Big_FV2Sm_FV;
+            EdgePE_rd_out <= nx_EdgePE_rd_out;
         end
     end
 
