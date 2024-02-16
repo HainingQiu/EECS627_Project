@@ -252,7 +252,7 @@ typedef struct packed {
     logic sos;
     logic eos;
     logic [`FV_bandwidth-1:0] FV_data;
-    logic[$clog2(`FV_info_bank_width-1-2)-1:0] A;
+    logic[`FV_info_bank_width-2-1:0] A;
 } FV_MEM2FV_Bank;
 typedef struct packed {
 	logic sos; // start of streaming

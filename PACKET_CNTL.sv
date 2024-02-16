@@ -120,6 +120,27 @@ case(state)
 
     end
 wait_fifo_stall:begin
+                if(DP2mem_packet_in.valid)begin 
+
+                PACKET_CNTL_SRAM_out.wen='d0;
+                PACKET_CNTL_SRAM_out.SRAM_addr=current_wr_addr;
+                PACKET_CNTL_SRAM_out.SRAM_DATA =DP2mem_packet_in.packet;
+                nx_wr_addr=nx_wr_addr +'d1;
+                nx_wr_en='d0;
+            end
+            else if (Edge_PE_WB_valid) begin
+                 nx_wr_en='d0;
+                PACKET_CNTL_SRAM_out.wen='d0;
+                PACKET_CNTL_SRAM_out.SRAM_addr=current_wr_addr;
+
+                nx_wr_addr=nx_wr_addr +'d1;
+                for(int i=0;i<`Num_Edge_PE;i++)begin
+                    if(Edge_PE2IMEM_CNTL_in[i].valid)begin
+                        PACKET_CNTL_SRAM_out.SRAM_DATA =Edge_PE2IMEM_CNTL_in[i].packet;
+                    end
+            
+                end
+            end
     nx_wr_en='d0;
     if(!fifo_stall)begin
     nx_state=stream;

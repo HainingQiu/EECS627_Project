@@ -54,6 +54,8 @@ always_comb begin
             end
             else if(FV_FIFO2FV_CNTL_in.valid)begin
                 nx_state=Stall;
+                nx_FV_FIFO2FV_CNTL_in=FV_FIFO2FV_CNTL_in;
+                
             end
             else begin
                 nx_state=Route;

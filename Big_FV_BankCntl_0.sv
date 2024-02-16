@@ -74,6 +74,7 @@ module Big_FV_BankCntl_0(
         EdgePE_rd_out.eos = 1'b0;
         EdgePE_rd_out.FV_data = 'd0;
         EdgePE_rd_out.PE_tag = 'd0;
+        EdgePE_rd_out.valid='d0;
         
         nx_state = state;
         nx_iter = cur_iter;
@@ -128,7 +129,7 @@ module Big_FV_BankCntl_0(
                 // FV2SRAM_out.WEN = 1'b1;
                 FV2SRAM_out.addr = stream_addr;
                 // FV2SRAM_out.FV_data = 'd0;
-                Big_FV2Sm_FV.A = {node_cnt[$clog2(`MAX_NODE_PER_ITER_BANK)-1:0], cnt[$clog2(`Max_FV_num/2)-1:0]-1};
+                Big_FV2Sm_FV.A = {2'b00,node_cnt[$clog2(`MAX_NODE_PER_ITER_BANK)-1:0], cnt[$clog2(`Max_FV_num/2)-1:0]-1};
 
                 if ((cnt == 1) && (node_cnt == 0)) begin
                     Big_FV2Sm_FV.sos = 1'b1;
@@ -173,6 +174,7 @@ module Big_FV_BankCntl_0(
                 nx_cnt = cnt + 1;
             end
             FV_RD_TO_EDGE: begin
+                    EdgePE_rd_out.valid='d1;
                 if (cnt == 1) begin
                     EdgePE_rd_out.sos = 1'b1;
                 end else begin
