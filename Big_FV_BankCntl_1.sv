@@ -2,7 +2,7 @@
 // `include "sys_defs.svh"
 // `timescale 1 ns/1 ps
 
-module Big_FV_BankCntl_0(
+module Big_FV_BankCntl_1(
     input clk,
     input reset, 
     input [$clog2(`Max_replay_Iter)-1:0] Cur_Replay_Iter,
