@@ -70,6 +70,7 @@ always_comb begin
     PACKET_CNTL_SRAM_out.SRAM_addr=0;
     PACKET_CNTL_SRAM_out.SRAM_DATA =0;
     mem2fifo =0;
+    Edge_PE_WB_valid='d0;
     for(int i=0;i<`Num_Edge_PE;i++)begin
         Edge_PE_WB_valid =Edge_PE_WB_valid | Edge_PE2IMEM_CNTL_in[i].valid;
 
