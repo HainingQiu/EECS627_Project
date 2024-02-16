@@ -19,7 +19,7 @@ module Big_FV_wrapper_1(
     */
 
 
-    logic [`Num_Banks_all_FV-1:0] [$clog2(`FV_MEM_cache_line)-1:0] cntl2RAM_addr;
+    // logic [`Num_Banks_all_FV-1:0] [$clog2(`FV_MEM_cache_line)-1:0] cntl2RAM_addr;
     logic [`Num_Banks_all_FV-1:0] [`FV_bandwidth-1:0 ] FV_SRAM_DATA;
 
     Big_FV2SRAM_pkt [`Num_Banks_all_FV-1:0] FV2SRAM_out;
