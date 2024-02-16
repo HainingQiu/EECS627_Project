@@ -36,6 +36,7 @@ logic wr_en;
     .full(fifo_full),
     .cntl_done(cntl_done),
     .wr_en(wr_en),
+    .fifo_stall(fifo_stall),
     .replay_iter_flag(replay_iter_flag),
     .Data_SRAM_in(Data_SRAM_in),
     .PACKET_CNTL_SRAM_out(PACKET_CNTL_SRAM_out),

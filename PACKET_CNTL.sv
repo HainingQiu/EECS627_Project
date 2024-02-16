@@ -16,6 +16,7 @@ module PACKET_CNTL(
     input cntl_done,
     output logic wr_en,
     input replay_iter_flag,
+    input fifo_stall,
     input [`packet_size-1:0] Data_SRAM_in,
     output PACKET_CNTL2SRAM  PACKET_CNTL_SRAM_out,
     output com_packet mem2fifo
@@ -24,7 +25,7 @@ module PACKET_CNTL(
 );
 //0 wr 1read
 
-parameter IDLE='d0, stream='d1,stall='d2;
+parameter IDLE='d0, stream='d1,stall='d2,wait_fifo_stall='d3;
 logic [1:0]state,nx_state;
 logic [$clog2(`Max_packet_line)-1:0] nx_re_addr,current_re_addr;
 logic [$clog2(`Max_packet_line)-1:0] nx_wr_addr,current_wr_addr;
@@ -113,7 +114,18 @@ case(state)
         if( cntl_done) begin
             nx_state =stall;
         end
+        else if (fifo_stall)begin
+            nx_state =wait_fifo_stall;
+        end
+
     end
+wait_fifo_stall:begin
+    nx_wr_en='d0;
+    if(!fifo_stall)begin
+    nx_state=stream;
+    end
+    end
+
    stall : begin
            PACKET_CNTL_SRAM_out=0;
            mem2fifo =0;
