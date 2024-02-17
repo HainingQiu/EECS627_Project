@@ -114,6 +114,7 @@ module vertex_buffer_one(
                     if (req_grant) begin
                         if (cnt + 2 >= output_FV_num) begin
                             state <= #1 IDLE;
+                            buffer <= #1 0;
                             cnt <= #1 'd0;
                         end else begin
                             state <= #1 OUT_FV;
@@ -123,7 +124,7 @@ module vertex_buffer_one(
                 end
 
                 OUT_FV: begin
-                    if (cnt >= output_FV_num) begin
+                    if (cnt + 2 >= output_FV_num) begin
                         state <= #1 IDLE;
                         buffer <= #1 0;
                         cnt <= #1 'd0;

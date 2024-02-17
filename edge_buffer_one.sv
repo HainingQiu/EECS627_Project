@@ -208,7 +208,9 @@ module edge_buffer_one(
                         state <= #1 IDLE;
                         buffer <= #1 0;
                         cnt <= #1 'd0;
-                    end 
+                    end else begin
+                        cnt <= #1 cnt + 2;
+                    end
                 end
             endcase
         end
