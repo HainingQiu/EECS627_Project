@@ -64,8 +64,8 @@ always_comb begin
                 if(Bank2RS_in.sos)begin
                     nx_state=Rex_FV;
                     // nx_rs_cnt=nx_rs_cnt+1'b1;
-                    nx_RS_FV_data[nx_rs_ptr][nx_num_fv]=Bank2RS_in[0].FV_data;
-                    nx_RS_FV_data[nx_rs_ptr][nx_num_fv+1'b1]=Bank2RS_in[1].FV_data;
+                    nx_RS_FV_data[nx_rs_ptr][nx_num_fv]=Bank2RS_in.FV_data[0];
+                    nx_RS_FV_data[nx_rs_ptr][nx_num_fv+1'b1]=Bank2RS_in.FV_data[1];
                     nx_RS_Node_id[nx_rs_ptr]=Bank2RS_in.Node_id;
                     nx_num_fv=nx_num_fv+'d2;
                     nx_rs_cnt=nx_rs_cnt+1'b1;
@@ -78,8 +78,8 @@ always_comb begin
         
         Rex_FV:
             begin
-                nx_RS_FV_data[nx_rs_ptr][nx_num_fv]=Bank2RS_in[0].FV_data;
-                nx_RS_FV_data[nx_rs_ptr][nx_num_fv+1'b1]=Bank2RS_in[1].FV_data;
+                nx_RS_FV_data[nx_rs_ptr][nx_num_fv]=Bank2RS_in.FV_data[0];
+                nx_RS_FV_data[nx_rs_ptr][nx_num_fv+1'b1]=Bank2RS_in.FV_data[1];
                 if(Bank2RS_in.eos)begin
                     nx_num_fv='d0;
                     if(nx_rs_cnt==`Num_Edge_PE)begin
@@ -106,8 +106,8 @@ always_comb begin
                 end 
                 for(int i=0;i<`Num_Edge_PE;i++)begin
                     for(int j=0;j<`Mult_per_PE;j++)begin
-                        nx_RS2Vertex_PE_out[i][j].FV_data=nx_RS_FV_data[i][vertex_fv_idx[j]];
-                        nx_RS2Vertex_PE_out[i].Node_id=nx_RS_Node_id[i];
+                        nx_RS2Vertex_PE_out.FV_data[i][j]=nx_RS_FV_data[i][vertex_fv_idx[j]];
+                        nx_RS2Vertex_PE_out.Node_id[i]=nx_RS_Node_id[i];
                     end
                 end
                 if(complete)begin

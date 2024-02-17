@@ -60,7 +60,9 @@ logic Vertex_buffer_empty;
 //------------------------Wires------------------------------------------//
 logic stream_begin;
 logic[`packet_size-1:0] Data_SRAM_in;
-logic RS_unavailable, RS_empty;
+logic RS_fire;
+// logic RS_unavailable, RS_empty;
+logic RS_available;
 RS2Vertex_PE RS2Vertex_PE_out;
 logic [`Num_RS2Vertex_PE-1:0][`Mult_per_PE-1:0][`FV_size-1:0] FV_data;
 logic [`Num_RS2Vertex_PE-1:0][$clog2(`Max_Node_id)-1:0] Node_id;
@@ -275,7 +277,19 @@ WB_packet_arbiter
 
 //------------------------------------------Vertex_RS----------------------------------------------//
 
-Vertex_RS  Vertex_RS_U(
+// Vertex_RS  Vertex_RS_U(
+//     .clk(clk),
+//     .reset(reset),
+//     .Bank2RS_in(RS_pkt_out),
+//     .start_idx(Weight_Cntl2RS_out.Cur_FV_num),
+//     .Vertex_buf_idle(Vertex_buffer_empty),
+//     .complete(Vertex_complete), 
+
+//     .RS2Vertex_PE_out(RS2Vertex_PE_out),
+//     .unavailable(RS_unavailable),
+//     .RS_empty(RS_empty)
+// );
+Vertex_RS  Vertex_RS_DUT(
     .clk(clk),
     .reset(reset),
     .Bank2RS_in(RS_pkt_out),
@@ -284,8 +298,9 @@ Vertex_RS  Vertex_RS_U(
     .complete(Vertex_complete), 
 
     .RS2Vertex_PE_out(RS2Vertex_PE_out),
-    .unavailable(RS_unavailable),
-    .RS_empty(RS_empty)
+    .fire(RS_fire),
+    .RS_available(RS_available)
+
 );
 //------------------------------------------Vertex_PE----------------------------------------------//
 generate
@@ -310,7 +325,7 @@ Weight_CNTL Weight_CNTL_U(
     .reset(reset),
     .Num_Weight_layer(Weights_boundary),//Num_Weight_layer-1
     .Num_FV(Num_FV),
-    .fire(RS2Vertex_PE_out.fire), //from RS
+    .fire(RS_fire), //from RS
 
     .Weight_data2Vertex(Weight_data2Vertex),
     .Weight_Cntl2RS_out(Weight_Cntl2RS_out),
@@ -365,7 +380,7 @@ edge_buffer edge_buffer(
     .reset(reset),
     .edge_pkt(Edge_PE2Bank_out),
     .req_grant(edge_req_grant),
-    .RS_busy(RS_unavailable&&RS_empty),
+    .RS_busy(RS_available),
 
     .RS_pkt_out(RS_pkt_out),
     .bank_busy(edge_buffer_busy),
