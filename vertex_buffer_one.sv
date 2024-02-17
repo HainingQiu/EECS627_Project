@@ -16,11 +16,23 @@ module vertex_buffer_one(
     logic [$clog2(`MAX_FV_num):0] output_FV_num;
     logic [$clog2(`Max_Node_id)-1:0] cur_nodeid;
 
-    logic [1:0] state;
-    localparam IDLE = 0;
-    localparam STREAM_IN = 1;
-    localparam OUT_FV_WAIT = 2;
-    localparam OUT_FV = 3; 
+    // logic [1:0] state;
+    // localparam IDLE = 0;
+    // localparam STREAM_IN = 1;
+    // localparam OUT_FV_WAIT = 2;
+    // localparam OUT_FV = 3; 
+
+    typedef enum logic [1:0] {
+        // logic [2:0] state;
+        IDLE = 'd0,
+        STREAM_IN = 'd1,
+        COMPLETE = 'd2,
+        OUT_FV_WAIT = 'd3,
+        OUT_FV = 'd4
+    } state_t;
+
+    state_t state;
+
 
     assign bank_busy = !(state == IDLE);
 

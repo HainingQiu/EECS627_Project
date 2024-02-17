@@ -197,6 +197,7 @@ module edge_buffer_one(
                     if (req_grant) begin
                         if (cnt + 2 == iter_FV_num) begin
                             state <= #1 IDLE;
+                            cnt <= #1 'd0;
                         end else begin
                             state <= #1 OUT_FV;
                             cnt <= #1 cnt + 2;
