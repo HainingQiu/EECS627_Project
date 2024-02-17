@@ -148,8 +148,19 @@ module edge_buffer_one(
                         state <= #1 OUT_RS_WAIT;
                     end else if (edge_pkt.WB_en) begin
                         state <= #1 OUT_FV_WAIT;
+                    end else if (edge_pkt.sos) begin
+                        buffer[cnt] <= #1 edge_pkt.FV_data[0] + buffer[cnt];
+                        buffer[cnt+1] <= #1 edge_pkt.FV_data[1] + buffer[cnt+1];
+                        cur_nodeid <= #1 edge_pkt.Node_id;
+                        cnt <= #1 cnt + 2;
+                        if (edge_pkt.eos) begin
+                            state <= #1 COMPLETE;
+                            iter_FV_num <= #1 cnt + 2;
+                        end else begin
+                            state <= #1 STREAM_IN;
+                        end
                     end else begin
-                        state <= #1 IDLE;
+                        state <= #1 COMPLETE;
                     end
                 end
                 OUT_RS_WAIT: begin
