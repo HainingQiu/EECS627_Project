@@ -95,7 +95,7 @@ module Vertex_RS (
             unavailable <= #1 0;
         end
         else begin
-            if ((sos_cnt == `Num_RS2Vertex_PE-1) && (Bank2RS_in.sos)) begin
+            if ((sos_cnt == `Num_RS2Vertex_PE-1) && (Bank2RS_in.sos)) begin // is the unavailable signal one cycle late? also why does it only last for one cycle
                 unavailable <= #1 1;
             end
             else begin
