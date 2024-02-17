@@ -23,12 +23,10 @@ module vertex_buffer_one(
     // localparam OUT_FV = 3; 
 
     typedef enum logic [1:0] {
-        // logic [2:0] state;
         IDLE = 'd0,
         STREAM_IN = 'd1,
-        COMPLETE = 'd2,
-        OUT_FV_WAIT = 'd3,
-        OUT_FV = 'd4
+        OUT_FV_WAIT = 'd2,
+        OUT_FV = 'd3
     } state_t;
 
     state_t state;
