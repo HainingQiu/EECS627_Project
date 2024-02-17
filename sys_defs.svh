@@ -338,7 +338,6 @@ typedef struct packed {
 typedef struct packed {
     logic [`Num_RS2Vertex_PE-1:0][`Mult_per_PE-1:0][`FV_size-1:0] FV_data;
     logic [`Num_RS2Vertex_PE-1:0][$clog2(`Max_Node_id)-1:0] Node_id;
-    logic fire;
 } RS2Vertex_PE;
 
 typedef struct packed {
