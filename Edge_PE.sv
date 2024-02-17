@@ -104,6 +104,7 @@ always_comb begin
     // nx_Req_Output_SRAM_out='d0;
     Req_Output_SRAM_out='d0;
     nx_Edge_PE2IMEM_CNTL_out='d0;
+    nx_Edge_PE2Bank_out='d0;
     case(Cur_Replay_Iter)
         'b00:Cal_replay_Iter='d0;
         'b01:Cal_replay_Iter=nx_req_neighbor_Iter[0];
