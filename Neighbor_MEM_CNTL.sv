@@ -55,6 +55,7 @@ always_comb begin
             end
             else if(Neighbor_info2Neighbor_FIFO_in.valid &&Bank_busy[Neighbor_info2Neighbor_FIFO_in.addr[`Neighbor_info_bandwidth-1:`Neighbor_info_bandwidth-2]])begin
                 nx_state=Stall;
+                nx_Neighbor_info2Neighbor_FIFO=Neighbor_info2Neighbor_FIFO_in;
             end
             else begin
                 nx_state=Route;
