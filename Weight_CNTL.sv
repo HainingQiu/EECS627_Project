@@ -33,6 +33,8 @@ always_comb begin
         nx_state=state;
         nx_Weight_Cntl2bank_out='d0;
         nx_RS_IDLE='d0;
+        Weight_Cntl2RS_out='d0;
+        nx_Weight_data2Vertex='d0;
         case(state)
             IDLE:
                 if(fire)begin
