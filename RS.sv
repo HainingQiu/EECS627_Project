@@ -42,7 +42,7 @@ always_comb begin
         weights = weights | Iter[replay_Iter];
         end
 
-        if(|PE_IDLE && !(|bank_busy))begin
+        if(|PE_IDLE )begin
             if(!weights)begin 
                 for (int i=0; i<`RS_entry;i=i+1)begin
                     if(current_entry_valid[i])begin
