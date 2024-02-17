@@ -23,14 +23,14 @@ module edge_buffer(
     input RS_busy,
 
     output Bank2RS RS_pkt_out,
-    output logic busy,
+    output logic [`Num_Edge_PE-1:0] bank_busy,
     output Bank_Req2Req_Output_SRAM [`Num_Edge_PE-1:0] outbuff_pkt
 );
-    logic[`Num_Edge_PE-1:0] bank_busy;
-    logic[`Num_Edge_PE-1:0]  rs_req, masked_rs_req, rs_req_grant, rs_req_grant_last;
+    
+    logic [`Num_Edge_PE-1:0]  rs_req, masked_rs_req, rs_req_grant, rs_req_grant_last;
     Bank2RS[`Num_Edge_PE-1:0] rs_pkt;
     
-    assign busy = |bank_busy;
+    // assign busy = bank_busy;
 
     typedef enum logic [1:0] {
         IDLE = 'd0,
