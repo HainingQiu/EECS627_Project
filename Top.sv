@@ -75,7 +75,7 @@ Bank_Req2Req_Output_SRAM[`Num_Edge_PE-1:0] Edge_Bank2Req_Output_SRAM_in;
 Bank2RS  RS_pkt_out;
 logic[`Mult_per_PE-1:0][`FV_size-1:0] Weight_data2Vertex;
 Output_SRAM2Edge_PE[`Num_Edge_PE-1:0] Output_SRAM2Edge_PE_out;
-logic edge_buffer_busy;
+logic [`Num_Edge_PE-1:0]edge_buffer_busy;
 logic [`Num_Edge_PE-1:0]edge_req_grant;
 logic [`Num_Vertex_Unit-1:0] vertex_buffer_grant;
 logic[`Num_Edge_PE-1:0] PE_IDLE;
@@ -368,7 +368,7 @@ edge_buffer edge_buffer(
     .RS_busy(RS_unavailable&&RS_empty),
 
     .RS_pkt_out(RS_pkt_out),
-    .busy(edge_buffer_busy),
+    .bank_busy(edge_buffer_busy),
     .outbuff_pkt(Edge_Bank2Req_Output_SRAM_in)
 );
 endmodule

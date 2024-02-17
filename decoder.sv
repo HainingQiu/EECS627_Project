@@ -5,7 +5,7 @@ module decoder(
     input com_packet com2DPpacket,
     input RS_empty,
     input grant, 
-    input bank_busy,
+    input [`Num_Edge_PE-1:0]bank_busy_in,
     input [`Num_Edge_PE-1:0]PE_IDLE,
     input stream_end,
     input vertex_done,
@@ -28,7 +28,7 @@ logic [$clog2(`Max_replay_Iter)-1:0] nx_replay_Iter ,current_replay_Iter;
 logic [`packet_size-1:0] nx_packet ,current_packet;
 logic [$clog2(16):0 ] nx_Num_FV,current_Num_FV;
 logic nx_Req,current_Req;
-
+logic bank_busy;
 logic [3:0] Iter;
 logic PE_finish;
 logic current_replay_iter_flag;
@@ -40,6 +40,7 @@ assign replay_Iter =current_replay_Iter;
 assign Num_FV =current_Num_FV;
 assign Weights_boundary =current_Weights_boundary;
 assign Req =nx_Req;
+assign bank_busy=|bank_busy_in;
 always_ff @( posedge clk ) begin 
     if(reset)begin
         state <= #1 'd0;
