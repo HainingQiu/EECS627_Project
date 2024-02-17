@@ -39,29 +39,44 @@ module edge_buffer_one(
         outbuff_pkt.Grant_valid = 1'b0;
         outbuff_pkt.sos = 1'b0;
         outbuff_pkt.eos = 1'b0;
-        outbuff_pkt.data[0] = 'd0;
-        outbuff_pkt.data[1] = 'd0;
+        outbuff_pkt.data[15:8] = 'd0;
+        outbuff_pkt.data[7:0] = 'd0;
         outbuff_pkt.Node_id = cur_nodeid;
         outbuff_pkt.req = 1'b0;
         rs_req='d0;
-        if(state==COMPLETE)begin
+
+
+        if(state == COMPLETE)begin
             if (edge_pkt.WB_en) 
                     outbuff_pkt.req = 1'b1;
             if (edge_pkt.Done_aggr)
                     rs_req = 1'b1;
 
-        end
-        else if(state==OUT_FV)begin
-
-            outbuff_pkt.sos = 1'b0;
+        end else if (state == OUT_FV_WAIT) begin
+             if (req_grant) begin
+                outbuff_pkt.Grant_valid = 1'b1;
+                outbuff_pkt.sos = 1'b1;
+                if (cnt + 2 == iter_FV_num) begin
+                    outbuff_pkt.eos = 1'b1;
+                end else begin
+                    outbuff_pkt.eos = 1'b0;
+                end
+                outbuff_pkt.data[15:8] = buffer[cnt];
+                outbuff_pkt.data[7:0] = buffer[cnt+1];
+                outbuff_pkt.req = 1'b0;
+            end else begin
+                outbuff_pkt.req = 1'b1;
+            end
+        end else if(state == OUT_FV)begin
+            // outbuff_pkt.sos = 1'b0;
             outbuff_pkt.Grant_valid = 1'b1;
             if (cnt + 2 == iter_FV_num) begin
                 outbuff_pkt.eos = 1'b1;
             end else begin
                 outbuff_pkt.eos = 1'b0;
             end
-            outbuff_pkt.data[0] = buffer[cnt];
-            outbuff_pkt.data[1] = buffer[cnt+1];
+            outbuff_pkt.data[15:8] = buffer[cnt];
+            outbuff_pkt.data[7:0] = buffer[cnt+1];
         end
         // case (state)
         //     COMPLETE: begin
@@ -200,7 +215,7 @@ module edge_buffer_one(
                     end
                 end
                 OUT_RS: begin
-                    if (cnt + 2 == iter_FV_num) begin
+                    if (cnt == iter_FV_num) begin
                         state <= #1 IDLE;
                         buffer <= #1 0;
                         cnt <= #1 'd0;
@@ -224,9 +239,14 @@ module edge_buffer_one(
                 end
                 OUT_FV_WAIT: begin
                     if (req_grant) begin
-                        cnt <= #1 cnt + 2;
-                        state <= #1 OUT_FV;
+                        if (cnt + 2 == iter_FV_num) begin
+                            state <= #1 IDLE;
+                        end else begin
+                            state <= #1 OUT_FV;
+                            cnt <= #1 cnt + 2;
+                        end
                     end
+                    
                 end
                 OUT_FV: begin
                     if (cnt + 2 == iter_FV_num) begin

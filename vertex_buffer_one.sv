@@ -29,8 +29,12 @@ module vertex_buffer_one(
         outbuff_pkt.Grant_valid = 1'b0;
         outbuff_pkt.sos = 1'b0;
         outbuff_pkt.eos = 1'b0;
-        outbuff_pkt.data[0] = 'd0;
-        outbuff_pkt.data[1] = 'd0;
+        // for (int i = 0; i < (`FV_bandwidth/`FV_size); i++) begin
+        //     outbuff_pkt.data[((i+1)*`FV_size-1):i] = buffer[cnt];
+        //     outbuff_pkt.data[15:8] = buffer[cnt+1];
+        // end
+        outbuff_pkt.data[15:8] = 'd0;
+        outbuff_pkt.data[7:0] = 'd0;
         outbuff_pkt.Node_id = cur_nodeid;
         outbuff_pkt.req = 1'b0;
 
@@ -46,8 +50,8 @@ module vertex_buffer_one(
                 outbuff_pkt.Grant_valid = 1'b1;
                 outbuff_pkt.sos = 1'b1;
                 outbuff_pkt.eos = 1'b0;
-                outbuff_pkt.data[0] = buffer[cnt];
-                outbuff_pkt.data[1] = buffer[cnt+1];
+                outbuff_pkt.data[7:0] = buffer[cnt];
+                outbuff_pkt.data[15:8] = buffer[cnt+1];
                 outbuff_pkt.req = 1'b0;
             end
         end
@@ -55,13 +59,13 @@ module vertex_buffer_one(
         if (state == OUT_FV) begin
             outbuff_pkt.Grant_valid = 1'b1;
             outbuff_pkt.sos = 1'b0;
-            if (cnt + 2 >= output_FV_num) begin
+            if (cnt >= output_FV_num) begin
                 outbuff_pkt.eos = 1'b1;
             end else begin
                 outbuff_pkt.eos = 1'b0;
             end
-            outbuff_pkt.data[0] = buffer[cnt];
-            outbuff_pkt.data[1] = buffer[cnt+1];
+            outbuff_pkt.data[7:0] = buffer[cnt];
+            outbuff_pkt.data[15:8] = buffer[cnt+1];
         end
     end
 
@@ -97,6 +101,7 @@ module vertex_buffer_one(
                         // output_pkt.req = 1'b1;
                         state <= #1 OUT_FV_WAIT;
                         output_FV_num <= #1 cnt + 1;
+                        cnt <= 'd0;
                     end else if (vertex_cntl_pkt.change) begin
                         cnt <= #1 cnt+1;
                     end
@@ -111,11 +116,14 @@ module vertex_buffer_one(
                 end
 
                 OUT_FV: begin
-                    if (cnt + 2 >= output_FV_num) begin
+                    if (cnt >= output_FV_num) begin
                         state <= #1 IDLE;
                         buffer <= #1 0;
                         cnt <= #1 'd0;
+                    end else begin
+                        cnt <= #1 cnt + 2;
                     end
+                    
                 end
             endcase
         
