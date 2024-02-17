@@ -138,18 +138,7 @@ always_comb begin
 end
 
 endmodule
-// module Vertex_RS (
-//     input clk,
-//     input reset,
-//     input Bank2RS Bank2RS_in,
-//     input logic [$clog2(`Max_FV_num)-1:0] start_idx,
-//     input logic Vertex_buf_idle,
-//     input logic complete, 
 
-//     output RS2Vertex_PE RS2Vertex_PE_out,
-//     output logic unavailable,
-//     output logic RS_empty
-// );
 
 // endmodule
 //     logic [`Num_RS2Vertex_PE-1:0][`Max_FV_num-1:0][`FV_size-1:0] RS_FV_data;

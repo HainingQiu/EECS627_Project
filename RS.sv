@@ -5,6 +5,7 @@ module RS(
     input DP_task2RS DP_task2RS_in,
     input [$clog2(`Max_replay_Iter)-1:0]  replay_Iter,
     input [`Num_Edge_PE-1:0]PE_IDLE,
+    input [`Num_Edge_PE-1:0] bank_busy,
     output DP_task2Edge_PE [`Num_Edge_PE-1:0] DP_task2Edge_PE_out,
     output logic RS_empty,
     output logic RS_full
@@ -41,14 +42,21 @@ always_comb begin
         weights = weights | Iter[replay_Iter];
         end
 
-        if(|PE_IDLE)begin
+        if(|PE_IDLE && !(|bank_busy))begin
             if(!weights)begin 
                 for (int i=0; i<`RS_entry;i=i+1)begin
                     if(current_entry_valid[i])begin
-                        DP_task2Edge_PE.packet = current_entry[i];
-                        DP_task2Edge_PE.valid  = 'd1;
-                        nx_entry_valid[i] = 0;
-                        nx_entry[i]=0;
+                        for(int j=0; j<`Num_Edge_PE;j=j+1)begin
+                            if(PE_IDLE[j]&&  !bank_busy[j])begin
+                                DP_task2Edge_PE_out[j].packet = current_entry[i];
+                                DP_task2Edge_PE_out[j].valid  = 'd1;
+                                nx_entry_valid[i] = 0;
+                                nx_entry[i]=0;
+                                break;
+                            end
+                        end
+
+
                         break;
                     end
                 end
@@ -56,23 +64,21 @@ always_comb begin
             else begin 
                 for (int i=0; i<`RS_entry;i=i+1)begin
                     if(current_entry_valid[i] && Iter[i][replay_Iter])begin
-                        DP_task2Edge_PE.packet = current_entry[i];
-                        DP_task2Edge_PE.valid  = 'd1;
-                        nx_entry_valid[i] = 0;
-                        nx_entry[i]=0;
+                        for(int j=0; j<`Num_Edge_PE;j=j+1)begin
+                            if(PE_IDLE[j]&&  !bank_busy[j])begin
+                                DP_task2Edge_PE_out[j].packet = current_entry[i];
+                                DP_task2Edge_PE_out[j].valid  = 'd1;
+                                nx_entry_valid[i] = 0;
+                                nx_entry[i]=0;
+                                break;
+                            end
+                        end
                         break;
                     end
                 end
             end
         end
 
-        for(int i=0; i<`Num_Edge_PE;i=i+1)begin
-            if(PE_IDLE[i])begin
-                DP_task2Edge_PE_out[i]=DP_task2Edge_PE;
-                break;
-            end
-
-        end 
 
 
 

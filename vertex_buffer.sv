@@ -11,7 +11,7 @@ module vertex_buffer(
     output Bank_Req2Req_Output_SRAM [`Num_Vertex_Unit-1:0] outbuff_pkt
 );
 logic[`Num_Vertex_Unit-1:0] bank_busy;
-    assign busy = |bank_busy;
+    // assign busy = |bank_busy;
     assign empty = ~|bank_busy;
 
     generate
