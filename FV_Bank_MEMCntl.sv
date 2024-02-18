@@ -99,18 +99,6 @@ always_comb begin
                 FV_bank2SRAM_Interface_out.WEN=1'b1;
                 nx_cnt='d0;
             end
-            else if(cnt[$clog2(`Max_FV_num):1]==Num_FV[$clog2(`Max_FV_num):1])begin
-                nx_state=IDLE;
-                Busy=1'b0;
-                nx_FV_bank_CNTL2Edge_PE_out.sos=1'b0;
-                nx_FV_bank_CNTL2Edge_PE_out.eos=1'b1;
-                nx_FV_bank_CNTL2Edge_PE_out.FV_data=Num_FV[0]?{8'd0,FV_SRAM_DATA[7:0]}:FV_SRAM_DATA;
-                nx_FV_bank_CNTL2Edge_PE_out.PE_tag=nx_reg_PE_tag;
-                nx_FV_bank_CNTL2Edge_PE_out.valid=1'b1;
-                nx_cnt='d0;
-                FV_bank2SRAM_Interface_out.CEN=1'b0;
-                FV_bank2SRAM_Interface_out.WEN=1'b1;
-            end
             else if(cnt=='d2)begin
                 Busy=1'b1;
                 nx_FV_bank_CNTL2Edge_PE_out.sos=1'b1;
@@ -123,6 +111,19 @@ always_comb begin
                 FV_bank2SRAM_Interface_out.A=FV_bank2SRAM_Interface_out.A+1'b1;
                 nx_cnt=nx_cnt+'d2;
             end
+            else if(cnt>=Num_FV)begin
+                nx_state=IDLE;
+                Busy=1'b0;
+                nx_FV_bank_CNTL2Edge_PE_out.sos=1'b0;
+                nx_FV_bank_CNTL2Edge_PE_out.eos=1'b1;
+                nx_FV_bank_CNTL2Edge_PE_out.FV_data=Num_FV[0]?{8'd0,FV_SRAM_DATA[7:0]}:FV_SRAM_DATA;
+                nx_FV_bank_CNTL2Edge_PE_out.PE_tag=nx_reg_PE_tag;
+                nx_FV_bank_CNTL2Edge_PE_out.valid=1'b1;
+                nx_cnt='d0;
+                FV_bank2SRAM_Interface_out.CEN=1'b0;
+                FV_bank2SRAM_Interface_out.WEN=1'b1;
+            end
+
             else begin
                 Busy=1'b1;
                 nx_FV_bank_CNTL2Edge_PE_out.sos=1'b0;

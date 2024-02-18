@@ -62,6 +62,7 @@ always_comb begin
                 Neighbor_bank2SRAM_Interface_out.CEN=1'b0;
                 Neighbor_bank2SRAM_Interface_out.WEN = 1'b1;
                 Neighbor_bank2SRAM_Interface_out.A=Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_in.Bank_addr[`Neighbor_info_bandwidth-1-2:`start_bit_addr_neighbor];         
+              //  nx_Num_neighbor_Iter=Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_in.Bank_addr[0]?Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_in.Bank_addr[`start_bit_addr_neighbor-1:0]+1'b1 :Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_in.Bank_addr[`start_bit_addr_neighbor-1:0];
                 nx_Num_neighbor_Iter=Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_in.Bank_addr[`start_bit_addr_neighbor-1:0];
                 nx_reg_PE_tag=Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_in.PE_tag;
                 nx_cnt=nx_cnt+'d2;
@@ -85,20 +86,7 @@ always_comb begin
                 Neighbor_bank2SRAM_Interface_out.CEN=1'b0;
                 Neighbor_bank2SRAM_Interface_out.WEN= 1'b1;
             end
-            else if(cnt[$clog2(`max_degree_Iter)-1:1]==nx_Num_neighbor_Iter[$clog2(`max_degree_Iter)-1:1])begin
-                nx_state=IDLE;
-                Busy=1'b0;
-                nx_Neighbor_bank_CNTL2Edge_PE_out.sos=1'b0;
-                nx_Neighbor_bank_CNTL2Edge_PE_out.eos=1'b1;
-                nx_Neighbor_bank_CNTL2Edge_PE_out.data=nx_Num_neighbor_Iter[0]?{7'd0,Neighbor_SRAM_DATA[6:0]}:Neighbor_SRAM_DATA;
-                nx_Neighbor_bank_CNTL2Edge_PE_out.PE_tag=nx_reg_PE_tag;
-                nx_Neighbor_bank_CNTL2Edge_PE_out.valid=1'b1;
-                nx_Neighbor_bank_CNTL2Edge_PE_out.Neighbor_num_Iter=nx_Num_neighbor_Iter;
-                nx_cnt='d0;
-                Neighbor_bank2SRAM_Interface_out.CEN= 1'b0;
-                Neighbor_bank2SRAM_Interface_out.WEN= 1'b1;
-            end
-            else if(cnt=='d2)begin
+             else if(cnt=='d2)begin
                 Busy=1'b1;
                 nx_Neighbor_bank_CNTL2Edge_PE_out.sos=1'b1;
                 nx_Neighbor_bank_CNTL2Edge_PE_out.eos=1'b0;
@@ -111,6 +99,20 @@ always_comb begin
                 Neighbor_bank2SRAM_Interface_out.WEN= 1'b1;
                 Neighbor_bank2SRAM_Interface_out.A=Neighbor_bank2SRAM_Interface_out.A+1'b1;
             end
+            else if(cnt>=nx_Num_neighbor_Iter)begin
+                nx_state=IDLE;
+                Busy=1'b0;
+                nx_Neighbor_bank_CNTL2Edge_PE_out.sos=1'b0;
+                nx_Neighbor_bank_CNTL2Edge_PE_out.eos=1'b1;
+                nx_Neighbor_bank_CNTL2Edge_PE_out.data=nx_Num_neighbor_Iter[0]?{7'd0,Neighbor_SRAM_DATA[6:0]}:Neighbor_SRAM_DATA;
+                nx_Neighbor_bank_CNTL2Edge_PE_out.PE_tag=nx_reg_PE_tag;
+                nx_Neighbor_bank_CNTL2Edge_PE_out.valid=1'b1;
+                nx_Neighbor_bank_CNTL2Edge_PE_out.Neighbor_num_Iter=nx_Num_neighbor_Iter;
+                nx_cnt='d0;
+                Neighbor_bank2SRAM_Interface_out.CEN= 1'b0;
+                Neighbor_bank2SRAM_Interface_out.WEN= 1'b1;
+            end
+
             else begin
                 Busy=1'b1;
                 nx_Neighbor_bank_CNTL2Edge_PE_out.sos=1'b0;
