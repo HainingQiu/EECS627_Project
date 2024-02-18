@@ -59,6 +59,7 @@ always_comb begin
             end
             else begin
                 nx_state=Route;
+                nx_FV_FIFO2FV_CNTL_in=FV_FIFO2FV_CNTL_in;
             end
         Stall:
             if(!Bank_busy[reg_FV_FIFO2FV_CNTL_in.FV_addr[`FV_info_bank_width-1:`FV_info_bank_width-2]])begin
