@@ -105,6 +105,8 @@ module edge_buffer_one(
             not last iteration ? then do write back to output buffer, wait for grant 
     */
 
+    logic complete_before;
+
     always_ff @(posedge clk) begin
         if (reset) begin
             for (int i = 0; i < `MAX_FV_num; i++) begin
@@ -115,6 +117,7 @@ module edge_buffer_one(
             cnt <= #1 'd0;
             state <= #1 IDLE;
             rs_pkt <= #1 0;
+            complete_before <= 1'b0;
         end else begin
             case (state)
                 IDLE: begin
@@ -127,6 +130,7 @@ module edge_buffer_one(
                         if (edge_pkt.eos) begin
                             state <= #1 COMPLETE;
                             iter_FV_num <= #1 cnt + 2;
+                            complete_before <= 1'b1;
                         end else begin
                             state <= #1 STREAM_IN;
                         end
@@ -134,7 +138,10 @@ module edge_buffer_one(
                 end
                 STREAM_IN: begin
                      if (edge_pkt.eos) begin
-                        iter_FV_num <= #1 cnt + 2;
+                        if (!complete_before) begin
+                            iter_FV_num <= #1 cnt + 2;
+                            complete_before <= 1'b1;
+                        end
                         cnt <= #1 '0;
                         state <= #1 COMPLETE;
                     end else begin
@@ -155,8 +162,7 @@ module edge_buffer_one(
                         cnt <= #1 cnt + 2;
                         if (edge_pkt.eos) begin
                             state <= #1 COMPLETE;
-                            iter_FV_num <= #1 cnt + 2;
-                            cnt <= #1 '0;
+                            cnt <= #1 'd0;
                         end else begin
                             state <= #1 STREAM_IN;
                         end
