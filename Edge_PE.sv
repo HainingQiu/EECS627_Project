@@ -253,6 +253,10 @@ always_comb begin
         Req_Pre_ITER_output:
                 if(Grant_output_Bus_arbiter_in)begin
                     nx_state=Wait_Pre_ITER_output;
+                    Req_Output_SRAM_out.req=1'b0;
+                    Req_Output_SRAM_out.PE_tag=PE_tag;
+                    Req_Output_SRAM_out.Node_id=nx_Target_node;
+                    Req_Output_SRAM_out.Grant_valid=1'b1;
                 end
                 else begin
                     nx_state=Req_Pre_ITER_output;
@@ -271,7 +275,7 @@ always_comb begin
             Req_Output_SRAM_out.req=1'b0;
             Req_Output_SRAM_out.PE_tag=PE_tag;
             Req_Output_SRAM_out.Node_id=nx_Target_node;
-            Req_Output_SRAM_out.Grant_valid=1'b1;
+            Req_Output_SRAM_out.Grant_valid=1'b0;
                 if(Output_SRAM2Edge_PE_in.eos)begin
                     nx_state=Complete;
                     nx_Edge_PE2Bank_out.sos=1'b1;
