@@ -20,7 +20,7 @@ module edge_buffer(
     input clk, reset,
     input Edge_PE2Bank [`Num_Edge_PE-1:0] edge_pkt,
     input [`Num_Edge_PE-1:0] req_grant,
-    input RS_busy,
+    input RS_available, // 1 is available , 0 is not available
 
     output Bank2RS RS_pkt_out,
     output logic [`Num_Edge_PE-1:0] bank_busy,
@@ -76,7 +76,7 @@ module edge_buffer(
     
     // end
 
-    assign masked_rs_req = (|rs_req_grant || ((state == BLOCKED) && (!or_result))) ? {`Num_Edge_PE{1'b0}} : rs_req; // TODO
+    assign masked_rs_req = (|rs_req_grant || ((state == BLOCKED) && (!or_result)) || (!RS_busy)) ? {`Num_Edge_PE{1'b0}} : rs_req; // TODO
 
 
     generate

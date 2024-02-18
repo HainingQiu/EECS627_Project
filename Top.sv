@@ -380,7 +380,7 @@ edge_buffer edge_buffer(
     .reset(reset),
     .edge_pkt(Edge_PE2Bank_out),
     .req_grant(edge_req_grant),
-    .RS_busy(RS_available),
+    .RS_available(RS_available),
 
     .RS_pkt_out(RS_pkt_out),
     .bank_busy(edge_buffer_busy),

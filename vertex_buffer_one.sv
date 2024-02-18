@@ -114,8 +114,9 @@ module vertex_buffer_one(
                         state <= #1 OUT_FV_WAIT;
                         output_FV_num <= #1 cnt + 1;
                         cnt <= 'd0;
-                    end else if (vertex_cntl_pkt.change) begin
-                        cnt <= #1 cnt+1;
+                    end else begin
+                        if (vertex_cntl_pkt.change)
+                            cnt <= #1 cnt+1;
                     end
                     buffer[cnt] <= #1 vertex_data_pkt.data + buffer[cnt];
                 end
