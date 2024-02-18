@@ -32,7 +32,7 @@ always_comb begin
             nx_Req2Output_SRAM_Bank_out[Edge_PE2Req_Output_SRAM_in[i].Node_id[$clog2(`Num_Banks_FV)-1:0]].wr_eos='d0;
         end
     end
-    for(int i=`Num_Edge_PE;i<`Num_Edge_PE+`Num_Edge_PE;i++)begin
+    for(int i=0;i<`Num_Edge_PE;i++)begin
         if(Edge_Bank2Req_Output_SRAM_in[i].Grant_valid)begin
             nx_Req2Output_SRAM_Bank_out[Edge_Bank2Req_Output_SRAM_in[i].Node_id[$clog2(`Num_Banks_FV)-1:0]].valid=1'b1;
             nx_Req2Output_SRAM_Bank_out[Edge_Bank2Req_Output_SRAM_in[i].Node_id[$clog2(`Num_Banks_FV)-1:0]].PE_tag='d0;
@@ -43,7 +43,7 @@ always_comb begin
             nx_Req2Output_SRAM_Bank_out[Edge_Bank2Req_Output_SRAM_in[i].Node_id[$clog2(`Num_Banks_FV)-1:0]].wr_eos=Edge_Bank2Req_Output_SRAM_in[i].eos;
         end
     end
-    for (int i=`Num_Edge_PE+`Num_Edge_PE;i<`Num_Total_reqs2Output;i++)begin
+    for (int i=0;i<`Num_Vertex_Unit;i++)begin
         if(Vertex_Bank2Req_Output_SRAM_in[i].Grant_valid)begin
             nx_Req2Output_SRAM_Bank_out[Vertex_Bank2Req_Output_SRAM_in[i].Node_id[$clog2(`Num_Banks_FV)-1:0]].valid=1'b1;
             nx_Req2Output_SRAM_Bank_out[Vertex_Bank2Req_Output_SRAM_in[i].Node_id[$clog2(`Num_Banks_FV)-1:0]].PE_tag='d0;

@@ -51,7 +51,7 @@ always_comb begin
     for(int i=0;i<`num_bank_neighbor_info;i++)begin
         Neighbor_info_CNTL2SRAM_interface_out[i].A= 'd0;
         Neighbor_info_CNTL2SRAM_interface_out[i].CEN= 'd1;
-        Neighbor_info_CNTL2SRAM_interface_out[Current_replay_Iter[1]].WEN=1'b1;
+        Neighbor_info_CNTL2SRAM_interface_out[i].WEN=1'b1;
     end
     case(state)
         IDLE:

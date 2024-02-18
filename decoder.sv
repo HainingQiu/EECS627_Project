@@ -175,7 +175,7 @@ always_comb begin
                         end
         wait_task_complete: begin                         
                             if(vertex_done)begin
-                                nx_state =IDLE;
+                                nx_state =wait_task_complete;
                                 fifo_stall = 'd1;
                                 task_complete='d1;
                                 
