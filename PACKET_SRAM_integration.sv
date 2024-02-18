@@ -70,7 +70,7 @@ decoder decoder_0(
     .task_complete(task_complete),
     .Req(Req),
     .fifo_stall(fifo_stall),
-    .replay_iter_flag(replay_iter_flag),
+    .current_replay_iter_flag(replay_iter_flag),
     .replay_Iter(replay_Iter),
     .Num_FV(Num_FV) ,
     .Weights_boundary(Weights_boundary),

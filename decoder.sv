@@ -14,7 +14,7 @@ module decoder(
     output DP_task2RS DP_task2RS_out,
     output logic Req,
     output logic fifo_stall,
-    output logic replay_iter_flag,
+    output logic current_replay_iter_flag,
     output logic [$clog2(`Max_replay_Iter)-1:0]  replay_Iter,
     output logic [$clog2(16):0 ]    Num_FV ,
     output logic [$clog2(16)-1:0 ] Weights_boundary,
@@ -31,7 +31,7 @@ logic nx_Req,current_Req;
 logic bank_busy;
 logic [3:0] Iter;
 logic PE_finish;
-logic current_replay_iter_flag;
+logic replay_iter_flag;
 
 logic nx_stream_begin;
 assign Iter = com2DPpacket.packet[13:10];
@@ -121,8 +121,8 @@ always_comb begin
         case(state)
         IDLE :  begin
 
-                    replay_iter_flag ='d0;
-                    nx_packet = 0 ;
+                    // replay_iter_flag ='d0;
+                    // nx_packet = 0 ;
                     
                 end
         wait_grant:   begin 
@@ -142,7 +142,7 @@ always_comb begin
 
                       end
         wait_replay_iter:   begin
-                            replay_iter_flag ='d1;
+                            replay_iter_flag ='d0;
                             if (!bank_busy && RS_empty && PE_finish && replay_Iter=='d3)begin
                                 fifo_stall = 'd1;
                                 nx_state=wait_task_complete;
@@ -153,7 +153,7 @@ always_comb begin
                             DP2mem_packet_out.valid='d1;
                                 nx_state = wait_stream;
                                 nx_replay_Iter = nx_replay_Iter+'d1;
-                                
+                                replay_iter_flag ='d1;
                                 fifo_stall = 'd1;
                             end
                             else begin

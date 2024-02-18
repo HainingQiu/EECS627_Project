@@ -27,9 +27,9 @@ module PACKET_CNTL(
 
 parameter IDLE='d0, stream='d1,stall='d2,wait_fifo_stall='d3;
 logic [1:0]state,nx_state;
-logic [$clog2(`Max_packet_line)-1:0] nx_re_addr,current_re_addr;
+logic [$clog2(`Max_packet_line)-1:0] nx_re_addr,current_re_addr,stall_re_addr;
 logic [$clog2(`Max_packet_line)-1:0] nx_wr_addr,current_wr_addr;
-
+ 
 logic Edge_PE_WB_valid;
 logic nx_wr_en;
 always_ff@(posedge clk)begin
@@ -38,6 +38,7 @@ always_ff@(posedge clk)begin
       current_wr_addr <=#1 'd0;
       state<=#1 IDLE;
       wr_en<=#1 'd0;
+      stall_re_addr<=#1 'd0;
     //   PACKET_CNTL_SRAM_out.wen<='d1;
     //   PACKET_CNTL_SRAM_out.SRAM_addr<=0;
     //   PACKET_CNTL_SRAM_out.SRAM_DATA <=0;
@@ -47,12 +48,21 @@ always_ff@(posedge clk)begin
       current_wr_addr <=#1 'd0;
       state<=#1 IDLE;
         wr_en<=#1 'd0;
+    stall_re_addr<=#1 'd0;
     //   PACKET_CNTL_SRAM_out.wen<='d1;
     //   PACKET_CNTL_SRAM_out.SRAM_addr<=0;
     //   PACKET_CNTL_SRAM_out.SRAM_DATA <=0;
     end
+    // else if (full) begin
+    //    current_re_addr <=#1 stall_re_addr;
+    //   current_wr_addr <=#1 nx_wr_addr;
+    //   state<=#1 nx_state;
+    //   wr_en<=#1 nx_wr_en;
+    // end
     else begin
-      current_re_addr <=#1 nx_re_addr;
+
+      current_re_addr <=#1 full || (DP2mem_packet_in.valid || Edge_PE_WB_valid) ? stall_re_addr:nx_re_addr;
+      stall_re_addr<=#1 full || (DP2mem_packet_in.valid || Edge_PE_WB_valid)? stall_re_addr:current_re_addr;
       current_wr_addr <=#1 nx_wr_addr;
       state<=#1 nx_state;
       wr_en<=#1 nx_wr_en;
@@ -69,8 +79,11 @@ always_comb begin
         PACKET_CNTL_SRAM_out.wen='d1;
     PACKET_CNTL_SRAM_out.SRAM_addr=0;
     PACKET_CNTL_SRAM_out.SRAM_DATA =0;
-    mem2fifo =0;
+    mem2fifo.valid='d1;
+    mem2fifo.packet = Data_SRAM_in;     
     Edge_PE_WB_valid='d0;
+      nx_wr_en=0;
+    
     for(int i=0;i<`Num_Edge_PE;i++)begin
         Edge_PE_WB_valid =Edge_PE_WB_valid | Edge_PE2IMEM_CNTL_in[i].valid;
 
@@ -115,7 +128,7 @@ case(state)
         if( cntl_done) begin
             nx_state =stall;
         end
-        else if (fifo_stall)begin
+        else if (fifo_stall )begin
             nx_state =wait_fifo_stall;
         end
 
@@ -143,7 +156,7 @@ wait_fifo_stall:begin
                 end
             end
     nx_wr_en='d0;
-    if(!fifo_stall)begin
+    if(!fifo_stall | !full)begin
     nx_state=stream;
     end
     end

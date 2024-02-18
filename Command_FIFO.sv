@@ -18,16 +18,13 @@ module Command_FIFO_dual_port_RAM(
 always @(posedge wclk) begin
 	if(wenc )
         RAM_MEM[waddr] <= #1 wdata;
-        else if(!replay_iter_flag)
-		RAM_MEM[waddr] <= #1 wdata;
+
 end 
 
 always @(posedge rclk) begin
-	if(renc && !replay_iter_flag)
+	if(renc)
 		rdata <=#1 RAM_MEM[raddr];
-	else begin
-		rdata<=#1 'd0;
-	end
+
 
 end 
 
