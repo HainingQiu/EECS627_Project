@@ -166,6 +166,7 @@ always_comb begin
                             if(stream_end)begin
                                 nx_state =IDLE;
                                 fifo_stall = 'd0;
+                                replay_iter_flag ='d0;
                             end
                             else begin
                                 fifo_stall = 'd1;

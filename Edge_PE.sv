@@ -145,7 +145,7 @@ always_comb begin
                 nx_state=Req_Neighbor_FV;
                 nx_Neighbor_ids[nx_cnt_neighbor_info]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[6:0];
                 nx_Neighbor_ids[nx_cnt_neighbor_info+'d1]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[13:7];
-                nx_cnt_neighbor_info=nx_cnt_neighbor_info+'d2;
+                nx_cnt_neighbor_info='d0;
             end
             else if(NeighborID_SRAM2Edge_PE_in.sos)begin
                 nx_state=Stream_Neighbor_ID;
@@ -162,7 +162,7 @@ always_comb begin
                 nx_state=Req_Neighbor_FV;
                 nx_Neighbor_ids[nx_cnt_neighbor_info]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[6:0];
                 nx_Neighbor_ids[nx_cnt_neighbor_info+1'b1]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[13:7];
-                nx_cnt_neighbor_info=nx_cnt_neighbor_info+'d2;
+                nx_cnt_neighbor_info='d0;
                 
             end
             else begin
@@ -174,6 +174,7 @@ always_comb begin
         Req_Neighbor_FV:
                 if(Grant_Bus_arbiter_in.Grant)begin
                     nx_state=Wait_Neighbor_FV;
+                    nx_fv_req_ptr=nx_fv_req_ptr+1'b1;
                 end
                 else begin
                         nx_state=Req_Neighbor_FV;
@@ -181,7 +182,7 @@ always_comb begin
                         Req_Bus_arbiter_out.PE_tag=PE_tag;
                         Req_Bus_arbiter_out.req_type='d1;
                         Req_Bus_arbiter_out.Node_id=nx_Neighbor_ids[nx_fv_req_ptr];
-                        nx_fv_req_ptr=nx_fv_req_ptr+1'b1;
+                        
                 end
           
 
@@ -226,6 +227,7 @@ always_comb begin
                 end
                 else if(nx_fv_req_ptr==nx_reg_Neighbor_num_Iter)begin
                     nx_state=Req_Pre_ITER_output;
+                    nx_fv_req_ptr='d0;
                 end
                 else begin
                     nx_state=Req_Neighbor_FV;
@@ -281,7 +283,7 @@ always_comb begin
                     nx_Edge_PE2Bank_out.Node_id=nx_Target_node;
                 end
                 else if(FV_SRAM2Edge_PE_in.sos)begin
-                    nx_state=Stream_Neighbor_FV;
+                    nx_state=Stream_Pre_ITER_output;
                     nx_Edge_PE2Bank_out.sos=1'b1;
                     nx_Edge_PE2Bank_out.eos=1'b0;
                     nx_Edge_PE2Bank_out.Done_aggr=1'b0;
@@ -291,7 +293,7 @@ always_comb begin
                     nx_Edge_PE2Bank_out.Node_id=nx_Target_node;
                 end
                 else begin
-                    nx_state=Wait_Neighbor_FV;
+                    nx_state=Wait_Pre_ITER_output;
                 end
             end
         Stream_Pre_ITER_output: 

@@ -24,6 +24,8 @@ end
 always @(posedge rclk) begin
 	if(renc)
 		rdata <=#1 RAM_MEM[raddr];
+    else 
+		rdata <=#1 'd0;
 
 
 end 
