@@ -61,7 +61,7 @@ module vertex_buffer_one(
                 end else begin
                     outbuff_pkt.eos = 1'b0;
                 end
-                outbuff_pkt.eos = 1'b0;
+                // outbuff_pkt.eos = 1'b0;
                 outbuff_pkt.data[7:0] = buffer[cnt];
                 outbuff_pkt.data[15:8] = buffer[cnt+1];
                 outbuff_pkt.req = 1'b0;
