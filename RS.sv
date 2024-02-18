@@ -16,7 +16,7 @@ logic weights;
 DP_task2Edge_PE DP_task2Edge_PE;
 assign RS_full = &nx_entry_valid; 
 assign RS_empty = ~(|nx_entry_valid); 
-logic [`RS_entry-1:0][2:0] Iter;
+logic [`RS_entry-1:0][3:0] Iter;
 always_ff @(posedge clk ) begin
     if(reset)begin
         current_entry <= #1  'd0;
@@ -35,8 +35,10 @@ always_comb begin
         DP_task2Edge_PE_out=0;
         nx_entry = current_entry;
         nx_entry_valid = current_entry_valid;
+        
         for (int i=0; i<`RS_entry;i=i+1)begin
-        Iter[i] = current_entry[i][9:7];
+            // Iter[i][0]='d0;
+            Iter[i] = {current_entry[i][9:7],1'b0};
         end
         for (int i=0; i<`RS_entry;i=i+1)begin
         weights = weights | Iter[replay_Iter];
