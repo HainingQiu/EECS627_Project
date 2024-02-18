@@ -156,6 +156,7 @@ module edge_buffer_one(
                         if (edge_pkt.eos) begin
                             state <= #1 COMPLETE;
                             iter_FV_num <= #1 cnt + 2;
+                            cnt <= #1 '0;
                         end else begin
                             state <= #1 STREAM_IN;
                         end
