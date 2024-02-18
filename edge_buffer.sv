@@ -76,7 +76,7 @@ module edge_buffer(
     
     // end
 
-    assign masked_rs_req = (|rs_req_grant || ((state == BLOCKED) && (!or_result)) || (!RS_busy)) ? {`Num_Edge_PE{1'b0}} : rs_req; // TODO
+    assign masked_rs_req = (|rs_req_grant || ((state == BLOCKED) && (!or_result)) || (!RS_available)) ? {`Num_Edge_PE{1'b0}} : rs_req; // TODO
 
 
     generate
