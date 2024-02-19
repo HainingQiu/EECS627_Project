@@ -60,7 +60,7 @@ always@(posedge clk )begin
 		wr_ptr<= #1 wr_ptr;
 	end
 end
-always@(posedge clk or negedge reset)begin
+always@(posedge clk)begin
 	if(reset )begin
 		rd_ptr<= #1'd0;
 	end
