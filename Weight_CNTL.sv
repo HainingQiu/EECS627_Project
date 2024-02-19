@@ -85,7 +85,39 @@ always_ff@(posedge clk)begin
         //         Weight_Buffer[i][j]<=#1 1;
         //     end
         // end
-        Weight_Buffer<=#1 'd0;
+        Weight_Buffer[0][0]<=#1 'd2;
+        Weight_Buffer[0][1]<=#1 'd2;
+        Weight_Buffer[0][2]<=#1 'd0;
+        Weight_Buffer[0][3]<=#1 'd2;
+        Weight_Buffer[0][4]<=#1 'd1;
+        Weight_Buffer[0][5]<=#1 'd0;
+        Weight_Buffer[0][6]<=#1 'd0;
+        Weight_Buffer[0][7]<=#1 'd1;
+        Weight_Buffer[0][8]<=#1 'd2;
+        Weight_Buffer[0][9]<=#1 'd2;
+        Weight_Buffer[0][10]<=#1 'd0;
+        Weight_Buffer[0][11]<=#1 'd2;
+        Weight_Buffer[0][12]<=#1 'd2;
+        Weight_Buffer[0][13]<=#1 'd1;
+        Weight_Buffer[0][14]<=#1 'd2;
+        Weight_Buffer[0][15]<=#1 'd0;
+
+        Weight_Buffer[1][0]<=#1 'd1;
+        Weight_Buffer[1][1]<=#1 'd2;
+        Weight_Buffer[1][2]<=#1 'd2;
+        Weight_Buffer[1][3]<=#1 'd2;
+        Weight_Buffer[1][4]<=#1 'd1;
+        Weight_Buffer[1][5]<=#1 'd0;
+        Weight_Buffer[1][6]<=#1 'd2;
+        Weight_Buffer[1][7]<=#1 'd2;
+        Weight_Buffer[1][8]<=#1 'd2;
+        Weight_Buffer[1][9]<=#1 'd2;
+        Weight_Buffer[1][10]<=#1 'd2;
+        Weight_Buffer[1][11]<=#1 'd1;
+        Weight_Buffer[1][12]<=#1 'd1;
+        Weight_Buffer[1][13]<=#1 'd0;
+        Weight_Buffer[1][14]<=#1 'd2;
+        Weight_Buffer[1][15]<=#1 'd0;
         state<=#1 IDLE;
         Cur_Weight_layer<=#1 'd0;
         Cur_FV_num<=#1 'd0;

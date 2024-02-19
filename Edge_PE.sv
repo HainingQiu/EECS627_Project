@@ -119,14 +119,18 @@ always_comb begin
     endcase
     case(state)
         IDLE: 
-            if(DP_task2Edge_PE_in.valid)begin
-                nx_state=Req_Neighbor_ID;
-                {nx_req_neighbor_Iter,nx_DP_Priority,nx_Target_node}=DP_task2Edge_PE_in.packet[13:0];
+            begin
+                nx_reg_Neighbor_num_Iter='d0;
+                if(DP_task2Edge_PE_in.valid)begin
+                    nx_state=Req_Neighbor_ID;
+                    {nx_req_neighbor_Iter,nx_DP_Priority,nx_Target_node}=DP_task2Edge_PE_in.packet[13:0];
+                end
+                else begin
+                    nx_state=IDLE;
+                    nx_Edge_PE2DP_out.IDLE_flag=1'b1;
+                end
             end
-            else begin
-                nx_state=IDLE;
-                nx_Edge_PE2DP_out.IDLE_flag=1'b1;
-            end
+
         Req_Neighbor_ID:
             if(Grant_Bus_arbiter_in.Grant)begin
                 nx_state=Wait_Neighbor_ID;
