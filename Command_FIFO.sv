@@ -54,10 +54,10 @@ always@(posedge clk )begin
 		wr_ptr<= #1'd0;
         end
 	else if(winc && !wfull)begin
-		wr_ptr<= #1wr_ptr+1'b1;
+		wr_ptr<= #1 wr_ptr+1'b1;
 	end
 	else begin
-		wr_ptr<= #1wr_ptr;
+		wr_ptr<= #1 wr_ptr;
 	end
 end
 always@(posedge clk or negedge reset)begin
@@ -68,10 +68,10 @@ always@(posedge clk or negedge reset)begin
 		rd_ptr<= #1'd0;
         end
 	else if(rinc && !rempty)begin
-		rd_ptr<= #1rd_ptr+1'b1;
+		rd_ptr<= #1 rd_ptr+1'b1;
 	end
 	else begin
-		rd_ptr<= #1rd_ptr;
+		rd_ptr<= #1 rd_ptr;
 	end
 end
 
