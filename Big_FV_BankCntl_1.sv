@@ -465,6 +465,7 @@ module Big_FV_BankCntl_1(
             prev_addr <= #1 'd0; // {2'b00, stream_addr[$clog2(`FV_MEM_cache_line)-3:0]};
             Big_FV2Sm_FV <= #1 'd0;
             EdgePE_rd_out <= #1 'd0;
+            curr_nodeid <= #1 'd0;
         end else begin
             // total_FV_line <= nx_total_FV_line;
             state <= #1 nx_state;
@@ -476,6 +477,7 @@ module Big_FV_BankCntl_1(
             prev_addr <= #1 FV2SRAM_out.addr; // {2'b00, stream_addr[$clog2(`FV_MEM_cache_line)-3:0]};
             Big_FV2Sm_FV <= #1 nx_Big_FV2Sm_FV;
             EdgePE_rd_out <= #1 nx_EdgePE_rd_out;
+            curr_nodeid <= #1 nxt_nodeid;
         end
     end
 
