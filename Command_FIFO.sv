@@ -71,7 +71,7 @@ always@(posedge clk)begin
 		rd_ptr<= #1 rd_ptr+1'b1;
 	end
 	else begin
-		rd_ptr<= #1 giyrd_ptr;
+		rd_ptr<= #1 rd_ptr;
 	end
 end
 
