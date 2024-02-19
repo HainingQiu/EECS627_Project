@@ -440,7 +440,7 @@ module Big_FV_BankCntl_1(
 
                     FV2SRAM_out.CEN = 1'b0;
                     FV2SRAM_out.WEN = 1'b1;
-                    FV2SRAM_out.addr = curr_nodeid;
+                    FV2SRAM_out.addr = {curr_nodeid[$clog2(`Max_Node_id)-1:2],cnt[$clog2(`Max_FV_num/2)-1:0]};
                     // FV2SRAM_out.addr = {req_pkt.Node_id[$clog2(`Max_Node_id)-1:2],3'd0} + cnt; // the last 3'd0 is because each node feature value takes 8 lines
                     // FV2SRAM_out.addr = {req_pkt.Node_id[$clog2(`Max_Node_id)-1:2],cnt[$clog2(`Max_FV_num/2)-1:0]};
                     FV2SRAM_out.FV_data = 'd0;
