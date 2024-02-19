@@ -72,8 +72,8 @@ module edge_buffer_one(
                 end else begin
                     outbuff_pkt.eos = 1'b0;
                 end
-                outbuff_pkt.data[15:8] = buffer[cnt];
-                outbuff_pkt.data[7:0] = buffer[cnt+1];
+                outbuff_pkt.data[7:0] = buffer[cnt];
+                outbuff_pkt.data[15:8] = buffer[cnt+1];
                 outbuff_pkt.req = 1'b0;
             end else begin
                 outbuff_pkt.req = 1'b1;
@@ -86,8 +86,8 @@ module edge_buffer_one(
             end else begin
                 outbuff_pkt.eos = 1'b0;
             end
-            outbuff_pkt.data[15:8] = buffer[cnt];
-            outbuff_pkt.data[7:0] = buffer[cnt+1];
+            outbuff_pkt.data[7:0] = buffer[cnt];
+            outbuff_pkt.data[15:8] = buffer[cnt+1];
         end else if (state == OUT_RS_WAIT) begin
             if (!rs_req_grant) begin
                 rs_req = 1'b1;
