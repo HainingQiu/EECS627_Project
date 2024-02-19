@@ -120,6 +120,12 @@ always_comb begin
         Wait_vertex_buffer:
                 if(Vertex_buf_idle)begin
                     nx_state=IDLE;
+                    nx_RS2Vertex_PE_out='d0;
+                    nx_rs_cnt='d0;
+                    nx_num_fv='d0;
+                    nx_rs_ptr='d0;
+                    vertex_fv_idx='d0;
+                    fire='d0;
                 end
                 else begin
                     nx_state=Wait_vertex_buffer;

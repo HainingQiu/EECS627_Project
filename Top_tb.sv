@@ -21,16 +21,16 @@ always @(posedge clk) begin
 		replay_Iter_ff <= iTop_DUT.Current_replay_Iter;
 end */
 ///// Dump Mem /////
-always @(iTop_DUT.Current_replay_Iter, task_complete) begin
-	if (iTop_DUT.Current_replay_Iter === 2'b01 & !task_complete)
-		dumpPongBuf2file(file1);
-	if (iTop_DUT.Current_replay_Iter === 2'b10 & !task_complete)
-		dumpPongBuf2file(file2);
-	if (iTop_DUT.Current_replay_Iter === 2'b11 & !task_complete)
-		dumpPongBuf2file(file3);
-	if (task_complete)
-		dumpPongBuf2file(file4);
-end
+// always @(iTop_DUT.Current_replay_Iter, task_complete) begin
+// 	if (iTop_DUT.Current_replay_Iter === 2'b01 & !task_complete)
+// 		dumpPongBuf2file(file1);
+// 	if (iTop_DUT.Current_replay_Iter === 2'b10 & !task_complete)
+// 		dumpPongBuf2file(file2);
+// 	if (iTop_DUT.Current_replay_Iter === 2'b11 & !task_complete)
+// 		dumpPongBuf2file(file3);
+// 	if (task_complete)
+// 		dumpPongBuf2file(file4);
+// end
 /* always @(posedge clk) begin
     if ((replay_Iter_ff == 2'b00 && iTop_DUT.Current_replay_Iter == 2'b01)) begin
 		dumpPongBuf2file(file1);
@@ -67,26 +67,26 @@ end
 task automatic init();
 
 ///// Output File /////
-file1 = $fopen("Iter0.txt", "w");
-if (!file1) begin
-	$display("Error opening Iter0.txt.");
-	$stop;
-end
-file2 = $fopen("Iter1.txt", "w");
-if (!file2) begin
-	$display("Error opening Iter1.txt.");
-	$stop;
-end
-file3 = $fopen("Iter2.txt", "w");
-if (!file3) begin
-	$display("Error opening Iter2.txt.");
-	$stop;
-end
-file4 = $fopen("Iter3.txt", "w");
-if (!file4) begin
-	$display("Error opening Iter3.txt.");
-	$stop;
-end
+// file1 = $fopen("Iter0.txt", "w");
+// if (!file1) begin
+// 	$display("Error opening Iter0.txt.");
+// 	$stop;
+// end
+// file2 = $fopen("Iter1.txt", "w");
+// if (!file2) begin
+// 	$display("Error opening Iter1.txt.");
+// 	$stop;
+// end
+// file3 = $fopen("Iter2.txt", "w");
+// if (!file3) begin
+// 	$display("Error opening Iter2.txt.");
+// 	$stop;
+// end
+// file4 = $fopen("Iter3.txt", "w");
+// if (!file4) begin
+// 	$display("Error opening Iter3.txt.");
+// 	$stop;
+// end
 
 clk = 0;
 reset = 1; // avtive high sync reset
@@ -139,14 +139,14 @@ endtask
 // This will be called 4 times for 4 replay iterations
 // NOTE that they dump all 4 SRAM contents into one file at a times
 // so please access the file in order
-task automatic dumpPongBuf2file (integer filex);
-	for (int i = 0; i < `Num_Banks_all_FV; i++) begin
-		for (int j = 0; j < 1024; j++) begin
-			$fwrite(filex, "%b\n",
-			iTop_DUT.Big_FV_wrapper_1_U.ping_buffer[i].BIG_FV_SRAM_u.mem[j]);
-		end
-	end
-endtask
+// task automatic dumpPongBuf2file (integer filex);
+// 	for (int i = 0; i < `Num_Banks_all_FV; i++) begin
+// 		for (int j = 0; j < 1024; j++) begin
+// 			$fwrite(filex, "%b\n",
+// 			iTop_DUT.Big_FV_wrapper_1_U.ping_buffer[i].BIG_FV_SRAM_u.mem[j]);
+// 		end
+// 	end
+// endtask
 
 
 endmodule

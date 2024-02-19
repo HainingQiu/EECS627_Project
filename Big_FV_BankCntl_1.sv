@@ -406,15 +406,17 @@ module Big_FV_BankCntl_1(
 
             end
             FV_WB: begin
-                if (req_pkt.wr_eos) begin
-                    nx_state = IDLE;
-                end
+
                 FV2SRAM_out.CEN = 1'b0;
                 FV2SRAM_out.WEN = 1'b0;
                // FV2SRAM_out.addr = {req_pkt.Node_id[$clog2(`Max_Node_id)-1:2],3'b000} + cnt;
                 FV2SRAM_out.addr = {req_pkt.Node_id[$clog2(`Max_Node_id)-1:2],cnt[$clog2(`Max_FV_num/2)-1:0]};
                 FV2SRAM_out.FV_data = req_pkt.data;
                 nx_cnt = cnt + 1;
+                if (req_pkt.wr_eos) begin
+                    nx_state = IDLE;
+                    nx_cnt='d0;
+                end
             end
             FV_RD_TO_EDGE: begin
                 nx_EdgePE_rd_out.valid='d1;

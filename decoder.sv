@@ -48,7 +48,7 @@ always_ff @( posedge clk ) begin
         current_replay_Iter <= #1 'd0;
         current_packet <= #1 'd0;
         current_Num_FV <= #1 'd0; 
-        current_Req<= #1 'd0;
+        // current_Req<= #1 'd0;
         stream_begin<= #1 'd0;
         current_replay_iter_flag<= #1 'd0;
     end
@@ -58,7 +58,7 @@ always_ff @( posedge clk ) begin
         current_replay_Iter <= #1 nx_replay_Iter;
         current_packet <= #1 nx_packet;
         current_Num_FV <= #1 nx_Num_FV; 
-        current_Req<= #1 nx_Req;
+        // current_Req<= #1 nx_Req;
         stream_begin<= #1 nx_stream_begin;
         current_replay_iter_flag<= #1 replay_iter_flag;
     end
@@ -71,7 +71,7 @@ always_comb begin
         nx_Num_FV = current_Num_FV;  
         replay_iter_flag =current_replay_iter_flag;
         DP_task2RS_out=0;
-        nx_Req =current_Req;
+        nx_Req ='d0;
         fifo_stall = 0;
         DP2mem_packet_out =0;
         cntl_done=0;
@@ -138,6 +138,7 @@ always_comb begin
                            fifo_stall = 'd1;
                            nx_state =wait_grant;
                            nx_Req ='d1;
+                           nx_packet=current_packet;
                         end
 
                       end

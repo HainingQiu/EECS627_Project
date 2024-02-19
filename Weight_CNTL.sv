@@ -23,7 +23,7 @@ logic partial_Weight_layer;
 state_t state,nx_state;
 logic [`Mult_per_PE-1:0] idx_Weight;
 logic[`Mult_per_PE-1:0][`FV_size-1:0] nx_Weight_data2Vertex;
-Weight_Cntl2bank nx_Weight_Cntl2bank_out,reg_nx_Weight_Cntl2bank_out;
+Weight_Cntl2bank nx_Weight_Cntl2bank_out,reg_nx_Weight_Cntl2bank_out,reg_nx_Weight_Cntl2bank_out_q;
 logic nx_RS_IDLE;
 // logic [$clog2(`Max_FV_num)-1:0]  Num_FV_boundary;
 // assign Num_FV_boundary=Num_FV-1'b1;
@@ -92,6 +92,7 @@ always_ff@(posedge clk)begin
         Weight_data2Vertex<=#1 'd0;
         Weight_Cntl2bank_out<=#1 'd0;
         reg_nx_Weight_Cntl2bank_out<=#1 'd0;
+        reg_nx_Weight_Cntl2bank_out_q<=#1 'd0;
         RS_IDLE<=#1 'd0;
     end
     else begin
@@ -101,7 +102,8 @@ always_ff@(posedge clk)begin
         Cur_FV_num<=#1 nx_FV_num;
         Weight_data2Vertex<=#1 nx_Weight_data2Vertex;
         reg_nx_Weight_Cntl2bank_out<=#1 nx_Weight_Cntl2bank_out;
-        Weight_Cntl2bank_out<=#1 reg_nx_Weight_Cntl2bank_out;
+        reg_nx_Weight_Cntl2bank_out_q<=#1 reg_nx_Weight_Cntl2bank_out;
+        Weight_Cntl2bank_out<=#1 reg_nx_Weight_Cntl2bank_out_q;
         RS_IDLE<=#1 nx_RS_IDLE;
     end
 end

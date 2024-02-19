@@ -61,8 +61,8 @@ always_ff@(posedge clk)begin
     // end
     else begin
 
-      current_re_addr <=#1 full || (DP2mem_packet_in.valid || Edge_PE_WB_valid) ? stall_re_addr:nx_re_addr;
-      stall_re_addr<=#1 full || (DP2mem_packet_in.valid || Edge_PE_WB_valid)? stall_re_addr:current_re_addr;
+      current_re_addr <=#1 full ? stall_re_addr:nx_re_addr;//|| (DP2mem_packet_in.valid )
+      stall_re_addr<=#1 full ? stall_re_addr:current_re_addr;//|| Edge_PE_WB_valid
       current_wr_addr <=#1 nx_wr_addr;
       state<=#1 nx_state;
       wr_en<=#1 nx_wr_en;
