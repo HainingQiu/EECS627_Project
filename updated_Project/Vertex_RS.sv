@@ -67,9 +67,12 @@ always_comb begin
                     nx_state=Rex_FV;
                     // nx_rs_cnt=nx_rs_cnt+1'b1;
                     nx_RS_FV_data[nx_rs_ptr][nx_num_fv]=Bank2RS_in.FV_data[0];
-                    nx_RS_FV_data[nx_rs_ptr][nx_num_fv+1'b1]=Bank2RS_in.FV_data[1];
+                    nx_RS_FV_data[nx_rs_ptr][nx_num_fv+'d1]=Bank2RS_in.FV_data[1];
+                    nx_RS_FV_data[nx_rs_ptr][nx_num_fv+'d2]=Bank2RS_in.FV_data[2];
+                    nx_RS_FV_data[nx_rs_ptr][nx_num_fv+'d3]=Bank2RS_in.FV_data[3];
+
                     nx_RS_Node_id[nx_rs_ptr]=Bank2RS_in.Node_id;
-                    nx_num_fv=nx_num_fv+'d2;
+                    nx_num_fv=nx_num_fv+`num_fv_line;
                     nx_rs_cnt=nx_rs_cnt+1'b1;
                 end
                 else  begin
@@ -96,7 +99,7 @@ always_comb begin
                 end 
                 else begin
                     nx_state=Rex_FV;
-                    nx_num_fv=nx_num_fv+'d2;
+                    nx_num_fv=nx_num_fv+`num_fv_line;
 
                 end
             end

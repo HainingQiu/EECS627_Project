@@ -57,7 +57,7 @@
 typedef struct packed {
     logic sos;
     logic eos;
-    logic [1:0][`FV_size-1:0] FV_data;
+    logic [`num_fv_line-1:0][`FV_size-1:0] FV_data;
     logic [$clog2(`Max_Node_id)-1:0] Node_id;
 } Bank2RS;
 
