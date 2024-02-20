@@ -15,8 +15,8 @@ module Top(
 PACKET_CNTL2SRAM  PACKET_CNTL_SRAM_out;
 DP_task2Edge_PE [`Num_Edge_PE-1:0]DP_task2Edge_PE_out;
 logic [$clog2(`Max_replay_Iter)-1:0]  Current_replay_Iter;
-logic [$clog2(16):0 ]    Num_FV;
-logic [$clog2(16)-1:0 ] Weights_boundary;
+logic [$clog2(`MAX_FV_num):0 ]    Num_FV;
+logic [$clog2(`Max_Num_Weight_layer)-1:0 ] Weights_boundary;
 //------------------------Edge_PE_output------------------------//
 Req_Bus_arbiter[`Num_Edge_PE-1:0] Req_Bus_arbiter_out;
 Edge_PE2DP[`Num_Edge_PE-1:0] Edge_PE2DP_out;

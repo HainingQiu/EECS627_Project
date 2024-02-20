@@ -61,13 +61,13 @@ generate
 //generate
     //genvar i;
     for(i=0;i<`Num_Banks_FV;i=i+1)begin:SRAM_Instantiations
-        Neighbor_SRAM Neighbor_SRAM_U(
+        Nb_SRAM_64 Neighbor_SRAM_U(
             .Q(Neighbor_SRAM_DATA[i]),
             .CLK(clk),
             .CEN(Neighbor_bank2SRAM_Interface_out[i].CEN),
             .WEN(1'b1),
             .A(Neighbor_bank2SRAM_Interface_out[i].A),
-            .D(14'd0)
+            .D(63'd0)
         );
         end 
 endgenerate

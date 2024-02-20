@@ -45,13 +45,13 @@ Neighbor_Info_CNTL Neighbor_Info_CNTL_U(
 generate
     genvar i;
     for(i=0;i<`num_bank_neighbor_info;i=i+1)begin:Nb_Info_SRAM_init
-        Nb_Info_SRAM_64 Neighbor_Info_SRAM_U(
+        Nb_info_SRAM_64 Neighbor_Info_SRAM_U(
             .Q(Data_SRAM_in[i]),
             .CLK(clk),
             .CEN(Neighbor_info_CNTL2SRAM_interface_out[i].CEN),
             .WEN(1'b1),
             .A(Neighbor_info_CNTL2SRAM_interface_out[i].A),
-            .D(17'd0)
+            .D(18'd0) // 17'd0
         );
         end 
 endgenerate

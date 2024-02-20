@@ -16,8 +16,8 @@ module PACKET_SRAM_integration(
     output DP_task2Edge_PE [`Num_Edge_PE-1:0]DP_task2Edge_PE_out,
     output logic Req,
     output logic [$clog2(`Max_replay_Iter)-1:0]  replay_Iter,
-    output logic [$clog2(16):0 ]    Num_FV ,
-    output logic [$clog2(16)-1:0 ] Weights_boundary,
+    output logic [$clog2(`MAX_FV_num):0 ]    Num_FV ,
+    output logic [$clog2(`Max_Num_Weight_layer)-1:0 ] Weights_boundary,
     output logic stream_begin
 );
 DP2mem_packet DP2mem_packet_in;

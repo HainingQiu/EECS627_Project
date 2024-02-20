@@ -68,7 +68,7 @@ generate
 //generate
     //genvar i;
     for(i=0;i<`Num_Banks_FV;i=i+1)begin:SRAM_Instantiations
-        SMALL_FV_SRAM SMALL_FV_SRAM_U(
+        SMALL_FV_SRAM_64 SMALL_FV_SRAM_U(
             .Q(FV_SRAM_DATA[i] ),
             .CLK(clk),
             .CEN(FV_bank2SRAM_Interface_out[i].CEN),

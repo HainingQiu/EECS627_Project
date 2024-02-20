@@ -15,12 +15,12 @@
 //           			IBM CMRF8SF-LPVT Process
 //      version:		2008Q3V1
 //      comment:		
-//      configuration:	 -instname "BIG_FV_SRAM_64" -words 1024 -bits 64 -frequency 500 -ring_width 2.0 -mux 8 -write_mask off -wp_size 8 -top_layer met4 -power_type rings -horiz met3 -vert met4 -cust_comment "" -bus_notation on -left_bus_delim "[" -right_bus_delim "]" -pwr_gnd_rename "VDD:VDD,GND:VSS" -prefix "" -pin_space 0.0 -name_case upper -check_instname on -diodes on -inside_ring_type GND -drive 6 -asvm on -corners ff_1p32v_m40c,ff_1p65v_125c,tt_1p2v_25c,ss_1p08v_125c
+//      configuration:	 -instname "SMALL_FV_SRAM_64" -words 256 -bits 64 -frequency 500 -ring_width 2.0 -mux 8 -write_mask off -wp_size 8 -top_layer met4 -power_type rings -horiz met3 -vert met4 -cust_comment "" -bus_notation on -left_bus_delim "[" -right_bus_delim "]" -pwr_gnd_rename "VDD:VDD,GND:VSS" -prefix "" -pin_space 0.0 -name_case upper -check_instname on -diodes on -inside_ring_type GND -drive 6 -asvm on -corners ff_1p32v_m40c,ff_1p65v_125c,tt_1p2v_25c,ss_1p08v_125c
 //
 //      Verilog model for Synchronous Single-Port Ram
 //
-//      Instance Name:              BIG_FV_SRAM_64
-//      Words:                      1024
+//      Instance Name:              SMALL_FV_SRAM_64
+//      Words:                      256
 //      Bits:                       64
 //      Mux:                        8
 //      Drive:                      6
@@ -31,7 +31,7 @@
 //      Redundant Columns:          0
 //      Test Muxes                  Off
 //
-//      Creation Date:  2024-02-20 16:47:18Z
+//      Creation Date:  2024-02-20 18:40:41Z
 //      Version: 	2008Q3V1
 //
 //      Modeling Assumptions: This model supports full gate level simulation
@@ -50,7 +50,7 @@
 //
 // `timescale 1 ns/1 ps
 `celldefine
-  module BIG_FV_SRAM_64 (
+  module SMALL_FV_SRAM_64 (
                 Q,
                 CLK,
                 CEN,
@@ -59,8 +59,8 @@
                 D
                 );
    parameter                BITS = 64;
-   parameter                WORD_DEPTH = 1024;
-   parameter                ADDR_WIDTH = 10;
+   parameter                WORD_DEPTH = 256;
+   parameter                ADDR_WIDTH = 8;
    parameter                WORDX = {BITS{1'bx}};
    parameter                WORD1 = {BITS{1'b1}};
    parameter                ADDRX = {ADDR_WIDTH{1'bx}};
@@ -83,7 +83,7 @@
    input                    CLK;
    input                    CEN;
    input                    WEN;
-   input [9:0]              A;
+   input [7:0]              A;
    input [63:0]             D;
 
    reg [BITS+RED_COLUMNS-1:0]             mem [0:WORD_DEPTH-1];
@@ -92,8 +92,6 @@
 
    reg                      NOT_CEN;
    reg                      NOT_WEN;
-   reg                      NOT_A9;
-   reg                      NOT_A8;
    reg                      NOT_A7;
    reg                      NOT_A6;
    reg                      NOT_A5;
@@ -211,8 +209,6 @@
    task update_notifier_buses;
    begin
       NOT_A = {
-               NOT_A9,
-               NOT_A8,
                NOT_A7,
                NOT_A6,
                NOT_A5,
@@ -1204,8 +1200,6 @@
    buf (_CLK, CLK);
    buf (_CEN, CEN);
    buf (_WEN, WEN);
-   buf (_A[9], A[9]);
-   buf (_A[8], A[8]);
    buf (_A[7], A[7]);
    buf (_A[6], A[6]);
    buf (_A[5], A[5]);
@@ -1288,8 +1282,6 @@
    always @(
 	    NOT_CEN or
 	    NOT_WEN or
-	    NOT_A9 or
-	    NOT_A8 or
 	    NOT_A7 or
 	    NOT_A6 or
 	    NOT_A5 or
@@ -1420,10 +1412,6 @@
       $setuphold(posedge CLK &&& CEN_flag, negedge CEN, 1.000, 0.500, NOT_CEN);
       $setuphold(posedge CLK &&& flag, posedge WEN, 1.000, 0.500, NOT_WEN);
       $setuphold(posedge CLK &&& flag, negedge WEN, 1.000, 0.500, NOT_WEN);
-      $setuphold(posedge CLK &&& flag, posedge A[9], 1.000, 0.500, NOT_A9);
-      $setuphold(posedge CLK &&& flag, negedge A[9], 1.000, 0.500, NOT_A9);
-      $setuphold(posedge CLK &&& flag, posedge A[8], 1.000, 0.500, NOT_A8);
-      $setuphold(posedge CLK &&& flag, negedge A[8], 1.000, 0.500, NOT_A8);
       $setuphold(posedge CLK &&& flag, posedge A[7], 1.000, 0.500, NOT_A7);
       $setuphold(posedge CLK &&& flag, negedge A[7], 1.000, 0.500, NOT_A7);
       $setuphold(posedge CLK &&& flag, posedge A[6], 1.000, 0.500, NOT_A6);
