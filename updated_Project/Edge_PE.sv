@@ -234,10 +234,10 @@ always_comb begin
                 nx_Edge_PE2Bank_out.eos=1'b1;
                 nx_Edge_PE2Bank_out.Done_aggr=1'b0;
                 nx_Edge_PE2Bank_out.WB_en=1'b0;
-                nx_Edge_PE2Bank_out.FV_data[0]=Output_SRAM2Edge_PE_in.FV_data[15:0];
-                nx_Edge_PE2Bank_out.FV_data[1]=Output_SRAM2Edge_PE_in.FV_data[31:16];
-                nx_Edge_PE2Bank_out.FV_data[2]=Output_SRAM2Edge_PE_in.FV_data[47:32];
-                nx_Edge_PE2Bank_out.FV_data[3]=Output_SRAM2Edge_PE_in.FV_data[63:48];
+                nx_Edge_PE2Bank_out.FV_data[0]=FV_SRAM2Edge_PE_in.FV_data[15:0];
+                nx_Edge_PE2Bank_out.FV_data[1]=FV_SRAM2Edge_PE_in.FV_data[31:16];
+                nx_Edge_PE2Bank_out.FV_data[2]=FV_SRAM2Edge_PE_in.FV_data[47:32];
+                nx_Edge_PE2Bank_out.FV_data[3]=FV_SRAM2Edge_PE_in.FV_data[63:48];
                 nx_Edge_PE2Bank_out.Node_id=nx_Target_node;
             end
             else if(FV_SRAM2Edge_PE_in.sos)begin
@@ -246,10 +246,10 @@ always_comb begin
                 nx_Edge_PE2Bank_out.eos=1'b0;
                 nx_Edge_PE2Bank_out.Done_aggr=1'b0;
                 nx_Edge_PE2Bank_out.WB_en=1'b0;
-                nx_Edge_PE2Bank_out.FV_data[0]=Output_SRAM2Edge_PE_in.FV_data[15:0];
-                nx_Edge_PE2Bank_out.FV_data[1]=Output_SRAM2Edge_PE_in.FV_data[31:16];
-                nx_Edge_PE2Bank_out.FV_data[2]=Output_SRAM2Edge_PE_in.FV_data[47:32];
-                nx_Edge_PE2Bank_out.FV_data[3]=Output_SRAM2Edge_PE_in.FV_data[63:48];
+                nx_Edge_PE2Bank_out.FV_data[0]=FV_SRAM2Edge_PE_in.FV_data[15:0];
+                nx_Edge_PE2Bank_out.FV_data[1]=FV_SRAM2Edge_PE_in.FV_data[31:16];
+                nx_Edge_PE2Bank_out.FV_data[2]=FV_SRAM2Edge_PE_in.FV_data[47:32];
+                nx_Edge_PE2Bank_out.FV_data[3]=FV_SRAM2Edge_PE_in.FV_data[63:48];
                 nx_Edge_PE2Bank_out.Node_id=nx_Target_node;
             end
             else begin
@@ -272,10 +272,10 @@ always_comb begin
                 nx_Edge_PE2Bank_out.eos=1'b1;
                 nx_Edge_PE2Bank_out.Done_aggr=1'b0;
                 nx_Edge_PE2Bank_out.WB_en=1'b0;
-                nx_Edge_PE2Bank_out.FV_data[0]=Output_SRAM2Edge_PE_in.FV_data[15:0];
-                nx_Edge_PE2Bank_out.FV_data[1]=Output_SRAM2Edge_PE_in.FV_data[31:16];
-                nx_Edge_PE2Bank_out.FV_data[2]=Output_SRAM2Edge_PE_in.FV_data[47:32];
-                nx_Edge_PE2Bank_out.FV_data[3]=Output_SRAM2Edge_PE_in.FV_data[63:48];
+                nx_Edge_PE2Bank_out.FV_data[0]=FV_SRAM2Edge_PE_in.FV_data[15:0];
+                nx_Edge_PE2Bank_out.FV_data[1]=FV_SRAM2Edge_PE_in.FV_data[31:16];
+                nx_Edge_PE2Bank_out.FV_data[2]=FV_SRAM2Edge_PE_in.FV_data[47:32];
+                nx_Edge_PE2Bank_out.FV_data[3]=FV_SRAM2Edge_PE_in.FV_data[63:48];
                 nx_Edge_PE2Bank_out.Node_id=nx_Target_node;
             end
             else begin
@@ -283,10 +283,10 @@ always_comb begin
                 nx_Edge_PE2Bank_out.eos=1'b0;
                 nx_Edge_PE2Bank_out.Done_aggr=1'b0;
                 nx_Edge_PE2Bank_out.WB_en=1'b0;
-                nx_Edge_PE2Bank_out.FV_data[0]=Output_SRAM2Edge_PE_in.FV_data[15:0];
-                nx_Edge_PE2Bank_out.FV_data[1]=Output_SRAM2Edge_PE_in.FV_data[31:16];
-                nx_Edge_PE2Bank_out.FV_data[2]=Output_SRAM2Edge_PE_in.FV_data[47:32];
-                nx_Edge_PE2Bank_out.FV_data[3]=Output_SRAM2Edge_PE_in.FV_data[63:48];
+                nx_Edge_PE2Bank_out.FV_data[0]=FV_SRAM2Edge_PE_in.FV_data[15:0];
+                nx_Edge_PE2Bank_out.FV_data[1]=FV_SRAM2Edge_PE_in.FV_data[31:16];
+                nx_Edge_PE2Bank_out.FV_data[2]=FV_SRAM2Edge_PE_in.FV_data[47:32];
+                nx_Edge_PE2Bank_out.FV_data[3]=FV_SRAM2Edge_PE_in.FV_data[63:48];
                 nx_Edge_PE2Bank_out.Node_id=nx_Target_node;
                 nx_state=Stream_Neighbor_FV;
             end
