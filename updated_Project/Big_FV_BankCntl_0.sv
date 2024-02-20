@@ -209,7 +209,7 @@ module Big_FV_BankCntl_0(
                     nx_EdgePE_rd_out.sos = 1'b0;
                 end
 
-                if ({cnt,1'b0} >= total_FV_num) begin // `FV_SRAM_bank_cache_line-1
+                if ({cnt,2'd0} >= total_FV_num) begin // `FV_SRAM_bank_cache_line-1
                     nx_EdgePE_rd_out.eos = 1'b1;
                     nx_state = IDLE;
                     nx_cnt = 'd0;
