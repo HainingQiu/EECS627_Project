@@ -149,6 +149,13 @@ always_comb begin
                 nx_state=Req_Neighbor_FV;
                 nx_Neighbor_ids[nx_cnt_neighbor_info]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[6:0];
                 nx_Neighbor_ids[nx_cnt_neighbor_info+'d1]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[13:7];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d2]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[20:14];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d3]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[27:21];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d4]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[34:28];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d5]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[41:35];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d6]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[48:42];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d7]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[55:49];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d8]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[62:56];
                 nx_cnt_neighbor_info='d0;
             end
             else if(NeighborID_SRAM2Edge_PE_in.sos)begin
@@ -156,7 +163,14 @@ always_comb begin
                 nx_reg_Neighbor_num_Iter=NeighborID_SRAM2Edge_PE_in.Neighbor_num_Iter;
                 nx_Neighbor_ids[nx_cnt_neighbor_info]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[6:0];
                 nx_Neighbor_ids[nx_cnt_neighbor_info+'d1]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[13:7];
-                nx_cnt_neighbor_info=nx_cnt_neighbor_info+'d2;
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d2]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[20:14];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d3]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[27:21];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d4]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[34:28];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d5]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[41:35];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d6]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[48:42];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d7]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[55:49];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d8]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[62:56];
+                nx_cnt_neighbor_info=nx_cnt_neighbor_info+'d9;
             end
             else begin
                 nx_state=Wait_Neighbor_ID;
@@ -165,15 +179,29 @@ always_comb begin
             if(NeighborID_SRAM2Edge_PE_in.eos)begin
                 nx_state=Req_Neighbor_FV;
                 nx_Neighbor_ids[nx_cnt_neighbor_info]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[6:0];
-                nx_Neighbor_ids[nx_cnt_neighbor_info+1'b1]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[13:7];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d1]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[13:7];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d2]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[20:14];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d3]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[27:21];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d4]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[34:28];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d5]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[41:35];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d6]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[48:42];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d7]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[55:49];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d8]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[62:56];
                 nx_cnt_neighbor_info='d0;
                 
             end
             else begin
                 nx_state=Stream_Neighbor_ID;
                 nx_Neighbor_ids[nx_cnt_neighbor_info]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[6:0];
-                nx_Neighbor_ids[nx_cnt_neighbor_info+1'b1]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[13:7];
-                nx_cnt_neighbor_info=nx_cnt_neighbor_info+'d2;
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d1]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[13:7];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d2]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[20:14];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d3]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[27:21];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d4]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[34:28];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d5]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[41:35];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d6]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[48:42];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d7]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[55:49];
+                nx_Neighbor_ids[nx_cnt_neighbor_info+'d8]=NeighborID_SRAM2Edge_PE_in.Neighbor_ids[62:56];
+                nx_cnt_neighbor_info=nx_cnt_neighbor_info+'d9;
             end
         Req_Neighbor_FV:
                 if(Grant_Bus_arbiter_in.Grant)begin
@@ -206,8 +234,10 @@ always_comb begin
                 nx_Edge_PE2Bank_out.eos=1'b1;
                 nx_Edge_PE2Bank_out.Done_aggr=1'b0;
                 nx_Edge_PE2Bank_out.WB_en=1'b0;
-                nx_Edge_PE2Bank_out.FV_data[0]=FV_SRAM2Edge_PE_in.FV_data[7:0];
-                nx_Edge_PE2Bank_out.FV_data[1]=FV_SRAM2Edge_PE_in.FV_data[15:8];
+                nx_Edge_PE2Bank_out.FV_data[0]=Output_SRAM2Edge_PE_in.FV_data[15:0];
+                nx_Edge_PE2Bank_out.FV_data[1]=Output_SRAM2Edge_PE_in.FV_data[31:16];
+                nx_Edge_PE2Bank_out.FV_data[2]=Output_SRAM2Edge_PE_in.FV_data[47:32];
+                nx_Edge_PE2Bank_out.FV_data[3]=Output_SRAM2Edge_PE_in.FV_data[63:48];
                 nx_Edge_PE2Bank_out.Node_id=nx_Target_node;
             end
             else if(FV_SRAM2Edge_PE_in.sos)begin
@@ -216,8 +246,10 @@ always_comb begin
                 nx_Edge_PE2Bank_out.eos=1'b0;
                 nx_Edge_PE2Bank_out.Done_aggr=1'b0;
                 nx_Edge_PE2Bank_out.WB_en=1'b0;
-                nx_Edge_PE2Bank_out.FV_data[0]=FV_SRAM2Edge_PE_in.FV_data[7:0];
-                nx_Edge_PE2Bank_out.FV_data[1]=FV_SRAM2Edge_PE_in.FV_data[15:8];
+                nx_Edge_PE2Bank_out.FV_data[0]=Output_SRAM2Edge_PE_in.FV_data[15:0];
+                nx_Edge_PE2Bank_out.FV_data[1]=Output_SRAM2Edge_PE_in.FV_data[31:16];
+                nx_Edge_PE2Bank_out.FV_data[2]=Output_SRAM2Edge_PE_in.FV_data[47:32];
+                nx_Edge_PE2Bank_out.FV_data[3]=Output_SRAM2Edge_PE_in.FV_data[63:48];
                 nx_Edge_PE2Bank_out.Node_id=nx_Target_node;
             end
             else begin
@@ -240,8 +272,10 @@ always_comb begin
                 nx_Edge_PE2Bank_out.eos=1'b1;
                 nx_Edge_PE2Bank_out.Done_aggr=1'b0;
                 nx_Edge_PE2Bank_out.WB_en=1'b0;
-                nx_Edge_PE2Bank_out.FV_data[0]=FV_SRAM2Edge_PE_in.FV_data[7:0];
-                nx_Edge_PE2Bank_out.FV_data[1]=FV_SRAM2Edge_PE_in.FV_data[15:8];
+                nx_Edge_PE2Bank_out.FV_data[0]=Output_SRAM2Edge_PE_in.FV_data[15:0];
+                nx_Edge_PE2Bank_out.FV_data[1]=Output_SRAM2Edge_PE_in.FV_data[31:16];
+                nx_Edge_PE2Bank_out.FV_data[2]=Output_SRAM2Edge_PE_in.FV_data[47:32];
+                nx_Edge_PE2Bank_out.FV_data[3]=Output_SRAM2Edge_PE_in.FV_data[63:48];
                 nx_Edge_PE2Bank_out.Node_id=nx_Target_node;
             end
             else begin
@@ -249,8 +283,10 @@ always_comb begin
                 nx_Edge_PE2Bank_out.eos=1'b0;
                 nx_Edge_PE2Bank_out.Done_aggr=1'b0;
                 nx_Edge_PE2Bank_out.WB_en=1'b0;
-                nx_Edge_PE2Bank_out.FV_data[0]=FV_SRAM2Edge_PE_in.FV_data[7:0];
-                nx_Edge_PE2Bank_out.FV_data[1]=FV_SRAM2Edge_PE_in.FV_data[15:8];
+                nx_Edge_PE2Bank_out.FV_data[0]=Output_SRAM2Edge_PE_in.FV_data[15:0];
+                nx_Edge_PE2Bank_out.FV_data[1]=Output_SRAM2Edge_PE_in.FV_data[31:16];
+                nx_Edge_PE2Bank_out.FV_data[2]=Output_SRAM2Edge_PE_in.FV_data[47:32];
+                nx_Edge_PE2Bank_out.FV_data[3]=Output_SRAM2Edge_PE_in.FV_data[63:48];
                 nx_Edge_PE2Bank_out.Node_id=nx_Target_node;
                 nx_state=Stream_Neighbor_FV;
             end
@@ -286,8 +322,10 @@ always_comb begin
                     nx_Edge_PE2Bank_out.eos=1'b1;
                     nx_Edge_PE2Bank_out.Done_aggr=1'b0;
                     nx_Edge_PE2Bank_out.WB_en=1'b0;
-                    nx_Edge_PE2Bank_out.FV_data[0]=Output_SRAM2Edge_PE_in.FV_data[7:0];
-                    nx_Edge_PE2Bank_out.FV_data[1]=Output_SRAM2Edge_PE_in.FV_data[15:8];
+                    nx_Edge_PE2Bank_out.FV_data[0]=Output_SRAM2Edge_PE_in.FV_data[15:0];
+                    nx_Edge_PE2Bank_out.FV_data[1]=Output_SRAM2Edge_PE_in.FV_data[31:16];
+                    nx_Edge_PE2Bank_out.FV_data[2]=Output_SRAM2Edge_PE_in.FV_data[47:32];
+                    nx_Edge_PE2Bank_out.FV_data[3]=Output_SRAM2Edge_PE_in.FV_data[63:48];
                     nx_Edge_PE2Bank_out.Node_id=nx_Target_node;
                 end
                 else if(Output_SRAM2Edge_PE_in.sos)begin
@@ -296,8 +334,11 @@ always_comb begin
                     nx_Edge_PE2Bank_out.eos=1'b0;
                     nx_Edge_PE2Bank_out.Done_aggr=1'b0;
                     nx_Edge_PE2Bank_out.WB_en=1'b0;
-                    nx_Edge_PE2Bank_out.FV_data[0]=Output_SRAM2Edge_PE_in.FV_data[7:0];
-                    nx_Edge_PE2Bank_out.FV_data[1]=Output_SRAM2Edge_PE_in.FV_data[15:8];
+                    nx_Edge_PE2Bank_out.FV_data[0]=Output_SRAM2Edge_PE_in.FV_data[15:0];
+                    nx_Edge_PE2Bank_out.FV_data[1]=Output_SRAM2Edge_PE_in.FV_data[31:16];
+                    nx_Edge_PE2Bank_out.FV_data[2]=Output_SRAM2Edge_PE_in.FV_data[47:32];
+                    nx_Edge_PE2Bank_out.FV_data[3]=Output_SRAM2Edge_PE_in.FV_data[63:48];
+
                     nx_Edge_PE2Bank_out.Node_id=nx_Target_node;
                 end
                 else begin
@@ -316,8 +357,10 @@ always_comb begin
                     nx_Edge_PE2Bank_out.eos=1'b1;
                     nx_Edge_PE2Bank_out.Done_aggr=1'b0;
                     nx_Edge_PE2Bank_out.WB_en=1'b0;
-                    nx_Edge_PE2Bank_out.FV_data[0]=Output_SRAM2Edge_PE_in.FV_data[7:0];
-                    nx_Edge_PE2Bank_out.FV_data[1]=Output_SRAM2Edge_PE_in.FV_data[15:8];
+                    nx_Edge_PE2Bank_out.FV_data[0]=Output_SRAM2Edge_PE_in.FV_data[15:0];
+                    nx_Edge_PE2Bank_out.FV_data[1]=Output_SRAM2Edge_PE_in.FV_data[31:16];
+                    nx_Edge_PE2Bank_out.FV_data[2]=Output_SRAM2Edge_PE_in.FV_data[47:32];
+                    nx_Edge_PE2Bank_out.FV_data[3]=Output_SRAM2Edge_PE_in.FV_data[63:48];
                     nx_Edge_PE2Bank_out.Node_id=nx_Target_node;
                 end
                 else begin
@@ -325,8 +368,10 @@ always_comb begin
                     nx_Edge_PE2Bank_out.eos=1'b0;
                     nx_Edge_PE2Bank_out.Done_aggr=1'b0;
                     nx_Edge_PE2Bank_out.WB_en=1'b0;
-                    nx_Edge_PE2Bank_out.FV_data[0]=Output_SRAM2Edge_PE_in.FV_data[7:0];
-                    nx_Edge_PE2Bank_out.FV_data[1]=Output_SRAM2Edge_PE_in.FV_data[15:8];
+                    nx_Edge_PE2Bank_out.FV_data[0]=Output_SRAM2Edge_PE_in.FV_data[15:0];
+                    nx_Edge_PE2Bank_out.FV_data[1]=Output_SRAM2Edge_PE_in.FV_data[31:16];
+                    nx_Edge_PE2Bank_out.FV_data[2]=Output_SRAM2Edge_PE_in.FV_data[47:32];
+                    nx_Edge_PE2Bank_out.FV_data[3]=Output_SRAM2Edge_PE_in.FV_data[63:48];
                     nx_Edge_PE2Bank_out.Node_id=nx_Target_node;
                     nx_state=Stream_Pre_ITER_output;
                 end

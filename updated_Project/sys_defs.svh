@@ -32,12 +32,13 @@
 `define FV_SRAM_bank_id_bit $clog2(`FV_SRAM_bank_size)+1 //which bank
 `define max_degree_Iter 128       //max num of neighbor for one replay iteration
 `define num_neighbor_id `Neighbor_ID_bandwidth/$clog2(`Max_Node_id)
+`define num_fv_line `FV_bandwidth/`FV_size
 `define DEPTH_FV_FIFO `Num_Banks_FV
 `define Num_Banks_all_FV `Num_Banks_FV //big
 `define Max_connectivity_all 4*`max_degree_Iter
 `define Size_Neighbor_SRAM `Max_Node_id*`Max_connectivity_all*`$clog2(`Max_Node_id) 
 `define line_Size_Neighbor_SRAM $clog2(`Size_Neighbor_SRAM)  //4096 lines
-`define Neighbor_info_bandwidth 16+1 //12 bits addr and  max_degree_Iter
+`define Neighbor_info_bandwidth 19 //12 bits addr and  max_degree_Iter
 `define num_bank_neighbor_info 2
 `define Num_Banks_Neighbor 4
 `define start_bit_addr_neighbor $clog2(`max_degree_Iter)+1//5
@@ -49,9 +50,9 @@
 `define Max_packet_line 256
 `define com_fifo_size 8
 `define RS_entry 4
-
+// `define num_neighbor_id_line 
 //---------------------------Vertex------------------------------//
-`define Max_Num_Weight_layer 16
+`define Max_Num_Weight_layer 8
 `define Mult_per_PE 4
 typedef struct packed {
     logic sos;
@@ -60,23 +61,6 @@ typedef struct packed {
     logic [$clog2(`Max_Node_id)-1:0] Node_id;
 } Bank2RS;
 
-// typedef struct packed {
-//     logic Grant_valid;
-//     logic sos;
-//     logic eos;
-//     logic [1:0][`FV_size-1:0] data;
-//     logic req;
-//     logic [$clog2(`Max_Node_id)-1:0] nodeid;
-// } Bank_Req2Req_Output_SRAM;
-
-// typedef struct packed {
-// 	logic sos; // start of streaming
-//     logic eos;//  end of streaming
-//     logic [1:0][`FV_size-1:0] FV_data;
-//     logic [$clog2(`Max_Node_id)-1:0] nodeid;
-//     logic Done_aggr;
-//     logic WB_en;
-// } Edge_PE2Bank;
 //----------------------WSW-----------------------------//
 
 typedef struct packed {
@@ -139,7 +123,7 @@ typedef struct packed {
 typedef struct packed {
 	logic sos; // start of streaming
     logic eos;//  end of streaming
-    logic [1:0][`FV_size-1:0] FV_data;
+    logic [3:0][`FV_size-1:0] FV_data; //64/16
     logic Done_aggr;
     logic WB_en;
     logic[$clog2(`Max_Node_id)-1:0] Node_id;

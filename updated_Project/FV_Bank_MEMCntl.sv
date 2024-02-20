@@ -64,7 +64,7 @@ always_comb begin
                 FV_bank2SRAM_Interface_out.WEN=1'b1;
                 FV_bank2SRAM_Interface_out.A=FV_MEM_CNTL2FV_Bank_CNTL_in.FV_Bank_addr;
                 nx_reg_PE_tag=FV_MEM_CNTL2FV_Bank_CNTL_in.PE_tag;
-                nx_cnt=nx_cnt+'d2;
+                nx_cnt=nx_cnt+`num_fv_line;
             end 
             else begin
                 nx_state=IDLE;
@@ -87,12 +87,12 @@ always_comb begin
 
             end
         Stream:
-            if(Num_FV<'d3)begin
+            if(Num_FV<=`num_fv_line)begin
                 nx_state=IDLE;
                 Busy=1'b0;
                 nx_FV_bank_CNTL2Edge_PE_out.sos=1'b1;
                 nx_FV_bank_CNTL2Edge_PE_out.eos=1'b1;
-                nx_FV_bank_CNTL2Edge_PE_out.FV_data=Num_FV[0]?{8'd0,FV_SRAM_DATA[7:0]}:FV_SRAM_DATA;
+                nx_FV_bank_CNTL2Edge_PE_out.FV_data=FV_SRAM_DATA;//Num_FV[0]?{8'd0,FV_SRAM_DATA[7:0]}:
                 nx_FV_bank_CNTL2Edge_PE_out.PE_tag=nx_reg_PE_tag;
                 nx_FV_bank_CNTL2Edge_PE_out.valid=1'b1;
                 FV_bank2SRAM_Interface_out.CEN=1'b0;
@@ -109,14 +109,14 @@ always_comb begin
                 FV_bank2SRAM_Interface_out.CEN=1'b0;
                 FV_bank2SRAM_Interface_out.WEN=1'b1;
                 FV_bank2SRAM_Interface_out.A=FV_bank2SRAM_Interface_out.A+1'b1;
-                nx_cnt=nx_cnt+'d2;
+                nx_cnt=nx_cnt+`num_fv_line;
             end
             else if(cnt>=Num_FV)begin
                 nx_state=IDLE;
                 Busy=1'b0;
                 nx_FV_bank_CNTL2Edge_PE_out.sos=1'b0;
                 nx_FV_bank_CNTL2Edge_PE_out.eos=1'b1;
-                nx_FV_bank_CNTL2Edge_PE_out.FV_data=Num_FV[0]?{8'd0,FV_SRAM_DATA[7:0]}:FV_SRAM_DATA;
+                nx_FV_bank_CNTL2Edge_PE_out.FV_data=FV_SRAM_DATA;//Num_FV[0]?{8'd0,FV_SRAM_DATA[7:0]}:
                 nx_FV_bank_CNTL2Edge_PE_out.PE_tag=nx_reg_PE_tag;
                 nx_FV_bank_CNTL2Edge_PE_out.valid=1'b1;
                 nx_cnt='d0;
@@ -131,7 +131,7 @@ always_comb begin
                 nx_FV_bank_CNTL2Edge_PE_out.FV_data=FV_SRAM_DATA;
                 nx_FV_bank_CNTL2Edge_PE_out.PE_tag=nx_reg_PE_tag;
                 nx_FV_bank_CNTL2Edge_PE_out.valid=1'b1;
-                nx_cnt=nx_cnt+'d2;
+                nx_cnt=nx_cnt+`num_fv_line;
                 FV_bank2SRAM_Interface_out.CEN=1'b0;
                 FV_bank2SRAM_Interface_out.WEN=1'b1;
                 FV_bank2SRAM_Interface_out.A=FV_bank2SRAM_Interface_out.A+1'b1;
