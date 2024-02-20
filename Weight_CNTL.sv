@@ -17,13 +17,13 @@ typedef enum reg [$clog2(2)-1:0] {
 } state_t;
 logic [`Max_Num_Weight_layer-1:0][`Max_FV_num-1:0][`FV_size-1:0]Weight_Buffer;
 logic[$clog2(`Max_Num_Weight_layer)-1:0] Cur_Weight_layer,nx_Weight_layer;
-logic [$clog2(`Max_FV_num):0] Cur_FV_num,nx_FV_num;
+logic [$clog2(`Max_FV_num):0]  Cur_FV_num,nx_FV_num;
 logic partial_FV;
 logic partial_Weight_layer;
 state_t state,nx_state;
-logic [`Mult_per_PE-1:0] idx_Weight;
+logic [`Mult_per_PE-1:0][$clog2(`Max_FV_num):0] idx_Weight;
 logic[`Mult_per_PE-1:0][`FV_size-1:0] nx_Weight_data2Vertex;
-Weight_Cntl2bank nx_Weight_Cntl2bank_out,reg_nx_Weight_Cntl2bank_out,reg_nx_Weight_Cntl2bank_out_q;
+Weight_Cntl2bank nx_Weight_Cntl2bank_out,reg_nx_Weight_Cntl2bank_out;//reg_nx_Weight_Cntl2bank_out_q
 logic nx_RS_IDLE;
 // logic [$clog2(`Max_FV_num)-1:0]  Num_FV_boundary;
 // assign Num_FV_boundary=Num_FV-1'b1;
@@ -39,8 +39,12 @@ always_comb begin
             IDLE:
                 if(fire)begin
                     nx_state=Work;
-                    nx_Weight_Cntl2bank_out.sos=1'b1;
-                    nx_Weight_Cntl2bank_out.eos=1'b0;
+
+                    //nx_FV_num=nx_FV_num+`Mult_per_PE;
+                    // for(int i=0;i<`Mult_per_PE;i++)begin
+                    //     idx_Weight[i]=Cur_FV_num+i;
+                    //     nx_Weight_data2Vertex[i]=Weight_Buffer[Cur_Weight_layer][idx_Weight[i]];
+                    // end
                 end
                 else begin
                     nx_state=IDLE;
@@ -50,6 +54,11 @@ always_comb begin
                 begin
                     nx_FV_num=nx_FV_num+`Mult_per_PE;
                     partial_FV=nx_FV_num==Num_FV;
+                    if(Cur_FV_num=='d0 && Cur_Weight_layer=='d0)begin
+                        nx_Weight_Cntl2bank_out.sos=1'b1;
+                        nx_Weight_Cntl2bank_out.eos=1'b0;
+                    end
+
                     nx_Weight_Cntl2bank_out.change=partial_FV;
                     nx_Weight_layer=partial_FV?nx_Weight_layer+1'b1:nx_Weight_layer;
                     partial_Weight_layer=Num_Weight_layer==Cur_Weight_layer &&partial_FV;
@@ -124,8 +133,9 @@ always_ff@(posedge clk)begin
         Weight_data2Vertex<=#1 'd0;
         Weight_Cntl2bank_out<=#1 'd0;
         reg_nx_Weight_Cntl2bank_out<=#1 'd0;
-        reg_nx_Weight_Cntl2bank_out_q<=#1 'd0;
+        // reg_nx_Weight_Cntl2bank_out_q<=#1 'd0;
         RS_IDLE<=#1 'd0;
+        // reg_Cur_FV_num<=#1 'd0;
     end
     else begin
         Weight_Buffer<=#1 Weight_Buffer;
@@ -134,9 +144,10 @@ always_ff@(posedge clk)begin
         Cur_FV_num<=#1 nx_FV_num;
         Weight_data2Vertex<=#1 nx_Weight_data2Vertex;
         reg_nx_Weight_Cntl2bank_out<=#1 nx_Weight_Cntl2bank_out;
-        reg_nx_Weight_Cntl2bank_out_q<=#1 reg_nx_Weight_Cntl2bank_out;
-        Weight_Cntl2bank_out<=#1 reg_nx_Weight_Cntl2bank_out_q;
+        // reg_nx_Weight_Cntl2bank_out_q<=#1 ;
+        Weight_Cntl2bank_out<=#1 reg_nx_Weight_Cntl2bank_out;
         RS_IDLE<=#1 nx_RS_IDLE;
+        //reg_Cur_FV_num<=#1 Cur_FV_num;
     end
 end
 endmodule

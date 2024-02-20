@@ -9,8 +9,9 @@ module Vertex_PE(
     output logic [$clog2(`Max_Node_id)-1:0] Node_id_out
 );
 logic[`FV_size-1:0] nx_vertex_output;
-logic [`FV_size-1:0] Mul_output;
+logic [`Mult_per_PE-1:0][`FV_size-1:0] Mul_output;
 always_comb begin
+    Mul_output='d0;
     for(int i=0;i<`Mult_per_PE;i++)begin
         Mul_output[i]=Weight_data_in[i]*FV_RS[i];
     end
