@@ -104,6 +104,7 @@ module Big_FV_BankCntl_1(
         nx_node_cnt = node_cnt;
 
         nxt_nodeid = curr_nodeid;
+        nx_PE_tag = PE_tag;
 
         case (state)
             IDLE: begin
