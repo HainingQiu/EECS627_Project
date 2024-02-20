@@ -142,19 +142,19 @@ endtask
 task automatic dumpPongBuf2file (integer filex);
 	for (int j = 0; j < 1024; j++) begin
 		$fwrite(filex, "%h\n",
-		iTop_DUT.Big_FV_wrapper_1_U.ping_buffer[0].BIG_FV_SRAM_u.mem[j][15:0]);
+		iTop_DUT.Big_FV_wrapper_1_U.ping_buffer[0].BIG_FV_SRAM_u.mem[j][63:0]);
 	end
 	for (int j = 0; j < 1024; j++) begin
 		$fwrite(filex, "%h\n",
-		iTop_DUT.Big_FV_wrapper_1_U.ping_buffer[1].BIG_FV_SRAM_u.mem[j][15:0]);
+		iTop_DUT.Big_FV_wrapper_1_U.ping_buffer[1].BIG_FV_SRAM_u.mem[j][63:0]);
 	end
 	for (int j = 0; j < 1024; j++) begin
 		$fwrite(filex, "%h\n",
-		iTop_DUT.Big_FV_wrapper_1_U.ping_buffer[2].BIG_FV_SRAM_u.mem[j][15:0]);
+		iTop_DUT.Big_FV_wrapper_1_U.ping_buffer[2].BIG_FV_SRAM_u.mem[j][63:0]);
 	end
 	for (int j = 0; j < 1024; j++) begin
 		$fwrite(filex, "%h\n",
-		iTop_DUT.Big_FV_wrapper_1_U.ping_buffer[3].BIG_FV_SRAM_u.mem[j][15:0]);
+		iTop_DUT.Big_FV_wrapper_1_U.ping_buffer[3].BIG_FV_SRAM_u.mem[j][63:0]);
 	end
 endtask
 
