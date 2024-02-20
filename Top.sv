@@ -84,6 +84,9 @@ logic[`Num_Edge_PE-1:0] PE_IDLE;
 logic stream_end;
 FV_MEM2FV_Bank[`Num_Banks_all_FV-1:0] Big_FV2Sm_FV_1;
 FV_bank_CNTL2Edge_PE[`Num_Banks_all_FV-1:0] EdgePE_rd_out_0;
+
+logic outbuff_available;
+logic inbuff_available;
 // generate 
 //     genvar i,j,k,l;
 
@@ -154,6 +157,7 @@ PACKET_SRAM_integration PACKET_SRAM_integration_U(
     .bank_busy(edge_buffer_busy),
     .stream_end(stream_end),
     .vertex_done(Vertex_buffer_empty),
+    .outbuff_available(outbuff_available),
     .task_complete(task_complete),
     .PACKET_CNTL_SRAM_out(PACKET_CNTL_SRAM_out),
     .DP_task2Edge_PE_out(DP_task2Edge_PE_out),
@@ -162,6 +166,7 @@ PACKET_SRAM_integration PACKET_SRAM_integration_U(
     .Num_FV(Num_FV),
     .Weights_boundary(Weights_boundary),
     .stream_begin(stream_begin)
+    
     // .TB_state(TB_state)
 );//----------------------------//
 //WIDTH=16 Depth 256 for IMEM_SRAM//
@@ -343,7 +348,8 @@ Big_FV_wrapper_0 Big_FV_wrapper_0_U(
     .stream_begin(stream_begin),
 
     .Big_FV2Sm_FV(Big_FV2Sm_FV),
-    .EdgePE_rd_out(EdgePE_rd_out_0) 
+    .EdgePE_rd_out(EdgePE_rd_out_0),
+    .available(inbuff_available)
 );
 Big_FV_wrapper_1 Big_FV_wrapper_1_U(
     .clk(clk),
@@ -355,7 +361,8 @@ Big_FV_wrapper_1 Big_FV_wrapper_1_U(
     .stream_begin(stream_begin),
 
     .Big_FV2Sm_FV(Big_FV2Sm_FV_1),
-    .EdgePE_rd_out(EdgePE_rd_out) 
+    .EdgePE_rd_out(EdgePE_rd_out),
+    .available(outbuff_available)
 );
 Output_BUS Output_BUS_U(
     .clk(clk),

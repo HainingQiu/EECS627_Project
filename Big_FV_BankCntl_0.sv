@@ -20,7 +20,9 @@ module Big_FV_BankCntl_0(
     output FV_MEM2FV_Bank Big_FV2Sm_FV,
 
     // Read output back to Edge PE
-    output FV_bank_CNTL2Edge_PE EdgePE_rd_out
+    output FV_bank_CNTL2Edge_PE EdgePE_rd_out,
+
+    output available
 
 );
     typedef enum logic [1:0] {
@@ -32,6 +34,8 @@ module Big_FV_BankCntl_0(
     } state_t;
 
     state_t state, nx_state;
+
+    assign available = (state == IDLE);
 
     // localparam IDLE = 0;
     // localparam STREAM_ITER_FV = 1;

@@ -9,6 +9,8 @@ module PACKET_SRAM_integration(
     input [`Num_Edge_PE-1:0]bank_busy,
     input stream_end,
     input vertex_done,
+    input outbuff_available,
+
     output logic task_complete,
     output PACKET_CNTL2SRAM  PACKET_CNTL_SRAM_out,
     output DP_task2Edge_PE [`Num_Edge_PE-1:0]DP_task2Edge_PE_out,
@@ -75,7 +77,8 @@ decoder decoder_0(
     .Num_FV(Num_FV) ,
     .Weights_boundary(Weights_boundary),
     .DP2mem_packet_out(DP2mem_packet_in),
-    .stream_begin(stream_begin)
+    .stream_begin(stream_begin),
+    .outbuff_available(outbuff_available)
 );
 RS RS_0(
     .clk(clk),

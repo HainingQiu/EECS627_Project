@@ -9,6 +9,7 @@ module decoder(
     input [`Num_Edge_PE-1:0]PE_IDLE,
     input stream_end,
     input vertex_done,
+    input outbuff_available,
     output logic cntl_done,
     output logic task_complete,
     output DP_task2RS DP_task2RS_out,
@@ -175,7 +176,7 @@ always_comb begin
                             end
                         end
         wait_task_complete: begin                         
-                            if(vertex_done)begin
+                            if(vertex_done && outbuff_available)begin
                                 nx_state =wait_task_complete;
                                 fifo_stall = 'd1;
                                 task_complete='d1;

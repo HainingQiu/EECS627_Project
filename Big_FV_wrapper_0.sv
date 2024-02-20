@@ -11,7 +11,8 @@ module Big_FV_wrapper_0(
     input stream_begin,
 
     output FV_MEM2FV_Bank [`Num_Banks_all_FV-1:0] Big_FV2Sm_FV,
-    output FV_bank_CNTL2Edge_PE [`Num_Banks_all_FV-1:0] EdgePE_rd_out 
+    output FV_bank_CNTL2Edge_PE [`Num_Banks_all_FV-1:0] EdgePE_rd_out,
+    output available
 );
     /*
         For Each Buffer:
@@ -24,6 +25,9 @@ module Big_FV_wrapper_0(
     logic [`Num_Banks_all_FV-1:0] [`FV_bandwidth-1:0 ] FV_SRAM_DATA;
 
     Big_FV2SRAM_pkt [`Num_Banks_all_FV-1:0] FV2SRAM_out;
+
+    logic [`Num_Banks_all_FV-1:0] available_array;
+    assign available = &available_array;
 
     generate // ping buffer cntl + sram
         genvar i;
@@ -39,7 +43,8 @@ module Big_FV_wrapper_0(
                 .stream_begin(stream_begin),
                 .FV2SRAM_out(FV2SRAM_out[i]),
                 .Big_FV2Sm_FV(Big_FV2Sm_FV[i]), 
-                .EdgePE_rd_out(EdgePE_rd_out[i])
+                .EdgePE_rd_out(EdgePE_rd_out[i]),
+                .available(available_array[i])
             );
         end 
    
