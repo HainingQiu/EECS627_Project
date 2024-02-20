@@ -123,7 +123,7 @@ typedef struct packed {
 typedef struct packed {
 	logic sos; // start of streaming
     logic eos;//  end of streaming
-    logic [3:0][`FV_size-1:0] FV_data; //64/16
+    logic [`num_fv_line-1:0][`FV_size-1:0] FV_data; //64/16
     logic Done_aggr;
     logic WB_en;
     logic[$clog2(`Max_Node_id)-1:0] Node_id;

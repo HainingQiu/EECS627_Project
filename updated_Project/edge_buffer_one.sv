@@ -50,8 +50,10 @@ module edge_buffer_one(
         outbuff_pkt.Grant_valid = 1'b0;
         outbuff_pkt.sos = 1'b0;
         outbuff_pkt.eos = 1'b0;
-        outbuff_pkt.data[15:8] = 'd0;
-        outbuff_pkt.data[7:0] = 'd0;
+        outbuff_pkt.data[63:48] = 'd0;
+        outbuff_pkt.data[47:32] = 'd0;
+        outbuff_pkt.data[31:16] = 'd0;
+        outbuff_pkt.data[15:0] = 'd0;
         outbuff_pkt.Node_id = cur_nodeid;
         outbuff_pkt.req = 1'b0;
         rs_req='d0;
@@ -67,13 +69,17 @@ module edge_buffer_one(
              if (req_grant) begin
                 outbuff_pkt.Grant_valid = 1'b1;
                 outbuff_pkt.sos = 1'b1;
-                if (cnt + 2 == iter_FV_num) begin // when entering OUT_FV_WAIT, cnt = 0
+                if (cnt + `num_fv_line == iter_FV_num) begin // when entering OUT_FV_WAIT, cnt = 0
                     outbuff_pkt.eos = 1'b1;
                 end else begin
                     outbuff_pkt.eos = 1'b0;
                 end
-                outbuff_pkt.data[7:0] = buffer[cnt];
-                outbuff_pkt.data[15:8] = buffer[cnt+1];
+                outbuff_pkt.data[63:48] = buffer[cnt+3];
+                outbuff_pkt.data[47:32] = buffer[cnt+2];
+                outbuff_pkt.data[31:16] = buffer[cnt+1];
+                outbuff_pkt.data[15:0] = buffer[cnt];
+                // outbuff_pkt.data[7:0] = buffer[cnt];
+                // outbuff_pkt.data[15:8] = buffer[cnt+1];
                 outbuff_pkt.req = 1'b0;
             end else begin
                 outbuff_pkt.req = 1'b1;
@@ -81,13 +87,15 @@ module edge_buffer_one(
         end else if(state == OUT_FV)begin
             // outbuff_pkt.sos = 1'b0;
             outbuff_pkt.Grant_valid = 1'b1;
-            if (cnt + 2 == iter_FV_num) begin
+            if (cnt + `num_fv_line == iter_FV_num) begin
                 outbuff_pkt.eos = 1'b1;
             end else begin
                 outbuff_pkt.eos = 1'b0;
             end
-            outbuff_pkt.data[7:0] = buffer[cnt];
-            outbuff_pkt.data[15:8] = buffer[cnt+1];
+            outbuff_pkt.data[63:48] = buffer[cnt+3];
+            outbuff_pkt.data[47:32] = buffer[cnt+2];
+            outbuff_pkt.data[31:16] = buffer[cnt+1];
+            outbuff_pkt.data[15:0] = buffer[cnt];
         end else if (state == OUT_RS_WAIT) begin
             if (!rs_req_grant) begin
                 rs_req = 1'b1;
@@ -123,13 +131,17 @@ module edge_buffer_one(
                 IDLE: begin
                     rs_pkt <= #1 0;
                     if (edge_pkt.sos) begin
-                        buffer[cnt] <= #1 edge_pkt.FV_data[0] + buffer[cnt];
-                        buffer[cnt+1] <= #1 edge_pkt.FV_data[1] + buffer[cnt+1];
+                        for (int i = 0; i < `num_fv_line; i++) begin
+                            buffer[cnt + i] <= #1 edge_pkt.FV_data[i] + buffer[cnt + i];
+                            // buffer[cnt+1] <= #1 edge_pkt.FV_data[1] + buffer[cnt+1];
+                            // buffer[cnt] <= #1 edge_pkt.FV_data[0] + buffer[cnt];
+                            // buffer[cnt+1] <= #1 edge_pkt.FV_data[1] + buffer[cnt+1];
+                        end
                         cur_nodeid <= #1 edge_pkt.Node_id;
-                        cnt <= #1 cnt + 2;
+                        cnt <= #1 cnt + `num_fv_line;
                         if (edge_pkt.eos) begin
                             state <= #1 COMPLETE;
-                            iter_FV_num <= #1 cnt + 2;
+                            iter_FV_num <= #1 cnt + `num_fv_line;
                             complete_before <= 1'b1;
                         end else begin
                             state <= #1 STREAM_IN;
@@ -139,16 +151,19 @@ module edge_buffer_one(
                 STREAM_IN: begin
                      if (edge_pkt.eos) begin
                         if (!complete_before) begin
-                            iter_FV_num <= #1 cnt + 2;
+                            iter_FV_num <= #1 cnt + `num_fv_line;
                             complete_before <= 1'b1;
                         end
                         cnt <= #1 '0;
                         state <= #1 COMPLETE;
                     end else begin
-                        cnt <= #1 cnt + 2;
+                        cnt <= #1 cnt + `num_fv_line;
                     end
-                    buffer[cnt] <= #1 edge_pkt.FV_data[0] + buffer[cnt];
-                    buffer[cnt+1] <= #1 edge_pkt.FV_data[1] + buffer[cnt+1];
+                    // buffer[cnt] <= #1 edge_pkt.FV_data[0] + buffer[cnt];
+                    // buffer[cnt+1] <= #1 edge_pkt.FV_data[1] + buffer[cnt+1];
+                    for (int i = 0; i < `num_fv_line; i++) begin
+                        buffer[cnt + i] <= #1 edge_pkt.FV_data[i] + buffer[cnt + i];
+                    end
                 end
                 COMPLETE: begin
                     if (edge_pkt.Done_aggr) begin // finish aggregation of all nodes, send to RS
@@ -156,10 +171,13 @@ module edge_buffer_one(
                     end else if (edge_pkt.WB_en) begin
                         state <= #1 OUT_FV_WAIT;
                     end else if (edge_pkt.sos) begin
-                        buffer[cnt] <= #1 edge_pkt.FV_data[0] + buffer[cnt];
-                        buffer[cnt+1] <= #1 edge_pkt.FV_data[1] + buffer[cnt+1];
+                        // buffer[cnt] <= #1 edge_pkt.FV_data[0] + buffer[cnt];
+                        // buffer[cnt+1] <= #1 edge_pkt.FV_data[1] + buffer[cnt+1];
+                        for (int i = 0; i < `num_fv_line; i++) begin
+                            buffer[cnt + i] <= #1 edge_pkt.FV_data[i] + buffer[cnt + i];
+                        end
                         cur_nodeid <= #1 edge_pkt.Node_id;
-                        cnt <= #1 cnt + 2;
+                        cnt <= #1 cnt + `num_fv_line;
                         if (edge_pkt.eos) begin
                             state <= #1 COMPLETE;
                             cnt <= #1 'd0;
@@ -173,62 +191,71 @@ module edge_buffer_one(
                 OUT_RS_WAIT: begin
                     if (rs_req_grant) begin
                         rs_pkt.sos <= #1 1'b1;
-                        rs_pkt.FV_data[0] <= #1 buffer[cnt];
-                        rs_pkt.FV_data[1] <= #1 buffer[cnt+1];
+                        // rs_pkt.FV_data[0] <= #1 buffer[cnt];
+                        // rs_pkt.FV_data[1] <= #1 buffer[cnt+1];
+                        for (int i = 0; i < `num_fv_line; i++) begin
+                            rs_pkt.FV_data[i] <= #1 buffer[cnt + i];
+                        end
                         rs_pkt.Node_id <= #1 cur_nodeid;
-                        if (cnt + 2 == iter_FV_num) begin
+                        if (cnt + `num_fv_line == iter_FV_num) begin
                             cnt <= #1 'd0;
                             state <= #1 IDLE;
                             buffer <= #1 0;
                             rs_pkt.eos <= #1 1'b1;
                         end else begin
-                            cnt <= #1 cnt + 2;
+                            cnt <= #1 cnt + `num_fv_line;
                             state <= #1 OUT_RS;
                             rs_pkt.eos <= #1 1'b0;
                         end
                     end else begin
                         rs_pkt.sos <= #1 1'b0;
-                        rs_pkt.FV_data[0] <= #1 'd0;
-                        rs_pkt.FV_data[1] <= #1 'd0;
+                        // rs_pkt.FV_data[0] <= #1 'd0;
+                        // rs_pkt.FV_data[1] <= #1 'd0;
+                        for (int i = 0; i < `num_fv_line; i++) begin
+                            rs_pkt.FV_data[i] <= #1 'd0;
+                        end
                         rs_pkt.Node_id <= #1 'd0;
                         rs_pkt.eos <= #1 1'b0;
                     end
                 end
                 OUT_RS: begin
                     rs_pkt.sos <= #1 1'b0;
-                    rs_pkt.FV_data[0] <= #1 buffer[cnt];
-                    rs_pkt.FV_data[1] <= #1 buffer[cnt+1];
+                    // rs_pkt.FV_data[0] <= #1 buffer[cnt];
+                    // rs_pkt.FV_data[1] <= #1 buffer[cnt+1];
+                    for (int i = 0; i < `num_fv_line; i++) begin
+                        rs_pkt.FV_data[i] <= #1 buffer[cnt + i];
+                    end
                     rs_pkt.Node_id <= #1 cur_nodeid;
-                    if (cnt + 2 == iter_FV_num) begin
+                    if (cnt + `num_fv_line == iter_FV_num) begin
                         state <= #1 IDLE;
                         buffer <= #1 0;
                         cnt <= #1 'd0;
                         rs_pkt.eos <= #1 1'b1;
                     end
                     else begin
-                        cnt <= #1 cnt + 2;
+                        cnt <= #1 cnt + `num_fv_line;
                         state <= #1 OUT_RS;
                         rs_pkt.eos <= #1 1'b0;
                     end
                 end
                 OUT_FV_WAIT: begin
                     if (req_grant) begin
-                        if (cnt + 2 == iter_FV_num) begin
+                        if (cnt + `num_fv_line == iter_FV_num) begin
                             state <= #1 IDLE;
                             cnt <= #1 'd0;
                         end else begin
                             state <= #1 OUT_FV;
-                            cnt <= #1 cnt + 2;
+                            cnt <= #1 cnt + `num_fv_line;
                         end
                     end 
                 end
                 OUT_FV: begin
-                    if (cnt + 2 == iter_FV_num) begin
+                    if (cnt + `num_fv_line == iter_FV_num) begin
                         state <= #1 IDLE;
                         buffer <= #1 0;
                         cnt <= #1 'd0;
                     end else begin
-                        cnt <= #1 cnt + 2;
+                        cnt <= #1 cnt + `num_fv_line;
                     end
                 end
             endcase
