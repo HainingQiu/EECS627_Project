@@ -49,7 +49,7 @@ module Big_FV_wrapper_1(
    
 
         for (i = 0; i < `Num_Banks_all_FV; i++) begin : ping_buffer
-            BIG_FV_SRAM BIG_FV_SRAM_u(
+            BIG_FV_SRAM_64 BIG_FV_SRAM_u(
                 .Q(FV_SRAM_DATA[i]), // output 
                 .CLK(clk),
                 .CEN(FV2SRAM_out[i].CEN),
