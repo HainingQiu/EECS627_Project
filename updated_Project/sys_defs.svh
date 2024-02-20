@@ -13,7 +13,7 @@
 `define Max_update_Iter 4
 `define FV_info_bank_width 10 //don't need to store offset, in this case 16bits in FV SRAM, 2^4, save 4 bits
 `define NODE_PER_ITER_BANK `Curr_Node_Id/(`Num_Banks_all_FV*`Max_replay_Iter)
-`define MAX_NODE_PER_ITER_BANK `Max_Node_id/(`Num_Banks_all_FV*`Max_replay_Iter)
+`define MAX_NODE_PER_ITER_BANK `Max_Node_id/(`Num_Banks_all_FV*`Max_replay_Iter) //128/16 =8
 
 // `define FV_info_SRAM_addr ;
 `define Max_FV_num 128 //#16 FVs
@@ -26,13 +26,13 @@
 
 // `define FV_MEM_size `Max_FV_num*`FV_size*`Max_Node_id // 4096
 // `define FV_MEM_size `FV_SRAM_size/4    //unit bits 4096
-`define FV_MEM_cache_line `FV_SRAM_bank_size*4/`FV_bandwidth   //256
+`define FV_MEM_cache_line (`FV_SRAM_bank_size*4/`FV_bandwidth )  //256
 
 `define FV_SRAM_bank_cache_line `FV_SRAM_bank_size/`FV_bandwidth    //unit bits
 `define FV_SRAM_bank_id_bit $clog2(`FV_SRAM_bank_size)+1 //which bank
 `define max_degree_Iter 128       //max num of neighbor for one replay iteration
 `define num_neighbor_id `Neighbor_ID_bandwidth/$clog2(`Max_Node_id)
-`define num_fv_line `FV_bandwidth/`FV_size
+`define num_fv_line (`FV_bandwidth/`FV_size)
 `define DEPTH_FV_FIFO `Num_Banks_FV
 `define Num_Banks_all_FV `Num_Banks_FV //big
 `define Max_connectivity_all 4*`max_degree_Iter
