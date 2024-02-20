@@ -87,6 +87,7 @@ FV_bank_CNTL2Edge_PE[`Num_Banks_all_FV-1:0] EdgePE_rd_out_0;
 
 logic outbuff_available;
 logic inbuff_available;
+logic Vertex_RS_empty;
 // generate 
 //     genvar i,j,k,l;
 
@@ -156,7 +157,7 @@ PACKET_SRAM_integration PACKET_SRAM_integration_U(
     .Data_SRAM_in(Data_SRAM_in),
     .bank_busy(edge_buffer_busy),
     .stream_end(stream_end),
-    .vertex_done(Vertex_buffer_empty),
+    .vertex_done(Vertex_buffer_empty&&Vertex_RS_empty),
     .outbuff_available(outbuff_available),
     .task_complete(task_complete),
     .PACKET_CNTL_SRAM_out(PACKET_CNTL_SRAM_out),
@@ -304,7 +305,8 @@ Vertex_RS  Vertex_RS_DUT(
 
     .RS2Vertex_PE_out(RS2Vertex_PE_out),
     .fire(RS_fire),
-    .RS_available(RS_available)
+    .RS_available(RS_available),
+    .Vertex_RS_empty(Vertex_RS_empty)
 
 );
 //------------------------------------------Vertex_PE----------------------------------------------//
