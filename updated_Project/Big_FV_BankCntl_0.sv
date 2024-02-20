@@ -49,8 +49,9 @@ module Big_FV_BankCntl_0(
     logic [$clog2(`MAX_NODE_PER_ITER_BANK):0] nx_node_cnt;
     // assign node_offset = node_cnt << ($clog2(`Max_FV_num/2));
 
-    logic [$clog2(`Max_FV_num/2):0] cnt; // sram bank cache line per iteration = 64
-    logic [$clog2(`Max_FV_num/2):0] nx_cnt;
+    // cnt[$clog2(`Max_FV_num/`num_fv_line)-1:0]
+    logic [$clog2(`Max_FV_num/(`num_fv_line)):0] cnt; // sram bank cache line per iteration = 64
+    logic [$clog2(`Max_FV_num/(`num_fv_line)):0] nx_cnt;
     
     logic [$clog2(`Max_FV_num):0] total_FV_num;
     logic [$clog2(`Max_FV_num):0] nx_total_FV_num;
@@ -67,7 +68,7 @@ module Big_FV_BankCntl_0(
     logic [$clog2(`FV_MEM_cache_line)-1:0] stream_addr;
     logic [$clog2(`FV_MEM_cache_line)-1:0] prev_addr;
     // assign stream_addr = cnt + node_offset + iter_offset;
-    assign stream_addr = {cur_iter, node_cnt[$clog2(`MAX_NODE_PER_ITER_BANK)-1:0], cnt[$clog2(`Max_FV_num/2)-1:0]};
+    assign stream_addr = {cur_iter, node_cnt[$clog2(`MAX_NODE_PER_ITER_BANK)-1:0], cnt[$clog2(`Max_FV_num/(`num_fv_line))-1:0]};
 
     logic [$clog2(`Num_Edge_PE)-1:0] nx_PE_tag;
     logic [$clog2(`Num_Edge_PE)-1:0] PE_tag;
@@ -113,7 +114,7 @@ module Big_FV_BankCntl_0(
                         FV2SRAM_out.CEN = 1'b0;
                         FV2SRAM_out.WEN = 1'b1;
                         // FV2SRAM_out.addr = cnt + node_offset + (Cur_Replay_Iter << ($clog2(`FV_SRAM_bank_cache_line)));
-                        FV2SRAM_out.addr = {Cur_Replay_Iter, node_cnt[$clog2(`MAX_NODE_PER_ITER_BANK)-1:0], cnt[$clog2(`Max_FV_num/2)-1:0]};
+                        FV2SRAM_out.addr = {Cur_Replay_Iter, node_cnt[$clog2(`MAX_NODE_PER_ITER_BANK)-1:0], cnt[$clog2(`Max_FV_num/(`num_fv_line))-1:0]};
                         FV2SRAM_out.FV_data = 'd0;
                         nx_total_FV_num = FV_num;
                         nx_cnt = cnt + 1;
@@ -131,13 +132,13 @@ module Big_FV_BankCntl_0(
                             end
                             FV2SRAM_out.CEN = 1'b0;
                             FV2SRAM_out.WEN = 1'b0;
-                            FV2SRAM_out.addr = {req_pkt.Node_id[$clog2(`Max_Node_id)-1:2],3'd0};
+                            FV2SRAM_out.addr = {req_pkt.Node_id[$clog2(`Max_Node_id)-1:2],{$clog2(`Max_FV_num/`num_fv_line){1'b0}}};
                             FV2SRAM_out.FV_data = req_pkt.data;
                         end else begin   // Edge PE read
                             nx_state = FV_RD_TO_EDGE;
                             FV2SRAM_out.CEN = 1'b0;
                             FV2SRAM_out.WEN = 1'b1;
-                            FV2SRAM_out.addr = {req_pkt.Node_id[$clog2(`Max_Node_id)-1:2],3'd0};
+                            FV2SRAM_out.addr = {req_pkt.Node_id[$clog2(`Max_Node_id)-1:2],{$clog2(`Max_FV_num/`num_fv_line){1'b0}}};
                             FV2SRAM_out.FV_data = 'd0;
                             nx_total_FV_num = FV_num;
                             nx_PE_tag = req_pkt.PE_tag;
@@ -173,7 +174,7 @@ module Big_FV_BankCntl_0(
                         // FV2SRAM_out.addr = {cur_iter, nx_node_cnt[$clog2(`MAX_NODE_PER_ITER_BANK)-1:0], {$clog2(`Max_FV_num/2){1'b0}}};
                         nx_node_cnt = node_cnt + 1;
                         nx_cnt = 'd1;
-                        FV2SRAM_out.addr = {cur_iter, nx_node_cnt[$clog2(`MAX_NODE_PER_ITER_BANK)-1:0], {$clog2(`Max_FV_num/2){1'b0}}};
+                        FV2SRAM_out.addr = {cur_iter, nx_node_cnt[$clog2(`MAX_NODE_PER_ITER_BANK)-1:0], {$clog2(`Max_FV_num/`num_fv_line){1'b0}}};
                     end
                 end else begin
                     // Big_FV2Sm_FV.sos = 1'b0;
@@ -191,7 +192,7 @@ module Big_FV_BankCntl_0(
                 FV2SRAM_out.CEN = 1'b0;
                 FV2SRAM_out.WEN = 1'b0;
                // FV2SRAM_out.addr = {req_pkt.Node_id[$clog2(`Max_Node_id)-1:2],3'b000} + cnt;
-                FV2SRAM_out.addr = {req_pkt.Node_id[$clog2(`Max_Node_id)-1:2],cnt[$clog2(`Max_FV_num/2)-1:0]};
+                FV2SRAM_out.addr = {req_pkt.Node_id[$clog2(`Max_Node_id)-1:2],cnt[$clog2(`Max_FV_num/(`num_fv_line))-1:0]};
                 FV2SRAM_out.FV_data = req_pkt.data;
                 nx_cnt = cnt + 1;
                 if (req_pkt.wr_eos) begin
@@ -218,7 +219,7 @@ module Big_FV_BankCntl_0(
                     FV2SRAM_out.CEN = 1'b0;
                     FV2SRAM_out.WEN = 1'b1;
                     // FV2SRAM_out.addr = {req_pkt.Node_id[$clog2(`Max_Node_id)-1:2],3'd0} + cnt; // the last 3'd0 is because each node feature value takes 8 lines
-                    FV2SRAM_out.addr = {curr_nodeid[$clog2(`Max_Node_id)-1:2],cnt[$clog2(`Max_FV_num/2)-1:0]};
+                    FV2SRAM_out.addr = {curr_nodeid[$clog2(`Max_Node_id)-1:2],cnt[$clog2(`Max_FV_num/(`num_fv_line))-1:0]};
                     // {req_pkt.Node_id[$clog2(`Max_Node_id)-1:2],cnt[$clog2(`Max_FV_num/2)-1:0]};
                     // nxt_nodeid = req_pkt.Node_id;
                     // FV2SRAM_out.addr = {req_pkt.Node_id[$clog2(`Max_Node_id)-1:2],3'd0};

@@ -24,8 +24,8 @@
 `define FV_SRAM_size `Max_FV_num*`FV_size*`Max_Node_id/4
 `define FV_SRAM_bank_size `FV_SRAM_size/4    //unit bits
 
-`define FV_MEM_size `Max_FV_num*`FV_size*`Max_Node_id // 4096
-`define FV_MEM_size `FV_SRAM_size/4    //unit bits 4096
+// `define FV_MEM_size `Max_FV_num*`FV_size*`Max_Node_id // 4096
+// `define FV_MEM_size `FV_SRAM_size/4    //unit bits 4096
 `define FV_MEM_cache_line `FV_SRAM_bank_size*4/`FV_bandwidth   //256
 
 `define FV_SRAM_bank_cache_line `FV_SRAM_bank_size/`FV_bandwidth    //unit bits
