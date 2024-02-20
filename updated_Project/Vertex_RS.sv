@@ -84,7 +84,9 @@ always_comb begin
         Rex_FV:
             begin
                 nx_RS_FV_data[nx_rs_ptr][nx_num_fv]=Bank2RS_in.FV_data[0];
-                nx_RS_FV_data[nx_rs_ptr][nx_num_fv+1'b1]=Bank2RS_in.FV_data[1];
+                nx_RS_FV_data[nx_rs_ptr][nx_num_fv+'d1]=Bank2RS_in.FV_data[1];
+                nx_RS_FV_data[nx_rs_ptr][nx_num_fv+'d2]=Bank2RS_in.FV_data[2];
+                nx_RS_FV_data[nx_rs_ptr][nx_num_fv+'d3]=Bank2RS_in.FV_data[3];
                 if(Bank2RS_in.eos)begin
                     nx_num_fv='d0;
                     if(nx_rs_cnt==`Num_Edge_PE)begin
