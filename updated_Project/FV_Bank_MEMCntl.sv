@@ -99,7 +99,7 @@ always_comb begin
                 FV_bank2SRAM_Interface_out.WEN=1'b1;
                 nx_cnt='d0;
             end
-            else if(cnt=='d2)begin
+            else if(cnt==`num_fv_line)begin
                 Busy=1'b1;
                 nx_FV_bank_CNTL2Edge_PE_out.sos=1'b1;
                 nx_FV_bank_CNTL2Edge_PE_out.eos=1'b0;
