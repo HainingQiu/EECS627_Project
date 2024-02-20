@@ -174,7 +174,7 @@ module Big_FV_BankCntl_0(
                         // FV2SRAM_out.addr = {cur_iter, nx_node_cnt[$clog2(`MAX_NODE_PER_ITER_BANK)-1:0], {$clog2(`Max_FV_num/2){1'b0}}};
                         nx_node_cnt = node_cnt + 1;
                         nx_cnt = 'd1;
-                        FV2SRAM_out.addr = {cur_iter, nx_node_cnt[$clog2(`MAX_NODE_PER_ITER_BANK)-1:0], {$clog2(`Max_FV_num/`num_fv_line){1'b0}}};
+                        FV2SRAM_out.addr = {cur_iter, nx_node_cnt[$clog2(`MAX_NODE_PER_ITER_BANK)-1:0], {$clog2(`Max_FV_num/(`num_fv_line)){1'b0}}};
                     end
                 end else begin
                     // Big_FV2Sm_FV.sos = 1'b0;
