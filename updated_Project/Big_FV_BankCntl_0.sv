@@ -133,13 +133,13 @@ module Big_FV_BankCntl_0(
                             end
                             FV2SRAM_out.CEN = 1'b0;
                             FV2SRAM_out.WEN = 1'b0;
-                            FV2SRAM_out.addr = {req_pkt.Node_id[$clog2(`Max_Node_id)-1:2],{$clog2(`Max_FV_num/`num_fv_line){1'b0}}};
+                            FV2SRAM_out.addr = {req_pkt.Node_id[$clog2(`Max_Node_id)-1:2],{$clog2(`Max_FV_num/(`num_fv_line)){1'b0}}};
                             FV2SRAM_out.FV_data = req_pkt.data;
                         end else begin   // Edge PE read
                             nx_state = FV_RD_TO_EDGE;
                             FV2SRAM_out.CEN = 1'b0;
                             FV2SRAM_out.WEN = 1'b1;
-                            FV2SRAM_out.addr = {req_pkt.Node_id[$clog2(`Max_Node_id)-1:2],{$clog2(`Max_FV_num/`num_fv_line){1'b0}}};
+                            FV2SRAM_out.addr = {req_pkt.Node_id[$clog2(`Max_Node_id)-1:2],{$clog2(`Max_FV_num/(`num_fv_line)){1'b0}}};
                             FV2SRAM_out.FV_data = 'd0;
                             nx_total_FV_num = FV_num;
                             nx_PE_tag = req_pkt.PE_tag;
