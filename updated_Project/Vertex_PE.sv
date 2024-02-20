@@ -12,12 +12,13 @@ logic[`FV_size-1:0] nx_vertex_output;
 logic [`Mult_per_PE-1:0][`FV_size-1:0] Mul_output;
 always_comb begin
     Mul_output='d0;
+    nx_vertex_output='d0;
     for(int i=0;i<`Mult_per_PE;i++)begin
         Mul_output[i]=Weight_data_in[i]*FV_RS[i];
     end
-    for(int i=0;i<`Mult_per_PE-1;i++)begin
-        nx_vertex_output=Mul_output[i]+Mul_output[i+1];
-    end
+    //for(int i=0;i<`Mult_per_PE-1;i++)begin
+        nx_vertex_output=(Mul_output[0]+Mul_output[1])+(Mul_output[2]+Mul_output[3]);
+    //end
 end
 always_ff@(posedge clk)begin
     if(reset)begin
