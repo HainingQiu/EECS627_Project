@@ -161,7 +161,7 @@ module Big_FV_BankCntl_1(
                     nx_cnt = cnt + 1;   
                 end 
                 
-                if ({cnt,1'b0} >= total_FV_num) begin
+                if ({cnt,2'd0} >= total_FV_num) begin
                     // FV2SRAM_out.CEN = 1'b0; 
                     if (node_cnt == (`NODE_PER_ITER_BANK-1)) begin // `FV_SRAM_bank_cache_line-1
                         nx_Big_FV2Sm_FV.eos = 1'b1;
