@@ -71,11 +71,12 @@ always_comb begin
                     end
                     nx_Weight_Cntl2SRAM_Interface_out.WEN=1'b1;
                     nx_Weight_Cntl2SRAM_Interface_out.CEN=1'b0;
-                    nx_Weight_Cntl2SRAM_Interface_out.A={nx_Weight_layer,Weight_line_cnt};
+                    
                     $display("nx_Weight_Cntl2SRAM_Interface_out.A:",{nx_Weight_layer,Weight_line_cnt});
                     nx_Weight_line_cnt=Weight_line_cnt+1'b1;
                     nx_Weight_Cntl2bank_out.change=partial_FV;
                     nx_Weight_layer=partial_FV?nx_Weight_layer+1'b1:nx_Weight_layer;
+                    nx_Weight_Cntl2SRAM_Interface_out.A={nx_Weight_layer,Weight_line_cnt};
                     partial_Weight_layer=Num_Weight_layer==Cur_Weight_layer &&partial_FV;
                     // Weight_Cntl2RS_out.Complete=partial_FV&&partial_Weight_layer;
                     nx_Weight_Cntl2RS_out.Cur_FV_num=Cur_FV_num;
@@ -107,6 +108,7 @@ always_comb begin
                         nx_Weight_layer='d0;
                         nx_Weight_line_cnt='d0;
                         
+                        nx_Weight_num='d0;
                         nx_Weight_Cntl2bank_out.sos=1'b0;
                         nx_Weight_Cntl2bank_out.eos=1'b1;
                     end
