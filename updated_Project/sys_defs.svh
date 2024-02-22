@@ -54,6 +54,9 @@
 //---------------------------Vertex------------------------------//
 `define Max_Num_Weight_layer 8
 `define Mult_per_PE 4
+`define Weight_SRAM_BW 64
+`define Weight_SRAM_line 256
+`define Weight_num_per_line `Weight_SRAM_BW/`FV_size
 typedef struct packed {
     logic sos;
     logic eos;
@@ -219,7 +222,11 @@ typedef struct packed {
     logic CEN;
     logic WEN;
 } Neighbor_bank2SRAM_Interface;
-
+typedef struct packed {
+    logic[$clog2(`Weight_SRAM_line)-1:0] A;
+    logic CEN;
+    logic WEN;
+} Weight_Cntl2SRAM_Interface;
 
 typedef struct packed {
     logic sos;

@@ -103,7 +103,12 @@ $readmemb("./data/feature_value_bank2.txt",
 $readmemb("./data/feature_value_bank3.txt",
 		  iTop_DUT.Big_FV_wrapper_0_U.ping_buffer[3].BIG_FV_SRAM_u.mem);
 		  
-		  
+////// weight data SRAM///////
+
+$readmemb("./data/weights.txt",
+		  iTop_DUT.Weight_CNTL_U.Weight_SRAM_DUT.mem);
+
+ 
 ///// FV Pointer SRAM /////
 $readmemb("./data/feature_value_pointer.txt",
 		  iTop_DUT.FV_info_Integration_U.FV_info_SRAM_U.mem);
