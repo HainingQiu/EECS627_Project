@@ -154,13 +154,13 @@ PACKET_SRAM_integration PACKET_SRAM_integration_U(
     .grant(Grant_WB_Packet_Decoder),
     .PE_IDLE(PE_IDLE),
     .Edge_PE2IMEM_CNTL_in(Edge_PE2IMEM_CNTL_out), // not connected
-    .Data_SRAM_in(Data_SRAM_in),
+    // .Data_SRAM_in(Data_SRAM_in),
     .bank_busy(edge_buffer_busy),
     .stream_end(stream_end),
     .vertex_done(Vertex_buffer_empty&&Vertex_RS_empty),
     .outbuff_available(outbuff_available),
     .task_complete(task_complete),
-    .PACKET_CNTL_SRAM_out(PACKET_CNTL_SRAM_out),
+    // .PACKET_CNTL_SRAM_out(PACKET_CNTL_SRAM_out),
     .DP_task2Edge_PE_out(DP_task2Edge_PE_out),
     .Req(reqs_WB_Packet[0]),
     .replay_Iter(Current_replay_Iter),
@@ -171,14 +171,14 @@ PACKET_SRAM_integration PACKET_SRAM_integration_U(
     // .TB_state(TB_state)
 );//----------------------------//
 //WIDTH=16 Depth 256 for IMEM_SRAM//
-IMem_Sram IMem_Sram_U(
-    .Q(Data_SRAM_in ),
-    .CLK(clk),
-    .CEN(1'b0),
-    .WEN(PACKET_CNTL_SRAM_out.wen),
-    .A(PACKET_CNTL_SRAM_out.SRAM_addr),
-    .D(PACKET_CNTL_SRAM_out.SRAM_DATA)
-);
+// IMem_Sram IMem_Sram_U(
+//     .Q(Data_SRAM_in ),
+//     .CLK(clk),
+//     .CEN(1'b0),
+//     .WEN(PACKET_CNTL_SRAM_out.wen),
+//     .A(PACKET_CNTL_SRAM_out.SRAM_addr),
+//     .D(PACKET_CNTL_SRAM_out.SRAM_DATA)
+// );
 //--------------------------------------------------------------------Edge_PE-----------------------------------------------------------------//
 generate
     genvar l;

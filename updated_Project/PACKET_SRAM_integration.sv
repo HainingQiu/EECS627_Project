@@ -5,14 +5,14 @@ module PACKET_SRAM_integration(
     input grant,
     input [`Num_Edge_PE-1:0]PE_IDLE,
     input Edge_PE2IMEM_CNTL[`Num_Edge_PE-1:0] Edge_PE2IMEM_CNTL_in,
-    input [`packet_size-1:0] Data_SRAM_in,
+
     input [`Num_Edge_PE-1:0]bank_busy,
     input stream_end,
     input vertex_done,
     input outbuff_available,
 
     output logic task_complete,
-    output PACKET_CNTL2SRAM  PACKET_CNTL_SRAM_out,
+
     output DP_task2Edge_PE [`Num_Edge_PE-1:0]DP_task2Edge_PE_out,
     output logic Req,
     output logic [$clog2(`Max_replay_Iter)-1:0]  replay_Iter,
@@ -30,6 +30,16 @@ DP_task2RS DP_task2RS_out;
 logic cntl_done;
 logic RS_empty;
 logic wr_en;
+logic [`packet_size-1:0] Data_SRAM_in;
+PACKET_CNTL2SRAM  PACKET_CNTL_SRAM_out;
+IMem_Sram IMem_Sram_U(
+    .Q(Data_SRAM_in ),
+    .CLK(clk),
+    .CEN(1'b0),
+    .WEN(PACKET_CNTL_SRAM_out.wen),
+    .A(PACKET_CNTL_SRAM_out.SRAM_addr),
+    .D(PACKET_CNTL_SRAM_out.SRAM_DATA)
+);
  PACKET_CNTL PACKET_CNTL_0(
     .clk(clk),
     .reset(reset),

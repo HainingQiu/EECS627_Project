@@ -123,7 +123,7 @@ $readmemb("./data/nb_info_bank1.txt",
 		  
 ///// Packet SRAM /////
 $readmemb("./data/packet_bank.txt",
-		  iTop_DUT.IMem_Sram_U.mem);
+		  iTop_DUT.PACKET_SRAM_integration_U.IMem_Sram_U.mem);
 
 ///// Neighbor SRAM /////
 $readmemb("./data/nb_bank0.txt",
