@@ -1,32 +1,140 @@
 `define NUM_PE 4
 `define BIT_WIDTH $clog2(`NUM_PE)
 
-// typedef struct packed {
-//     logic sos; // start of streaming
-//     logic eos;//  end of streaming
-//     logic [1:0][`FV_size-1:0] FV_data;
-//     logic Done_aggr;
-//     logic WB_en;
-// } Edge_PE2Bank;
-
-// typedef struct packed {
-//     logic sos;
-//     logic eos;
-//     logic [1:0][`FV_size-1:0] FV_data;
-// } out_buff2Bank;
-
-
 module edge_buffer(
     input clk, reset,
-    input Edge_PE2Bank [`Num_Edge_PE-1:0] edge_pkt,
+
+    //input Edge_PE2Bank [`Num_Edge_PE-1:0] edge_pkt,
+    input [`Num_Edge_PE-1:0] edge_pkt_sos,
+    input [`Num_Edge_PE-1:0] edge_pkt_eos,
+    input [`FV_size-1:0] edge_pkt_FV_data_0_0,
+    input [`FV_size-1:0] edge_pkt_FV_data_0_1,
+    input [`FV_size-1:0] edge_pkt_FV_data_0_2,
+    input [`FV_size-1:0] edge_pkt_FV_data_0_3,
+    input [`FV_size-1:0] edge_pkt_FV_data_1_0,
+    input [`FV_size-1:0] edge_pkt_FV_data_1_1,
+    input [`FV_size-1:0] edge_pkt_FV_data_1_2,
+    input [`FV_size-1:0] edge_pkt_FV_data_1_3,
+    input [`FV_size-1:0] edge_pkt_FV_data_2_0,
+    input [`FV_size-1:0] edge_pkt_FV_data_2_1,
+    input [`FV_size-1:0] edge_pkt_FV_data_2_2,
+    input [`FV_size-1:0] edge_pkt_FV_data_2_3,
+    input [`FV_size-1:0] edge_pkt_FV_data_3_0,
+    input [`FV_size-1:0] edge_pkt_FV_data_3_1,
+    input [`FV_size-1:0] edge_pkt_FV_data_3_2,
+    input [`FV_size-1:0] edge_pkt_FV_data_3_3,
+    input [`Num_Edge_PE-1:0] edge_pkt_Done_aggr,
+    input [`Num_Edge_PE-1:0] edge_pkt_WB_en,
+    input [$clog2(`Max_Node_id)-1:0] edge_pkt_Node_id_0,
+    input [$clog2(`Max_Node_id)-1:0] edge_pkt_Node_id_1,
+    input [$clog2(`Max_Node_id)-1:0] edge_pkt_Node_id_2,
+    input [$clog2(`Max_Node_id)-1:0] edge_pkt_Node_id_3,
+
+
     input [`Num_Edge_PE-1:0] req_grant,
     input RS_available, // 1 is available , 0 is not available
 
-    output Bank2RS RS_pkt_out,
+    //output Bank2RS RS_pkt_out,
+    output logic RS_pkt_out_sos,
+    output logic RS_pkt_out_eos,
+    output logic [`FV_size-1:0] RS_pkt_out_FV_data_0,
+    output logic [`FV_size-1:0] RS_pkt_out_FV_data_1,
+    output logic [`FV_size-1:0] RS_pkt_out_FV_data_2,
+    output logic [`FV_size-1:0] RS_pkt_out_FV_data_3,
+    output logic [$clog2(`Max_Node_id)-1:0] RS_pkt_out_Node_id,
+
     output logic [`Num_Edge_PE-1:0] bank_busy,
-    output Bank_Req2Req_Output_SRAM [`Num_Edge_PE-1:0] outbuff_pkt
+
+    //output Bank_Req2Req_Output_SRAM [`Num_Edge_PE-1:0] outbuff_pkt,
+    output logic [`Num_Edge_PE-1:0] outbuff_pkt_Grant_valid,
+    output logic [`Num_Edge_PE-1:0] outbuff_pkt_sos,
+    output logic [`Num_Edge_PE-1:0] outbuff_pkt_eos,
+    output logic [`FV_bandwidth-1:0] outbuff_pkt_data_0,
+    output logic [`FV_bandwidth-1:0] outbuff_pkt_data_1,
+    output logic [`FV_bandwidth-1:0] outbuff_pkt_data_2,
+    output logic [`FV_bandwidth-1:0] outbuff_pkt_data_3,
+    output logic [`Num_Edge_PE-1:0] outbuff_pkt_req,
+    output logic [$clog2(`Max_Node_id)-1:0] outbuff_pkt_Node_id_0,
+    output logic [$clog2(`Max_Node_id)-1:0] outbuff_pkt_Node_id_1,
+    output logic [$clog2(`Max_Node_id)-1:0] outbuff_pkt_Node_id_2,
+    output logic [$clog2(`Max_Node_id)-1:0] outbuff_pkt_Node_id_3
+
 );
-    
+
+Edge_PE2Bank [`Num_Edge_PE-1:0] edge_pkt;
+Bank2RS RS_pkt_out;
+Bank_Req2Req_Output_SRAM [`Num_Edge_PE-1:0] outbuff_pkt;
+
+assign edge_pkt[0].sos = edge_pkt_sos[0];
+assign edge_pkt[1].sos = edge_pkt_sos[1];
+assign edge_pkt[2].sos = edge_pkt_sos[2];
+assign edge_pkt[3].sos = edge_pkt_sos[3];
+assign edge_pkt[0].eos = edge_pkt_eos[0];
+assign edge_pkt[1].eos = edge_pkt_eos[1];
+assign edge_pkt[2].eos = edge_pkt_eos[2];
+assign edge_pkt[3].eos = edge_pkt_eos[3];
+assign edge_pkt[0].FV_data[0] = edge_pkt_FV_data_0_0;
+assign edge_pkt[0].FV_data[1] = edge_pkt_FV_data_0_1;
+assign edge_pkt[0].FV_data[2] = edge_pkt_FV_data_0_2;
+assign edge_pkt[0].FV_data[3] = edge_pkt_FV_data_0_3;
+assign edge_pkt[1].FV_data[0] = edge_pkt_FV_data_1_0;
+assign edge_pkt[1].FV_data[1] = edge_pkt_FV_data_1_1;
+assign edge_pkt[1].FV_data[2] = edge_pkt_FV_data_1_2;
+assign edge_pkt[1].FV_data[3] = edge_pkt_FV_data_1_3;
+assign edge_pkt[2].FV_data[0] = edge_pkt_FV_data_2_0;
+assign edge_pkt[2].FV_data[1] = edge_pkt_FV_data_2_1;
+assign edge_pkt[2].FV_data[2] = edge_pkt_FV_data_2_2;
+assign edge_pkt[2].FV_data[3] = edge_pkt_FV_data_2_3;
+assign edge_pkt[3].FV_data[0] = edge_pkt_FV_data_3_0;
+assign edge_pkt[3].FV_data[1] = edge_pkt_FV_data_3_1;
+assign edge_pkt[3].FV_data[2] = edge_pkt_FV_data_3_2;
+assign edge_pkt[3].FV_data[3] = edge_pkt_FV_data_3_3;
+assign edge_pkt[0].Done_aggr = edge_pkt_Done_aggr[0];
+assign edge_pkt[1].Done_aggr = edge_pkt_Done_aggr[1];
+assign edge_pkt[2].Done_aggr = edge_pkt_Done_aggr[2];
+assign edge_pkt[3].Done_aggr = edge_pkt_Done_aggr[3];
+assign edge_pkt[0].WB_en = edge_pkt_WB_en[0];
+assign edge_pkt[1].WB_en = edge_pkt_WB_en[1];
+assign edge_pkt[2].WB_en = edge_pkt_WB_en[2];
+assign edge_pkt[3].WB_en = edge_pkt_WB_en[3];
+assign edge_pkt[0].Node_id = edge_pkt_Node_id_0;
+assign edge_pkt[1].Node_id = edge_pkt_Node_id_1;
+assign edge_pkt[2].Node_id = edge_pkt_Node_id_2;
+assign edge_pkt[3].Node_id = edge_pkt_Node_id_3;
+
+assign RS_pkt_out.sos = RS_pkt_out_sos;
+assign RS_pkt_out.eos = RS_pkt_out_eos;
+assign RS_pkt_out.FV_data[0] = RS_pkt_out_FV_data_0;
+assign RS_pkt_out.FV_data[1] = RS_pkt_out_FV_data_1;
+assign RS_pkt_out.FV_data[2] = RS_pkt_out_FV_data_2;
+assign RS_pkt_out.FV_data[3] = RS_pkt_out_FV_data_3;
+assign RS_pkt_out.Node_id = RS_pkt_out_Node_id;
+
+assign outbuff_pkt[0].Grant_valid = outbuff_pkt_Grant_valid[0];
+assign outbuff_pkt[1].Grant_valid = outbuff_pkt_Grant_valid[1];
+assign outbuff_pkt[2].Grant_valid = outbuff_pkt_Grant_valid[2];
+assign outbuff_pkt[3].Grant_valid = outbuff_pkt_Grant_valid[3];
+assign outbuff_pkt[0].sos = outbuff_pkt_sos[0];
+assign outbuff_pkt[1].sos = outbuff_pkt_sos[1];
+assign outbuff_pkt[2].sos = outbuff_pkt_sos[2];
+assign outbuff_pkt[3].sos = outbuff_pkt_sos[3];
+assign outbuff_pkt[0].eos = outbuff_pkt_eos[0];
+assign outbuff_pkt[1].eos = outbuff_pkt_eos[1];
+assign outbuff_pkt[2].eos = outbuff_pkt_eos[2];
+assign outbuff_pkt[3].eos = outbuff_pkt_eos[3];
+assign outbuff_pkt[0].data = outbuff_pkt_data_0;
+assign outbuff_pkt[1].data = outbuff_pkt_data_1;
+assign outbuff_pkt[2].data = outbuff_pkt_data_2;
+assign outbuff_pkt[3].data = outbuff_pkt_data_3;
+assign outbuff_pkt[0].req = outbuff_pkt_outbuff_pkt_req[0];
+assign outbuff_pkt[1].req = outbuff_pkt_outbuff_pkt_req[1];
+assign outbuff_pkt[2].req = outbuff_pkt_outbuff_pkt_req[2];
+assign outbuff_pkt[3].req = outbuff_pkt_outbuff_pkt_req[3];
+assign outbuff_pkt[0].Node_id = outbuff_pkt_Node_id_0;
+assign outbuff_pkt[1].Node_id = outbuff_pkt_Node_id_1;
+assign outbuff_pkt[2].Node_id = outbuff_pkt_Node_id_2;
+assign outbuff_pkt[3].Node_id = outbuff_pkt_Node_id_3;
+
     logic [`Num_Edge_PE-1:0]  rs_req, masked_rs_req, rs_req_grant, rs_req_grant_last;
     Bank2RS[`Num_Edge_PE-1:0] rs_pkt;
     
@@ -128,70 +236,3 @@ module edge_buffer(
     end
 
 endmodule
-
-
-
-// module round_robin_arbiter (
-//     input		reset,
-//     input		clk,
-//     input	[3:0]	req,
-//     input   rs_busy,
-//     output	logic[3:0]	grant
-// );
-
-// logic	[3:0]	rotate_ptr;
-// logic	[3:0]	mask_req;
-// logic	[3:0]	mask_grant;
-// logic	[3:0]	grant_comb;
-
-// logic	[3:0]	no_mask_req;
-// // logic	[3:0]	nomask_grant;
-// logic   [3:0]   no_mask_grant;
-// always @ (posedge clk or negedge reset)
-// begin
-// 	if (reset)begin
-// 		rotate_ptr[3:0] <= 4'b1111;
-//         grant[3:0] <= 4'b0;
-//     end
-// 	else begin
-//         grant[3:0] <= grant_comb[3:0] & (~{4{rs_busy}});
-// 		case (1'b1) // synthesis parallel_case
-// 			grant_comb[0]: rotate_ptr[3:0] <= 4'b1111;
-// 			grant_comb[1]: rotate_ptr[3:0] <= 4'b0111;
-// 			grant_comb[2]: rotate_ptr[3:0] <= 4'b0011;
-// 			grant_comb[3]: rotate_ptr[3:0] <= 4'b0001;
-// 		endcase
-//     end
-// end
-
-// assign mask_req[3:0] = req[3:0] & rotate_ptr[3:0];
-
-// // simple priority arbiter for mask req
-// always_comb begin
-//     casez (mask_req)
-//         4'b1???: mask_grant = 4'b1000;
-//         4'b01??: mask_grant = 4'b0100;
-//         4'b001?: mask_grant = 4'b0010;
-//         4'b0001: mask_grant = 4'b0001;
-//         default: mask_grant = 4'b0;
-//     endcase
-// end
-
-// // simple priority arbiter for no mask req
-// always_comb begin
-//     casez (no_mask_req)
-//         4'b1???: no_mask_grant = 4'b1000;
-//         4'b01??: no_mask_grant = 4'b0100;
-//         4'b001?: no_mask_grant = 4'b0010;
-//         4'b0001: no_mask_grant = 4'b0001;
-//         default: no_mask_grant = 4'b0;
-//     endcase
-// end
-
-// // not or
-// assign no_mask_req = ~|mask_req[3:0];
-// assign grant_comb[3:0] = (no_mask_grant[3:0] & {4{no_mask_req}}) | mask_grant[3:0];
-
-
-
-// endmodule
