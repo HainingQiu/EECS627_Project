@@ -29,7 +29,7 @@ output logic Req_Bus_arbiter_out_req_type,
 output logic[$clog2(`Max_Node_id)-1:0] Req_Bus_arbiter_out_Node_id,					// request to arbiter
 
 
-output logic Edge_PE2DP_out,							// idle flag output to dispatch
+output logic Edge_PE2DP_out_IDLE_flag,							// idle flag output to dispatch
 output logic[`packet_size-1:0] Edge_PE2IMEM_CNTL_out_packet,				// packet to IMEM
 output logic Edge_PE2IMEM_CNTL_out_valid,		
 
@@ -44,7 +44,7 @@ output logic [`FV_size-1:0] Edge_PE2Bank_out_FV_data_3,
 output logic Edge_PE2Bank_out_Done_aggr,
 output logic Edge_PE2Bank_out_WB_en,
 output logic[$clog2(`Max_Node_id)-1:0] Edge_PE2Bank_out_Node_id,
-				// aggregated output to bank
+
 output logic Req_Output_SRAM_out_Grant_valid,
 output logic[$clog2(`Num_Edge_PE)-1:0] Req_Output_SRAM_out_PE_tag,
 output logic Req_Output_SRAM_out_req,
@@ -60,7 +60,8 @@ Req_Bus_arbiter Req_Bus_arbiter_out;
 Edge_PE2IMEM_CNTL Edge_PE2IMEM_CNTL_out;
 Edge_PE2Bank Edge_PE2Bank_out;
 Edge_PE2Req_Output_SRAM Req_Output_SRAM_out;
-
+Edge_PE2DP Edge_PE2DP_out;
+assign Edge_PE2DP_out_IDLE_flag=Edge_PE2DP_out.IDLE_flag;
 
 assign DP_task2Edge_PE_in.packet =DP_task2Edge_PE_in_packet;
 assign DP_task2Edge_PE_in.valid =DP_task2Edge_PE_in_valid;
@@ -88,10 +89,10 @@ assign Edge_PE2IMEM_CNTL_out_valid=Edge_PE2IMEM_CNTL_out.valid;
 
 assign Edge_PE2Bank_out_sos=Edge_PE2Bank_out.sos;
 assign Edge_PE2Bank_out_eos=Edge_PE2Bank_out.sos;
-assign Edge_PE2Bank_out_FV_data_0=Edge_PE2Bank_out[0].FV_data;
-assign Edge_PE2Bank_out_FV_data_1=Edge_PE2Bank_out[1].FV_data;
-assign Edge_PE2Bank_out_FV_data_2=Edge_PE2Bank_out[2].FV_data;
-assign Edge_PE2Bank_out_FV_data_3=Edge_PE2Bank_out[3].FV_data;
+assign Edge_PE2Bank_out_FV_data_0=Edge_PE2Bank_out.FV_data[0];
+assign Edge_PE2Bank_out_FV_data_1=Edge_PE2Bank_out.FV_data[1];
+assign Edge_PE2Bank_out_FV_data_2=Edge_PE2Bank_out.FV_data[2];
+assign Edge_PE2Bank_out_FV_data_3=Edge_PE2Bank_out.FV_data[3];
 assign Edge_PE2Bank_out_Done_aggr=Edge_PE2Bank_out.Done_aggr;
 assign Edge_PE2Bank_out_WB_en=Edge_PE2Bank_out.WB_en;
 assign Edge_PE2Bank_out_Node_id=Edge_PE2Bank_out.Node_id;
