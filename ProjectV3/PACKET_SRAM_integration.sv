@@ -4,8 +4,11 @@ module PACKET_SRAM_integration(
     input reset,
     input grant,
     input [`Num_Edge_PE-1:0]PE_IDLE,
-    input Edge_PE2IMEM_CNTL[`Num_Edge_PE-1:0] Edge_PE2IMEM_CNTL_in,
-
+    input [`packet_size-1:0] Edge_PE2IMEM_CNTL_in_packet_0,
+    input [`packet_size-1:0] Edge_PE2IMEM_CNTL_in_packet_1,
+    input [`packet_size-1:0] Edge_PE2IMEM_CNTL_in_packet_2,
+    input [`packet_size-1:0] Edge_PE2IMEM_CNTL_in_packet_3,
+    input [`Num_Edge_PE-1:0]  Edge_PE2IMEM_CNTL_in_valid,
     input [`Num_Edge_PE-1:0]bank_busy,
     input stream_end,
     input vertex_done,
@@ -13,13 +16,43 @@ module PACKET_SRAM_integration(
 
     output logic task_complete,
 
-    output DP_task2Edge_PE [`Num_Edge_PE-1:0]DP_task2Edge_PE_out,
+    output logic [`packet_size-1-2:0] DP_task2Edge_PE_out_packet_0,
+    output logic [`packet_size-1-2:0] DP_task2Edge_PE_out_packet_1,
+    output logic [`packet_size-1-2:0] DP_task2Edge_PE_out_packet_2,
+    output logic [`packet_size-1-2:0] DP_task2Edge_PE_out_packet_3,
+    output logic [`Num_Edge_PE-1:0] DP_task2Edge_PE_out_valid,
     output logic Req,
     output logic [$clog2(`Max_replay_Iter)-1:0]  replay_Iter,
     output logic [$clog2(`MAX_FV_num):0 ]    Num_FV ,
     output logic [$clog2(`Max_Num_Weight_layer)-1:0 ] Weights_boundary,
     output logic stream_begin
 );
+
+
+Edge_PE2IMEM_CNTL[`Num_Edge_PE-1:0] Edge_PE2IMEM_CNTL_in;
+DP_task2Edge_PE [`Num_Edge_PE-1:0]DP_task2Edge_PE_out;
+
+assign Edge_PE2IMEM_CNTL_in[0].packet=Edge_PE2IMEM_CNTL_in_packet_0;
+assign Edge_PE2IMEM_CNTL_in[1].packet=Edge_PE2IMEM_CNTL_in_packet_0;
+assign Edge_PE2IMEM_CNTL_in[2].packet=Edge_PE2IMEM_CNTL_in_packet_0;
+assign Edge_PE2IMEM_CNTL_in[3].packet=Edge_PE2IMEM_CNTL_in_packet_0;
+assign Edge_PE2IMEM_CNTL_in[0].valid=Edge_PE2IMEM_CNTL_in_valid[0];
+assign Edge_PE2IMEM_CNTL_in[1].valid=Edge_PE2IMEM_CNTL_in_valid[1];
+assign Edge_PE2IMEM_CNTL_in[2].valid=Edge_PE2IMEM_CNTL_in_valid[2];
+assign Edge_PE2IMEM_CNTL_in[3].valid=Edge_PE2IMEM_CNTL_in_valid[3];
+
+
+
+
+assign DP_task2Edge_PE_out_packet_0=DP_task2Edge_PE_out[0];
+assign DP_task2Edge_PE_out_packet_1=DP_task2Edge_PE_out[1];
+assign DP_task2Edge_PE_out_packet_2=DP_task2Edge_PE_out[2];
+assign DP_task2Edge_PE_out_packet_3=DP_task2Edge_PE_out[3];
+assign DP_task2Edge_PE_out_valid={DP_task2Edge_PE_out[3].valid,DP_task2Edge_PE_out[2].valid,DP_task2Edge_PE_out[1].valid,DP_task2Edge_PE_out[0].valid};
+
+
+
+
 DP2mem_packet DP2mem_packet_in;
 logic fifo_full;
 logic replay_iter_flag;
