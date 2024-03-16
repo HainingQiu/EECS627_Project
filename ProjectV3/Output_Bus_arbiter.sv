@@ -77,6 +77,7 @@ module Output_Bus_arbiter(
     input Vertex_Bank2Req_Output_SRAM_in_eos_3,
     input [`FV_bandwidth-1:0] Vertex_Bank2Req_Output_SRAM_in_data_3,
     input Vertex_Bank2Req_Output_SRAM_in_req_3,
+    input Vertex_Bank2Req_Output_SRAM_in_Node_id_3,
     // input Output_Sram2Arbiter[`Num_Banks_FV-1:0] Output_Sram2Arbiter,
     input [`Num_Banks_FV-1:0] Output_Sram2Arbiter_eos,
     // output Req2Output_SRAM_Bank[`Num_Banks_FV-1:0] Req2Output_SRAM_Bank_out,
