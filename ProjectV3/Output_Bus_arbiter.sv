@@ -2,11 +2,6 @@ module Output_Bus_arbiter(
     input clk,
     input reset,
 
-
-
-
-
-
     // input Edge_PE2Req_Output_SRAM[`Num_Edge_PE-1:0]  Edge_PE2Req_Output_SRAM_in,
     input Edge_PE2Req_Output_SRAM_in_Grant_valid_0,
     input [$clog2(`Num_Edge_PE)-1:0] Edge_PE2Req_Output_SRAM_in_PE_tag_0,
@@ -85,10 +80,11 @@ module Output_Bus_arbiter(
     // input Output_Sram2Arbiter[`Num_Banks_FV-1:0] Output_Sram2Arbiter,
     input [`Num_Banks_FV-1:0] Output_Sram2Arbiter_eos,
     // output Req2Output_SRAM_Bank[`Num_Banks_FV-1:0] Req2Output_SRAM_Bank_out,
+    output logic Req2Output_SRAM_Bank_out_valid_0,
     output logic [$clog2(`Num_Edge_PE)-1:0]Req2Output_SRAM_Bank_out_PE_tag_0,
     output logic Req2Output_SRAM_Bank_out_rd_wr_0,
     output logic [$clog2(`Max_Node_id)-1:0]Req2Output_SRAM_Bank_out_Node_id_0,
-    output logic Req2Output_SRAM_Bank_out_data_0,
+    output logic [`FV_bandwidth-1:0] Req2Output_SRAM_Bank_out_data_0,
     output logic Req2Output_SRAM_Bank_out_wr_sos_0,
     output logic Req2Output_SRAM_Bank_out_wr_eos_0,
 
@@ -96,7 +92,7 @@ module Output_Bus_arbiter(
     output logic [$clog2(`Num_Edge_PE)-1:0]Req2Output_SRAM_Bank_out_PE_tag_1,
     output logic Req2Output_SRAM_Bank_out_rd_wr_1,
     output logic [$clog2(`Max_Node_id)-1:0]Req2Output_SRAM_Bank_out_Node_id_1,
-    output logic Req2Output_SRAM_Bank_out_data_1,
+    output logic [`FV_bandwidth-1:0] Req2Output_SRAM_Bank_out_data_1,
     output logic Req2Output_SRAM_Bank_out_wr_sos_1,
     output logic Req2Output_SRAM_Bank_out_wr_eos_1,
 
@@ -104,7 +100,7 @@ module Output_Bus_arbiter(
     output logic [$clog2(`Num_Edge_PE)-1:0]Req2Output_SRAM_Bank_out_PE_tag_2,
     output logic Req2Output_SRAM_Bank_out_rd_wr_2,
     output logic [$clog2(`Max_Node_id)-1:0]Req2Output_SRAM_Bank_out_Node_id_2,
-    output logic Req2Output_SRAM_Bank_out_data_2,
+    output logic [`FV_bandwidth-1:0] Req2Output_SRAM_Bank_out_data_2,
     output logic Req2Output_SRAM_Bank_out_wr_sos_2,
     output logic Req2Output_SRAM_Bank_out_wr_eos_2,
 
@@ -112,7 +108,7 @@ module Output_Bus_arbiter(
     output logic [$clog2(`Num_Edge_PE)-1:0]Req2Output_SRAM_Bank_out_PE_tag_3,
     output logic Req2Output_SRAM_Bank_out_rd_wr_3,
     output logic [$clog2(`Max_Node_id)-1:0]Req2Output_SRAM_Bank_out_Node_id_3,
-    output logic Req2Output_SRAM_Bank_out_data_3,
+    output logic [`FV_bandwidth-1:0] Req2Output_SRAM_Bank_out_data_3,
     output logic Req2Output_SRAM_Bank_out_wr_sos_3,
     output logic Req2Output_SRAM_Bank_out_wr_eos_3,
 

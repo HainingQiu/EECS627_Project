@@ -5,10 +5,13 @@ module Weight_CNTL(
     input[$clog2(`Max_FV_num):0]  Num_FV,
     input fire, //from RS
 
-    output logic[`Mult_per_PE-1:0][`FV_size-1:0] Weight_data2Vertex,
-    // output Weight_Cntl2RS Weight_Cntl2RS_out,
+    // output logic[`Mult_per_PE-1:0][`FV_size-1:0] Weight_data2Vertex,
+    output logic[`FV_size-1:0] Weight_data2Vertex_0,
+    output logic[`FV_size-1:0] Weight_data2Vertex_1,
+    output logic[`FV_size-1:0] Weight_data2Vertex_2,
+    output logic[`FV_size-1:0] Weight_data2Vertex_3,
     output logic [$clog2(`Max_FV_num)-1:0] Weight_Cntl2RS_out_Cur_FV_num,
-    // output Weight_Cntl2bank Weight_Cntl2bank_out,
+
     output logic Weight_Cntl2bank_out_sos,
     output logic Weight_Cntl2bank_out_eos,
     output logic Weight_Cntl2bank_out_change,   
@@ -19,6 +22,7 @@ typedef enum reg [$clog2(2)-1:0] {
     IDLE='d0,
     Work='d1
 } state_t;
+logic[`Mult_per_PE-1:0][`FV_size-1:0] Weight_data2Vertex;
 logic [`Max_Num_Weight_layer-1:0][`Max_FV_num-1:0][`FV_size-1:0]Weight_Buffer;
 logic[$clog2(`Max_Num_Weight_layer)-1:0] Cur_Weight_layer,nx_Weight_layer;
 logic [$clog2(`Max_FV_num):0]  Cur_FV_num,nx_FV_num,Cur_Weight_num,nx_Weight_num;
@@ -41,6 +45,10 @@ assign Weight_Cntl2RS_out_Cur_FV_num=Weight_Cntl2RS_out.Cur_FV_num;
 assign Weight_Cntl2bank_out_sos=Weight_Cntl2bank_out.sos;
 assign Weight_Cntl2bank_out_eos=Weight_Cntl2bank_out.eos;
 assign Weight_Cntl2bank_out_change=Weight_Cntl2bank_out.change;
+assign Weight_data2Vertex_0=Weight_data2Vertex[0];
+assign Weight_data2Vertex_1=Weight_data2Vertex[1];
+assign Weight_data2Vertex_2=Weight_data2Vertex[2];
+assign Weight_data2Vertex_3=Weight_data2Vertex[3];
 always_comb begin
         nx_Weight_layer=Cur_Weight_layer;
         nx_FV_num=Cur_FV_num;

@@ -1,8 +1,17 @@
 module Vertex_PE(
     input clk,
     input reset,
-    input [`Mult_per_PE-1:0][`FV_size-1:0] Weight_data_in,
-    input [`Mult_per_PE-1:0][`FV_size-1:0] FV_RS,
+    // input [`Mult_per_PE-1:0][`FV_size-1:0] Weight_data_in,
+    input [`FV_size-1:0] Weight_data_in_0,
+    input [`FV_size-1:0] Weight_data_in_1,
+    input [`FV_size-1:0] Weight_data_in_2,
+    input [`FV_size-1:0] Weight_data_in_3,
+    // input [`Mult_per_PE-1:0][`FV_size-1:0] FV_RS,
+    input [`FV_size-1:0] FV_RS_0,
+    input [`FV_size-1:0] FV_RS_1,
+    input [`FV_size-1:0] FV_RS_2,
+    input [`FV_size-1:0] FV_RS_3,
+
     input [$clog2(`Max_Node_id)-1:0] Node_id,
 
     output logic [`FV_size-1:0] Vertex_output,
@@ -10,6 +19,17 @@ module Vertex_PE(
 );
 logic[`FV_size-1:0] nx_vertex_output;
 logic [`Mult_per_PE-1:0][`FV_size-1:0] Mul_output;
+logic [`Mult_per_PE-1:0][`FV_size-1:0] Weight_data_in;
+logic [`Mult_per_PE-1:0][`FV_size-1:0] FV_RS;
+assign Weight_data_in[0]=Weight_data_in_0;
+assign Weight_data_in[1]=Weight_data_in_1;
+assign Weight_data_in[2]=Weight_data_in_2;
+assign Weight_data_in[3]=Weight_data_in_3;
+
+assign FV_RS[0]=FV_RS_0;
+assign FV_RS[1]=FV_RS_1;
+assign FV_RS[2]=FV_RS_2;
+assign FV_RS[3]=FV_RS_3;
 always_comb begin
     Mul_output='d0;
     nx_vertex_output='d0;
