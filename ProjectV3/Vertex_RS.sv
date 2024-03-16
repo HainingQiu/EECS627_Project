@@ -32,10 +32,10 @@ module Vertex_RS (
     output logic [`FV_size-1:0] RS2Vertex_PE_out_3_2,
     output logic [`FV_size-1:0] RS2Vertex_PE_out_3_3,
 
-    output logic [$clog2(`Max_Node_id)-1:0] Node_id_0,
-    output logic [$clog2(`Max_Node_id)-1:0] Node_id_1,
-    output logic [$clog2(`Max_Node_id)-1:0] Node_id_2,
-    output logic [$clog2(`Max_Node_id)-1:0] Node_id_3,
+    output logic [$clog2(`Max_Node_id)-1:0] RS2Vertex_PE_out_Node_id_0,
+    output logic [$clog2(`Max_Node_id)-1:0] RS2Vertex_PE_out_Node_id_1,
+    output logic [$clog2(`Max_Node_id)-1:0] RS2Vertex_PE_out_Node_id_2,
+    output logic [$clog2(`Max_Node_id)-1:0] RS2Vertex_PE_out_Node_id_3,
 
     output logic fire,
     output logic RS_available,
@@ -53,27 +53,27 @@ assign Bank2RS_in.FV_data[2] = Bank2RS_in_FV_data_2;
 assign Bank2RS_in.FV_data[3] = Bank2RS_in_FV_data_3;
 assign Bank2RS_in.Node_id = Bank2RS_in_Node_id;
 
-assign RS2Vertex_PE_out.FV_data[0][0] = RS2Vertex_PE_out_0_0;
-assign RS2Vertex_PE_out.FV_data[0][1] = RS2Vertex_PE_out_0_1;
-assign RS2Vertex_PE_out.FV_data[0][2] = RS2Vertex_PE_out_0_2;
-assign RS2Vertex_PE_out.FV_data[0][3] = RS2Vertex_PE_out_0_3;
-assign RS2Vertex_PE_out.FV_data[1][0] = RS2Vertex_PE_out_1_0;
-assign RS2Vertex_PE_out.FV_data[1][1] = RS2Vertex_PE_out_1_1;
-assign RS2Vertex_PE_out.FV_data[1][2] = RS2Vertex_PE_out_1_2;
-assign RS2Vertex_PE_out.FV_data[1][3] = RS2Vertex_PE_out_1_3;
-assign RS2Vertex_PE_out.FV_data[2][0] = RS2Vertex_PE_out_2_0;
-assign RS2Vertex_PE_out.FV_data[2][1] = RS2Vertex_PE_out_2_1;
-assign RS2Vertex_PE_out.FV_data[2][2] = RS2Vertex_PE_out_2_2;
-assign RS2Vertex_PE_out.FV_data[2][3] = RS2Vertex_PE_out_2_3;
-assign RS2Vertex_PE_out.FV_data[3][0] = RS2Vertex_PE_out_3_0;
-assign RS2Vertex_PE_out.FV_data[3][1] = RS2Vertex_PE_out_3_1;
-assign RS2Vertex_PE_out.FV_data[3][2] = RS2Vertex_PE_out_3_1;
-assign RS2Vertex_PE_out.FV_data[3][3] = RS2Vertex_PE_out_3_3;
+assign RS2Vertex_PE_out_0_0 = RS2Vertex_PE_out.FV_data[0][0];
+assign RS2Vertex_PE_out_0_1 = RS2Vertex_PE_out.FV_data[0][1];
+assign RS2Vertex_PE_out_0_2 = RS2Vertex_PE_out.FV_data[0][2];
+assign RS2Vertex_PE_out_0_3 = RS2Vertex_PE_out.FV_data[0][3];
+assign RS2Vertex_PE_out_1_0 = RS2Vertex_PE_out.FV_data[1][0];
+assign RS2Vertex_PE_out_1_1 = RS2Vertex_PE_out.FV_data[1][1];
+assign RS2Vertex_PE_out_1_2 = RS2Vertex_PE_out.FV_data[1][2];
+assign RS2Vertex_PE_out_1_3 = RS2Vertex_PE_out.FV_data[1][3];
+assign RS2Vertex_PE_out_2_0 = RS2Vertex_PE_out.FV_data[2][0];
+assign RS2Vertex_PE_out_2_1 = RS2Vertex_PE_out.FV_data[2][1];
+assign RS2Vertex_PE_out_2_2 = RS2Vertex_PE_out.FV_data[2][2];
+assign RS2Vertex_PE_out_2_3 = RS2Vertex_PE_out.FV_data[2][3];
+assign RS2Vertex_PE_out_3_0 = RS2Vertex_PE_out.FV_data[3][0];
+assign RS2Vertex_PE_out_3_1 = RS2Vertex_PE_out.FV_data[3][1];
+assign RS2Vertex_PE_out_3_2 = RS2Vertex_PE_out.FV_data[3][2];
+assign RS2Vertex_PE_out_3_3 = RS2Vertex_PE_out.FV_data[3][3];
 
-assign RS2Vertex_PE_out.Node_id[0] = Node_id_0;
-assign RS2Vertex_PE_out.Node_id[1] = Node_id_1;
-assign RS2Vertex_PE_out.Node_id[2] = Node_id_2;
-assign RS2Vertex_PE_out.Node_id[3] = Node_id_3;
+assign RS2Vertex_PE_out_Node_id_0 = RS2Vertex_PE_out.Node_id[0];
+assign RS2Vertex_PE_out_Node_id_1 = RS2Vertex_PE_out.Node_id[1];
+assign RS2Vertex_PE_out_Node_id_2 = RS2Vertex_PE_out.Node_id[2];
+assign RS2Vertex_PE_out_Node_id_3 = RS2Vertex_PE_out.Node_id[3];
 
 typedef enum reg [$clog2(5)-1:0] {
 IDLE='d0,
