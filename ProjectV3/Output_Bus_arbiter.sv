@@ -209,37 +209,37 @@ assign Output_Sram2Arbiter[2].eos=Output_Sram2Arbiter_eos[2];
 assign Output_Sram2Arbiter[3].eos=Output_Sram2Arbiter_eos[3];
 
 
-assign Req2Output_SRAM_Bank_out[0].valid=Req2Output_SRAM_Bank_out_valid_0;
-assign Req2Output_SRAM_Bank_out[0].PE_tag=Req2Output_SRAM_Bank_out_PE_tag_0;
-assign Req2Output_SRAM_Bank_out[0].rd_wr=Req2Output_SRAM_Bank_out_rd_wr_0;
-assign Req2Output_SRAM_Bank_out[0].Node_id=Req2Output_SRAM_Bank_out_Node_id_0;
-assign Req2Output_SRAM_Bank_out[0].data=Req2Output_SRAM_Bank_out_data_0;
-assign Req2Output_SRAM_Bank_out[0].wr_sos=Req2Output_SRAM_Bank_out_wr_sos_0;
-assign Req2Output_SRAM_Bank_out[0].wr_eos=Req2Output_SRAM_Bank_out_wr_eos_0;
+assign Req2Output_SRAM_Bank_out_valid_0 = Req2Output_SRAM_Bank_out[0].valid;
+assign Req2Output_SRAM_Bank_out_PE_tag_0=Req2Output_SRAM_Bank_out[0].PE_tag;
+assign Req2Output_SRAM_Bank_out_rd_wr_0=Req2Output_SRAM_Bank_out[0].rd_wr;
+assign Req2Output_SRAM_Bank_out_Node_id_0=Req2Output_SRAM_Bank_out[0].Node_id;
+assign Req2Output_SRAM_Bank_out_data_0=Req2Output_SRAM_Bank_out[0].data;
+assign Req2Output_SRAM_Bank_out_wr_sos_0= Req2Output_SRAM_Bank_out[0].wr_sos;
+assign Req2Output_SRAM_Bank_out_wr_eos_0=Req2Output_SRAM_Bank_out[0].wr_eos;
 
-assign Req2Output_SRAM_Bank_out[1].valid=Req2Output_SRAM_Bank_out_valid_1;
-assign Req2Output_SRAM_Bank_out[1].PE_tag=Req2Output_SRAM_Bank_out_PE_tag_1;
-assign Req2Output_SRAM_Bank_out[1].rd_wr=Req2Output_SRAM_Bank_out_rd_wr_1;
-assign Req2Output_SRAM_Bank_out[1].Node_id=Req2Output_SRAM_Bank_out_Node_id_1;
-assign Req2Output_SRAM_Bank_out[1].data=Req2Output_SRAM_Bank_out_data_1;
-assign Req2Output_SRAM_Bank_out[1].wr_sos=Req2Output_SRAM_Bank_out_wr_sos_1;
-assign Req2Output_SRAM_Bank_out[1].wr_eos=Req2Output_SRAM_Bank_out_wr_eos_1;
+assign Req2Output_SRAM_Bank_out_valid_1=Req2Output_SRAM_Bank_out[1].valid;
+assign Req2Output_SRAM_Bank_out_PE_tag_1=Req2Output_SRAM_Bank_out[1].PE_tag;
+assign Req2Output_SRAM_Bank_out_rd_wr_1=Req2Output_SRAM_Bank_out[1].rd_wr;
+assign Req2Output_SRAM_Bank_out_Node_id_1=Req2Output_SRAM_Bank_out[1].Node_id;
+assign Req2Output_SRAM_Bank_out_data_1=Req2Output_SRAM_Bank_out[1].data;
+assign Req2Output_SRAM_Bank_out_wr_sos_1=Req2Output_SRAM_Bank_out[1].wr_sos;
+assign Req2Output_SRAM_Bank_out_wr_eos_1=Req2Output_SRAM_Bank_out[1].wr_eos;
 
-assign Req2Output_SRAM_Bank_out[2].valid=Req2Output_SRAM_Bank_out_valid_2;
-assign Req2Output_SRAM_Bank_out[2].PE_tag=Req2Output_SRAM_Bank_out_PE_tag_2;
-assign Req2Output_SRAM_Bank_out[2].rd_wr=Req2Output_SRAM_Bank_out_rd_wr_2;
-assign Req2Output_SRAM_Bank_out[2].Node_id=Req2Output_SRAM_Bank_out_Node_id_2;
-assign Req2Output_SRAM_Bank_out[2].data=Req2Output_SRAM_Bank_out_data_2;
-assign Req2Output_SRAM_Bank_out[2].wr_sos=Req2Output_SRAM_Bank_out_wr_sos_2;
-assign Req2Output_SRAM_Bank_out[2].wr_eos=Req2Output_SRAM_Bank_out_wr_eos_2;
+assign Req2Output_SRAM_Bank_out_valid_2=Req2Output_SRAM_Bank_out[2].valid;
+assign Req2Output_SRAM_Bank_out_PE_tag_2=Req2Output_SRAM_Bank_out[2].PE_tag;
+assign Req2Output_SRAM_Bank_out_rd_wr_2=Req2Output_SRAM_Bank_out[2].rd_wr;
+assign Req2Output_SRAM_Bank_out_Node_id_2=Req2Output_SRAM_Bank_out[2].Node_id;
+assign Req2Output_SRAM_Bank_out_data_2=Req2Output_SRAM_Bank_out[2].data;
+assign Req2Output_SRAM_Bank_out_wr_sos_2=Req2Output_SRAM_Bank_out[2].wr_sos;
+assign Req2Output_SRAM_Bank_out_wr_eos_2=Req2Output_SRAM_Bank_out[2].wr_eos;
 
-assign Req2Output_SRAM_Bank_out[3].valid=Req2Output_SRAM_Bank_out_valid_3;
-assign Req2Output_SRAM_Bank_out[3].PE_tag=Req2Output_SRAM_Bank_out_PE_tag_3;
-assign Req2Output_SRAM_Bank_out[3].rd_wr=Req2Output_SRAM_Bank_out_rd_wr_3;
-assign Req2Output_SRAM_Bank_out[3].Node_id=Req2Output_SRAM_Bank_out_Node_id_3;
-assign Req2Output_SRAM_Bank_out[3].data=Req2Output_SRAM_Bank_out_data_3;
-assign Req2Output_SRAM_Bank_out[3].wr_sos=Req2Output_SRAM_Bank_out_wr_sos_3;
-assign Req2Output_SRAM_Bank_out[3].wr_eos=Req2Output_SRAM_Bank_out_wr_eos_3;
+assign Req2Output_SRAM_Bank_out_valid_3=Req2Output_SRAM_Bank_out[3].valid;
+assign Req2Output_SRAM_Bank_out_PE_tag_3=Req2Output_SRAM_Bank_out[3].PE_tag;
+assign Req2Output_SRAM_Bank_out_rd_wr_3=Req2Output_SRAM_Bank_out[3].rd_wr;
+assign Req2Output_SRAM_Bank_out_Node_id_3=Req2Output_SRAM_Bank_out[3].Node_id;
+assign Req2Output_SRAM_Bank_out_data_3=Req2Output_SRAM_Bank_out[3].data;
+assign Req2Output_SRAM_Bank_out_wr_sos_3=Req2Output_SRAM_Bank_out[3].wr_sos;
+assign Req2Output_SRAM_Bank_out_wr_eos_3=Req2Output_SRAM_Bank_out[3].wr_eos;
 
 
 
