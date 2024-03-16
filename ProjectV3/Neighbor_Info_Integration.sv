@@ -23,9 +23,9 @@ assign BUS2Neighbor_info_MEM_CNTL_in.valid=BUS2Neighbor_info_MEM_CNTL_in_valid;
 assign BUS2Neighbor_info_MEM_CNTL_in.Node_id=BUS2Neighbor_info_MEM_CNTL_in_Node_id;
 assign BUS2Neighbor_info_MEM_CNTL_in.PE_tag=BUS2Neighbor_info_MEM_CNTL_PE_tag;
 
-assign Neighbor_info2Neighbor_FIFO_out.valid=Neighbor_info2Neighbor_FIFO_out_valid;
-assign Neighbor_info2Neighbor_FIFO_out.addr=Neighbor_info2Neighbor_FIFO_out_addr;
-assign Neighbor_info2Neighbor_FIFO_out.PE_tag=Neighbor_info2Neighbor_FIFO_out_PE_tag;
+assign Neighbor_info2Neighbor_FIFO_out_valid =Neighbor_info2Neighbor_FIFO_out.valid;
+assign Neighbor_info2Neighbor_FIFO_out_addr =Neighbor_info2Neighbor_FIFO_out.addr;
+assign Neighbor_info2Neighbor_FIFO_out_PE_tag =Neighbor_info2Neighbor_FIFO_out.PE_tag;
 
 logic rempty;
 logic wfull;
@@ -76,3 +76,4 @@ generate
 endgenerate
 
 endmodule
+
