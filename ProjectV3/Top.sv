@@ -329,6 +329,31 @@ logic [$clog2(`Num_Edge_PE)-1:0] EdgePE_rd_out_PE_tag_3;
 logic [`FV_bandwidth-1:0] EdgePE_rd_out_FV_data_3;
 logic EdgePE_rd_out_valid_3;
 
+
+logic EdgePE_rd_out_sos_0_1;
+logic EdgePE_rd_out_eos_0_1;
+logic [$clog2(`Num_Edge_PE)-1:0] EdgePE_rd_out_PE_tag_0_1;
+logic [`FV_bandwidth-1:0] EdgePE_rd_out_FV_data_0_1;
+logic EdgePE_rd_out_valid_0_1;
+
+logic EdgePE_rd_out_sos_1_1;
+logic EdgePE_rd_out_eos_1_1;
+logic [$clog2(`Num_Edge_PE)-1:0] EdgePE_rd_out_PE_tag_1_1;
+logic [`FV_bandwidth-1:0] EdgePE_rd_out_FV_data_1_1;
+logic EdgePE_rd_out_valid_1_1;
+
+logic EdgePE_rd_out_sos_2_1;
+logic EdgePE_rd_out_eos_2_1;
+logic [$clog2(`Num_Edge_PE)-1:0] EdgePE_rd_out_PE_tag_2_1;
+logic [`FV_bandwidth-1:0] EdgePE_rd_out_FV_data_2_1;
+logic EdgePE_rd_out_valid_2_1;
+
+logic EdgePE_rd_out_sos_3_1;
+logic EdgePE_rd_out_eos_3_1;
+logic [$clog2(`Num_Edge_PE)-1:0] EdgePE_rd_out_PE_tag_3_1;
+logic [`FV_bandwidth-1:0] EdgePE_rd_out_FV_data_3_1;
+logic EdgePE_rd_out_valid_3_1;
+
 logic Big_FV2Sm_FV_sos_0;
 logic Big_FV2Sm_FV_eos_0;
 logic [`FV_bandwidth-1:0] Big_FV2Sm_FV_FV_data_0;
@@ -348,6 +373,26 @@ logic Big_FV2Sm_FV_sos_3;
 logic Big_FV2Sm_FV_eos_3;
 logic [`FV_bandwidth-1:0] Big_FV2Sm_FV_FV_data_3;
 logic[`FV_info_bank_width-2-1:0] Big_FV2Sm_FV_A_3;
+
+logic Big_FV2Sm_FV_sos_0_1;
+logic Big_FV2Sm_FV_eos_0_1;
+logic [`FV_bandwidth-1:0] Big_FV2Sm_FV_FV_data_0_1;
+logic[`FV_info_bank_width-2-1:0] Big_FV2Sm_FV_A_0_1;
+
+logic Big_FV2Sm_FV_sos_1_1;
+logic Big_FV2Sm_FV_eos_1_1;
+logic [`FV_bandwidth-1:0] Big_FV2Sm_FV_FV_data_1_1;
+logic[`FV_info_bank_width-2-1:0] Big_FV2Sm_FV_A_1_1;
+
+logic Big_FV2Sm_FV_sos_2_1;
+logic Big_FV2Sm_FV_eos_2_1;
+logic [`FV_bandwidth-1:0] Big_FV2Sm_FV_FV_data_2_1;
+logic[`FV_info_bank_width-2-1:0] Big_FV2Sm_FV_A_2_1;
+
+logic Big_FV2Sm_FV_sos_3_1;
+logic Big_FV2Sm_FV_eos_3_1;
+logic [`FV_bandwidth-1:0] Big_FV2Sm_FV_FV_data_3_1;
+logic[`FV_info_bank_width-2-1:0] Big_FV2Sm_FV_A_3_1;
 
 logic stream_begin;
 logic outbuff_available;
@@ -369,6 +414,24 @@ logic [`FV_bandwidth-1:0]  Output_SRAM2Edge_PE_out_2_FV_data;
 logic Output_SRAM2Edge_PE_out_3_sos;
 logic Output_SRAM2Edge_PE_out_3_eos;
 logic [`FV_bandwidth-1:0]  Output_SRAM2Edge_PE_out_3_FV_data;
+
+logic[`Num_Edge_PE-1:0] PE_IDLE;
+logic Edge_PE2DP_out_IDLE_flag_0;
+logic Edge_PE2DP_out_IDLE_flag_1;
+logic Edge_PE2DP_out_IDLE_flag_2;
+logic Edge_PE2DP_out_IDLE_flag_3;
+
+logic task_complete;
+
+logic[`Num_Edge_PE-1+1:0] reqs_WB_Packet;
+logic [`Num_Edge_PE+1-1:0] WB_packet_grants;
+
+logic [`Num_Banks_FV-1:0] Output_Sram2Arbiter_eos;
+
+assign Output_Sram2Arbiter_eos[0]=EdgePE_rd_out_eos_0_1;
+assign Output_Sram2Arbiter_eos[1]=EdgePE_rd_out_eos_1_1;
+assign Output_Sram2Arbiter_eos[2]=EdgePE_rd_out_eos_2_1;
+assign Output_Sram2Arbiter_eos[3]=EdgePE_rd_out_eos_3_1;
 assign stream_end=Big_FV2Sm_FV_eos_3&Big_FV2Sm_FV_eos_2&Big_FV2Sm_FV_eos_1&Big_FV2Sm_FV_eos_0;
 assign Edge_PE2IMEM_CNTL_in_valid[0]=Edge_PE2IMEM_CNTL_out_0_valid;
 assign Edge_PE2IMEM_CNTL_in_valid[1]=Edge_PE2IMEM_CNTL_out_1_valid;
@@ -395,10 +458,15 @@ assign edge_pkt_eos[1]=Edge_PE2Bank_out_eos_1;
 assign edge_pkt_eos[2]=Edge_PE2Bank_out_eos_2;
 assign edge_pkt_eos[3]=Edge_PE2Bank_out_eos_3;
 
+assign PE_IDLE[0]=Edge_PE2DP_out_IDLE_flag_0;
+assign PE_IDLE[1]=Edge_PE2DP_out_IDLE_flag_1;
+assign PE_IDLE[2]=Edge_PE2DP_out_IDLE_flag_2;
+assign PE_IDLE[3]=Edge_PE2DP_out_IDLE_flag_3;
+
 PACKET_SRAM_integration PACKET_SRAM_integration_U(
     .clk(clk),														
     .reset(reset),	
-    .grant(Grant_WB_Packet_Decoder),
+    .grant(WB_packet_grants[0]),
     .PE_IDLE(PE_IDLE),
     .Edge_PE2IMEM_CNTL_in_packet_0(Edge_PE2IMEM_CNTL_out_0_packet),
     .Edge_PE2IMEM_CNTL_in_packet_1(Edge_PE2IMEM_CNTL_out_1_packet),
@@ -410,14 +478,14 @@ PACKET_SRAM_integration PACKET_SRAM_integration_U(
     .vertex_done(Vertex_empty&&Vertex_RS_empty),
     .outbuff_available(outbuff_available),
 
-    output logic task_complete,
+    .task_complete(task_complete),
 
     .DP_task2Edge_PE_out_packet_0(DP_task2Edge_PE_out_packet_0),
     .DP_task2Edge_PE_out_packet_1(DP_task2Edge_PE_out_packet_1),
     .DP_task2Edge_PE_out_packet_2(DP_task2Edge_PE_out_packet_2),
     .DP_task2Edge_PE_out_packet_3(DP_task2Edge_PE_out_packet_3),
     .DP_task2Edge_PE_out_valid(DP_task2Edge_PE_out_valid),
-    output logic Req,
+    .Req(reqs_WB_Packet[0]),
     .replay_Iter(replay_Iter),
     .Num_FV(Num_FV),
     .Weights_boundary(Weights_boundary),
@@ -435,9 +503,10 @@ Edge_PE_0(
     .FV_SRAM2Edge_PE_in_sos(FV_SRAM2Edge_PE_out_0_sos),					// feature value from FV SRAM (for current computation)
     .FV_SRAM2Edge_PE_in_eos(FV_SRAM2Edge_PE_out_0_eos),	
     .FV_SRAM2Edge_PE_in_FV_data(FV_SRAM2Edge_PE_out_0_FV_data),	
-input Output_SRAM2Edge_PE_in_sos,			// feature value from output SRAM (last computation)
-input Output_SRAM2Edge_PE_in_eos,	
-input [`FV_bandwidth-1:0] Output_SRAM2Edge_PE_in_FV_data,	
+
+    .Output_SRAM2Edge_PE_in_sos(Output_SRAM2Edge_PE_out_0_sos),			// feature value from output SRAM (last computation)
+    .Output_SRAM2Edge_PE_in_eos(Output_SRAM2Edge_PE_out_0_eos),	
+    .Output_SRAM2Edge_PE_in_FV_data(Output_SRAM2Edge_PE_out_0_FV_data),	
 
     .NeighborID_SRAM2Edge_PE_in_sos(NeighborID_SRAM2Edge_PE_out_sos_0),	// neighbor info from neighbor SRAM
     .NeighborID_SRAM2Edge_PE_in_eos(NeighborID_SRAM2Edge_PE_out_eos_0),
@@ -448,18 +517,18 @@ input [`FV_bandwidth-1:0] Output_SRAM2Edge_PE_in_FV_data,
     .Grant_output_Bus_arbiter_in(Ouput_SRAM_Grants[0]),                             // grant output sram req
     .Cur_Replay_Iter(replay_Iter),		// replay iteration count
 // input [$clog2(`Max_Node_id)-1:0] Last_Node_ID,				// last node ID address
-input Grant_WB_Packet,										// write back packet
+    .Grant_WB_Packet(WB_packet_grants[1]),										// write back packet
 
     .Req_Bus_arbiter_out_req(Req_Bus_arbiter_out_0_req),
     .Req_Bus_arbiter_out_PE_tag(Req_Bus_arbiter_out_0_PE_tag),
     .Req_Bus_arbiter_out_req_type(Req_Bus_arbiter_out_0_req_type), 
     .Req_Bus_arbiter_out_Node_id(Req_Bus_arbiter_out_0_Node_id),			
 
-output logic Edge_PE2DP_out,							// idle flag output to dispatch
-.Edge_PE2IMEM_CNTL_out_packet(Edge_PE2IMEM_CNTL_out_0_packet),				// packet to IMEM
-.Edge_PE2IMEM_CNTL_out_valid(Edge_PE2IMEM_CNTL_out_0_valid),		
+    .Edge_PE2DP_out_IDLE_flag(Edge_PE2DP_out_IDLE_flag_0),							// idle flag output to dispatch
+    .Edge_PE2IMEM_CNTL_out_packet(Edge_PE2IMEM_CNTL_out_0_packet),				// packet to IMEM
+    .Edge_PE2IMEM_CNTL_out_valid(Edge_PE2IMEM_CNTL_out_0_valid),		
 
-output logic req_WB_Packet,									// request write back packet
+    .req_WB_Packet(reqs_WB_Packet[1]),									// request write back packet
 
     .Edge_PE2Bank_out_sos(Edge_PE2Bank_out_sos_0), // start of streaming
     .Edge_PE2Bank_out_eos(Edge_PE2Bank_out_eos_0),//  end of streaming
@@ -491,9 +560,10 @@ Edge_PE_1(
     .FV_SRAM2Edge_PE_in_eos(FV_SRAM2Edge_PE_out_1_eos),	
     .FV_SRAM2Edge_PE_in_FV_data(FV_SRAM2Edge_PE_out_1_FV_data),
 
-input Output_SRAM2Edge_PE_in_sos,			// feature value from output SRAM (last computation)
-input Output_SRAM2Edge_PE_in_eos,	
-input [`FV_bandwidth-1:0] Output_SRAM2Edge_PE_in_FV_data,	
+    .Output_SRAM2Edge_PE_in_sos(Output_SRAM2Edge_PE_out_1_sos),			// feature value from output SRAM (last computation)
+    .Output_SRAM2Edge_PE_in_eos(Output_SRAM2Edge_PE_out_1_eos),	
+    .Output_SRAM2Edge_PE_in_FV_data(Output_SRAM2Edge_PE_out_1_FV_data),	
+
 
     .NeighborID_SRAM2Edge_PE_in_sos(NeighborID_SRAM2Edge_PE_out_sos_1),	// neighbor info from neighbor SRAM
     .NeighborID_SRAM2Edge_PE_in_eos(NeighborID_SRAM2Edge_PE_out_eos_1),
@@ -504,7 +574,7 @@ input [`FV_bandwidth-1:0] Output_SRAM2Edge_PE_in_FV_data,
     .Grant_output_Bus_arbiter_in(Ouput_SRAM_Grants[1]),                             // grant output sram req
     .Cur_Replay_Iter(replay_Iter),		// replay iteration count
 // input [$clog2(`Max_Node_id)-1:0] Last_Node_ID,				// last node ID address
-input Grant_WB_Packet,										// write back packet
+    .Grant_WB_Packet(WB_packet_grants[2]),										// write back packet
 
     .Req_Bus_arbiter_out_req(Req_Bus_arbiter_out_1_req),
     .Req_Bus_arbiter_out_PE_tag(Req_Bus_arbiter_out_1_PE_tag),
@@ -512,11 +582,11 @@ input Grant_WB_Packet,										// write back packet
     .Req_Bus_arbiter_out_Node_id(Req_Bus_arbiter_out_1_Node_id),			
 
 
-output logic Edge_PE2DP_out,							// idle flag output to dispatch
-.Edge_PE2IMEM_CNTL_out_packet(Edge_PE2IMEM_CNTL_out_1_packet),				// packet to IMEM
-.Edge_PE2IMEM_CNTL_out_valid(Edge_PE2IMEM_CNTL_out_1_valid),	
+    .Edge_PE2DP_out_IDLE_flag(Edge_PE2DP_out_IDLE_flag_1),								// idle flag output to dispatch
+    .Edge_PE2IMEM_CNTL_out_packet(Edge_PE2IMEM_CNTL_out_1_packet),				// packet to IMEM
+    .Edge_PE2IMEM_CNTL_out_valid(Edge_PE2IMEM_CNTL_out_1_valid),	
 
-output logic req_WB_Packet,									// request write back packet
+   .req_WB_Packet(reqs_WB_Packet[2]),								// request write back packet
 
     .Edge_PE2Bank_out_sos(Edge_PE2Bank_out_sos_1), // start of streaming
     .Edge_PE2Bank_out_eos(Edge_PE2Bank_out_eos_1),//  end of streaming
@@ -547,9 +617,10 @@ Edge_PE_2(
     .FV_SRAM2Edge_PE_in_eos(FV_SRAM2Edge_PE_out_2_eos),	
     .FV_SRAM2Edge_PE_in_FV_data(FV_SRAM2Edge_PE_out_2_FV_data),	
 
-input Output_SRAM2Edge_PE_in_sos,			// feature value from output SRAM (last computation)
-input Output_SRAM2Edge_PE_in_eos,	
-input [`FV_bandwidth-1:0] Output_SRAM2Edge_PE_in_FV_data,	
+    .Output_SRAM2Edge_PE_in_sos(Output_SRAM2Edge_PE_out_2_sos),			// feature value from output SRAM (last computation)
+    .Output_SRAM2Edge_PE_in_eos(Output_SRAM2Edge_PE_out_2_eos),	
+    .Output_SRAM2Edge_PE_in_FV_data(Output_SRAM2Edge_PE_out_2_FV_data),	
+	
 
     .NeighborID_SRAM2Edge_PE_in_sos(NeighborID_SRAM2Edge_PE_out_sos_2),	// neighbor info from neighbor SRAM
     .NeighborID_SRAM2Edge_PE_in_eos(NeighborID_SRAM2Edge_PE_out_eos_2),
@@ -559,8 +630,7 @@ input [`FV_bandwidth-1:0] Output_SRAM2Edge_PE_in_FV_data,
     .Grant_Bus_arbiter_in(Grant_Bus_arbiter_out_2_Grant),				// grant request signal
     .Grant_output_Bus_arbiter_in(Ouput_SRAM_Grants[2]),                             // grant output sram req
     .Cur_Replay_Iter(replay_Iter),		// replay iteration count
-// input [$clog2(`Max_Node_id)-1:0] Last_Node_ID,				// last node ID address
-input Grant_WB_Packet,										// write back packet
+    .Grant_WB_Packet(WB_packet_grants[3]),										// write back packet
 
     .Req_Bus_arbiter_out_req(Req_Bus_arbiter_out_2_req),
     .Req_Bus_arbiter_out_PE_tag(Req_Bus_arbiter_out_2_PE_tag),
@@ -568,11 +638,11 @@ input Grant_WB_Packet,										// write back packet
     .Req_Bus_arbiter_out_Node_id(Req_Bus_arbiter_out_2_Node_id),			
 
 
-output logic Edge_PE2DP_out,							// idle flag output to dispatch
+    .Edge_PE2DP_out_IDLE_flag(Edge_PE2DP_out_IDLE_flag_2),							// idle flag output to dispatch
     .Edge_PE2IMEM_CNTL_out_packet(Edge_PE2IMEM_CNTL_out_2_packet),				// packet to IMEM
     .Edge_PE2IMEM_CNTL_out_valid(Edge_PE2IMEM_CNTL_out_2_valid),	
 
-output logic req_WB_Packet,									// request write back packet
+   .req_WB_Packet(reqs_WB_Packet[3]),									// request write back packet
 
     .Edge_PE2Bank_out_sos(Edge_PE2Bank_out_sos_2), // start of streaming
     .Edge_PE2Bank_out_eos(Edge_PE2Bank_out_eos_2),//  end of streaming
@@ -604,9 +674,10 @@ Edge_PE_3(
     .FV_SRAM2Edge_PE_in_eos(FV_SRAM2Edge_PE_out_3_eos),	
     .FV_SRAM2Edge_PE_in_FV_data(FV_SRAM2Edge_PE_out_3_FV_data),	
     
-input Output_SRAM2Edge_PE_in_sos,			// feature value from output SRAM (last computation)
-input Output_SRAM2Edge_PE_in_eos,	
-input [`FV_bandwidth-1:0] Output_SRAM2Edge_PE_in_FV_data,	
+    .Output_SRAM2Edge_PE_in_sos(Output_SRAM2Edge_PE_out_3_sos),			// feature value from output SRAM (last computation)
+    .Output_SRAM2Edge_PE_in_eos(Output_SRAM2Edge_PE_out_3_eos),	
+    .Output_SRAM2Edge_PE_in_FV_data(Output_SRAM2Edge_PE_out_3_FV_data),	
+
 
     .NeighborID_SRAM2Edge_PE_in_sos(NeighborID_SRAM2Edge_PE_out_sos_3),	// neighbor info from neighbor SRAM
     .NeighborID_SRAM2Edge_PE_in_eos(NeighborID_SRAM2Edge_PE_out_eos_3),
@@ -617,7 +688,7 @@ input [`FV_bandwidth-1:0] Output_SRAM2Edge_PE_in_FV_data,
     .Grant_output_Bus_arbiter_in(Ouput_SRAM_Grants[3]),                             // grant output sram req
     .Cur_Replay_Iter(replay_Iter),		// replay iteration count
 // input [$clog2(`Max_Node_id)-1:0] Last_Node_ID,				// last node ID address
-input Grant_WB_Packet,										// write back packet
+    .Grant_WB_Packet(WB_packet_grants[4]),										// write back packet
 
     .Req_Bus_arbiter_out_req(Req_Bus_arbiter_out_3_req),
     .Req_Bus_arbiter_out_PE_tag(Req_Bus_arbiter_out_3_PE_tag),
@@ -625,11 +696,11 @@ input Grant_WB_Packet,										// write back packet
     .Req_Bus_arbiter_out_Node_id(Req_Bus_arbiter_out_3_Node_id),			
 
 
-output logic Edge_PE2DP_out,							// idle flag output to dispatch
+    .Edge_PE2DP_out_IDLE_flag(Edge_PE2DP_out_IDLE_flag_3),							// idle flag output to dispatch
     .Edge_PE2IMEM_CNTL_out_packet(Edge_PE2IMEM_CNTL_out_3_packet),				// packet to IMEM
     .Edge_PE2IMEM_CNTL_out_valid(Edge_PE2IMEM_CNTL_out_3_valid),	
 
-output logic req_WB_Packet,									// request write back packet
+   .req_WB_Packet(reqs_WB_Packet[4]),									// request write back packet
 
     .Edge_PE2Bank_out_sos(Edge_PE2Bank_out_sos_3), // start of streaming
     .Edge_PE2Bank_out_eos(Edge_PE2Bank_out_eos_3),//  end of streaming
@@ -956,7 +1027,7 @@ Output_Bus_arbiter Output_Bus_arbiter_U(
     .Vertex_Bank2Req_Output_SRAM_in_req_3(outbuff_pkt_3_req),
     .Vertex_Bank2Req_Output_SRAM_in_Node_id_3(outbuff_pkt_3_Node_id),
     // input Output_Sram2Arbiter[`Num_Banks_FV-1:0] Output_Sram2Arbiter,
-    input [`Num_Banks_FV-1:0] Output_Sram2Arbiter_eos,
+    .Output_Sram2Arbiter_eos(Output_Sram2Arbiter_eos),
     // output Req2Output_SRAM_Bank[`Num_Banks_FV-1:0] Req2Output_SRAM_Bank_out,
     .Req2Output_SRAM_Bank_out_valid_0(Req2Output_SRAM_Bank_out_valid_0),
     .Req2Output_SRAM_Bank_out_PE_tag_0(Req2Output_SRAM_Bank_out_PE_tag_0),
@@ -1128,8 +1199,6 @@ Vertex_PE Vertex_PE_3(
     .Node_id_out(vertex_data_pkt_3_Node_id)
 );
 //------------------------------------------------------Weight_CNTL-----------------------------------------//
-
-// );
 Weight_CNTL Weight_CNTL_DUT(
     .clk(clk),
     .reset(reset),
@@ -1278,50 +1347,50 @@ Big_FV_wrapper_1 Big_FV_wrapper_1_U(
 
     .stream_begin(stream_begin),
 
-    .Big_FV2Sm_FV_sos_0(Big_FV2Sm_FV_sos_0),
-    .Big_FV2Sm_FV_eos_0(Big_FV2Sm_FV_eos_0),
-    .Big_FV2Sm_FV_FV_data_0(Big_FV2Sm_FV_FV_data_0),
-    .Big_FV2Sm_FV_A_0(Big_FV2Sm_FV_A_0),
+    .Big_FV2Sm_FV_sos_0(Big_FV2Sm_FV_sos_0_1),
+    .Big_FV2Sm_FV_eos_0(Big_FV2Sm_FV_eos_0_1),
+    .Big_FV2Sm_FV_FV_data_0(Big_FV2Sm_FV_FV_data_0_1),
+    .Big_FV2Sm_FV_A_0(Big_FV2Sm_FV_A_0_1),
 
-    .Big_FV2Sm_FV_sos_1(Big_FV2Sm_FV_sos_1),
-    .Big_FV2Sm_FV_eos_1(Big_FV2Sm_FV_eos_1),
-    .Big_FV2Sm_FV_FV_data_1(Big_FV2Sm_FV_FV_data_1),
-    .Big_FV2Sm_FV_A_1(Big_FV2Sm_FV_A_1),
+    .Big_FV2Sm_FV_sos_1(Big_FV2Sm_FV_sos_1_1),
+    .Big_FV2Sm_FV_eos_1(Big_FV2Sm_FV_eos_1_1),
+    .Big_FV2Sm_FV_FV_data_1(Big_FV2Sm_FV_FV_data_1_1),
+    .Big_FV2Sm_FV_A_1(Big_FV2Sm_FV_A_1_1),
 
-    .Big_FV2Sm_FV_sos_2(Big_FV2Sm_FV_sos_2),
-    .Big_FV2Sm_FV_eos_2(Big_FV2Sm_FV_eos_2),
-    .Big_FV2Sm_FV_FV_data_2(Big_FV2Sm_FV_FV_data_2),
-    .Big_FV2Sm_FV_A_2(Big_FV2Sm_FV_A_2),
+    .Big_FV2Sm_FV_sos_2(Big_FV2Sm_FV_sos_2_1),
+    .Big_FV2Sm_FV_eos_2(Big_FV2Sm_FV_eos_2_1),
+    .Big_FV2Sm_FV_FV_data_2(Big_FV2Sm_FV_FV_data_2_1),
+    .Big_FV2Sm_FV_A_2(Big_FV2Sm_FV_A_2_1),
 
-    .Big_FV2Sm_FV_sos_3(Big_FV2Sm_FV_sos_3),
-    .Big_FV2Sm_FV_eos_3(Big_FV2Sm_FV_eos_3),
-    .Big_FV2Sm_FV_FV_data_3(Big_FV2Sm_FV_FV_data_3),
-    .Big_FV2Sm_FV_A_3(Big_FV2Sm_FV_A_3),
+    .Big_FV2Sm_FV_sos_3(Big_FV2Sm_FV_sos_3_1),
+    .Big_FV2Sm_FV_eos_3(Big_FV2Sm_FV_eos_3_1),
+    .Big_FV2Sm_FV_FV_data_3(Big_FV2Sm_FV_FV_data_3_1),
+    .Big_FV2Sm_FV_A_3(Big_FV2Sm_FV_A_3_1),
 
 
-    .EdgePE_rd_out_sos_0(EdgePE_rd_out_sos_0),
-    .EdgePE_rd_out_eos_0(EdgePE_rd_out_eos_0),
-    .EdgePE_rd_out_PE_tag_0(EdgePE_rd_out_PE_tag_0),
-    .EdgePE_rd_out_FV_data_0(EdgePE_rd_out_FV_data_0),
-    .EdgePE_rd_out_valid_0(EdgePE_rd_out_valid_0),
+    .EdgePE_rd_out_sos_0(EdgePE_rd_out_sos_0_1),
+    .EdgePE_rd_out_eos_0(EdgePE_rd_out_eos_0_1),
+    .EdgePE_rd_out_PE_tag_0(EdgePE_rd_out_PE_tag_0_1),
+    .EdgePE_rd_out_FV_data_0(EdgePE_rd_out_FV_data_0_1),
+    .EdgePE_rd_out_valid_0(EdgePE_rd_out_valid_0_1),
 
-    .EdgePE_rd_out_sos_1(EdgePE_rd_out_sos_1),
-    .EdgePE_rd_out_eos_1(EdgePE_rd_out_eos_1),
-    .EdgePE_rd_out_PE_tag_1(EdgePE_rd_out_PE_tag_1),
-    .EdgePE_rd_out_FV_data_1(EdgePE_rd_out_FV_data_1),
-    .EdgePE_rd_out_valid_1(EdgePE_rd_out_valid_1),
+    .EdgePE_rd_out_sos_1(EdgePE_rd_out_sos_1_1),
+    .EdgePE_rd_out_eos_1(EdgePE_rd_out_eos_1_1),
+    .EdgePE_rd_out_PE_tag_1(EdgePE_rd_out_PE_tag_1_1),
+    .EdgePE_rd_out_FV_data_1(EdgePE_rd_out_FV_data_1_1),
+    .EdgePE_rd_out_valid_1(EdgePE_rd_out_valid_1_1),
 
-    .EdgePE_rd_out_sos_2(EdgePE_rd_out_sos_2),
-    .EdgePE_rd_out_eos_2(EdgePE_rd_out_eos_2),
-    .EdgePE_rd_out_PE_tag_2(EdgePE_rd_out_PE_tag_2),
-    .EdgePE_rd_out_FV_data_2(EdgePE_rd_out_FV_data_2),
-    .EdgePE_rd_out_valid_2(EdgePE_rd_out_valid_2),
+    .EdgePE_rd_out_sos_2(EdgePE_rd_out_sos_2_1),
+    .EdgePE_rd_out_eos_2(EdgePE_rd_out_eos_2_1),
+    .EdgePE_rd_out_PE_tag_2(EdgePE_rd_out_PE_tag_2_1),
+    .EdgePE_rd_out_FV_data_2(EdgePE_rd_out_FV_data_2_1),
+    .EdgePE_rd_out_valid_2(EdgePE_rd_out_valid_2_1),
 
-    .EdgePE_rd_out_sos_3(EdgePE_rd_out_sos_3),
-    .EdgePE_rd_out_eos_3(EdgePE_rd_out_eos_3),
-    .EdgePE_rd_out_PE_tag_3(EdgePE_rd_out_PE_tag_3),
-    .EdgePE_rd_out_FV_data_3(EdgePE_rd_out_FV_data_3),
-    .EdgePE_rd_out_valid_3(EdgePE_rd_out_valid_3),
+    .EdgePE_rd_out_sos_3(EdgePE_rd_out_sos_3_1),
+    .EdgePE_rd_out_eos_3(EdgePE_rd_out_eos_3_1),
+    .EdgePE_rd_out_PE_tag_3(EdgePE_rd_out_PE_tag_3_1),
+    .EdgePE_rd_out_FV_data_3(EdgePE_rd_out_FV_data_3_1),
+    .EdgePE_rd_out_valid_3(EdgePE_rd_out_valid_3_1),
     .available(outbuff_available)
 );
 Output_BUS Output_BUS_U(
