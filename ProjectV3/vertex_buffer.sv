@@ -40,7 +40,7 @@ module vertex_buffer(
 
     output logic outbuff_pkt_2_Grant_valid,
     output logic outbuff_pkt_2_sos,
-    output logic outbuff_pkt_3_eos,
+    output logic outbuff_pkt_2_eos,
     output logic [`FV_bandwidth-1:0] outbuff_pkt_2_data,
     output logic outbuff_pkt_2_req,
     output logic[$clog2(`Max_Node_id)-1:0] outbuff_pkt_2_Node_id,

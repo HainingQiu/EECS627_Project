@@ -84,8 +84,8 @@ assign BUS2FV_info_MEM_CNTL_out_Node_id=BUS2FV_info_MEM_CNTL_out.Node_id;
 assign BUS2FV_info_MEM_CNTL_out_PE_tag=BUS2FV_info_MEM_CNTL_out.PE_tag;
 
 assign BUS2Neighbor_info_MEM_CNTL_out_valid=BUS2Neighbor_info_MEM_CNTL_out.valid;
-assign BUS2FV_info_MEM_CNTBUS2Neighbor_info_MEM_CNTL_out_validL_out_Node_id=BUS2Neighbor_info_MEM_CNTL_out.Node_id;
-assign BUS2Neighbor_info_MEM_CNTL_out_valid=BUS2Neighbor_info_MEM_CNTL_out.PE_tag;
+assign BUS2Neighbor_info_MEM_CNTL_out_Node_id=BUS2Neighbor_info_MEM_CNTL_out.Node_id;
+assign BUS2Neighbor_info_MEM_CNTL_out_PE_tag=BUS2Neighbor_info_MEM_CNTL_out.PE_tag;
 always_ff@(posedge clk)begin
     if(reset)begin
         reg_Req_Bus_arbiter_in<=#1 'd0;

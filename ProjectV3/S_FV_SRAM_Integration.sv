@@ -75,7 +75,7 @@ assign FV_MEM2FV_Bank_in[0].eos=FV_MEM2FV_Bank_in_0_eos;
 assign FV_MEM2FV_Bank_in[0].FV_data=FV_MEM2FV_Bank_in_0_FV_data;
 assign FV_MEM2FV_Bank_in[0].A=FV_MEM2FV_Bank_in_0_A;
 
-assign FV_MEM2FV_Bank_in[1].sos=FV_MEM2FV_Bank_in_0_sos;
+assign FV_MEM2FV_Bank_in[1].sos=FV_MEM2FV_Bank_in_1_sos;
 assign FV_MEM2FV_Bank_in[1].eos=FV_MEM2FV_Bank_in_1_eos;
 assign FV_MEM2FV_Bank_in[1].FV_data=FV_MEM2FV_Bank_in_1_FV_data;
 assign FV_MEM2FV_Bank_in[1].A=FV_MEM2FV_Bank_in_1_A;

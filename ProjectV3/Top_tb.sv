@@ -21,12 +21,12 @@ always @(posedge clk) begin
 		replay_Iter_ff <= iTop_DUT.Current_replay_Iter;
 end */
 ///// Dump Mem /////
-always @(iTop_DUT.Current_replay_Iter, task_complete) begin
-	if (iTop_DUT.Current_replay_Iter === 2'b01 & !task_complete)
+always @(iTop_DUT.replay_Iter, task_complete) begin
+	if (iTop_DUT.replay_Iter === 2'b01 & !task_complete)
 		dumpPongBuf2file(file1);
-	if (iTop_DUT.Current_replay_Iter === 2'b10 & !task_complete)
+	if (iTop_DUT.replay_Iter === 2'b10 & !task_complete)
 		dumpPongBuf2file(file2);
-	if (iTop_DUT.Current_replay_Iter === 2'b11 & !task_complete)
+	if (iTop_DUT.replay_Iter === 2'b11 & !task_complete)
 		dumpPongBuf2file(file3);
 	if (task_complete)
 		dumpPongBuf2file(file4);

@@ -53,7 +53,7 @@ assign NeighborID_SRAM2Edge_PE_out_eos_2=NeighborID_SRAM2Edge_PE_out[2].eos;
 assign NeighborID_SRAM2Edge_PE_out_Neighbor_num_Iter_2=NeighborID_SRAM2Edge_PE_out[2].Neighbor_num_Iter;
 assign NeighborID_SRAM2Edge_PE_out_Neighbor_id_2=NeighborID_SRAM2Edge_PE_out[2].Neighbor_ids;
 
-assign NeighborID_SRAM2Edge_PE_out_sos_3=NeighborID_SRAM2Edge_PE_out[3].sos;s
+assign NeighborID_SRAM2Edge_PE_out_sos_3=NeighborID_SRAM2Edge_PE_out[3].sos;
 assign NeighborID_SRAM2Edge_PE_out_eos_3=NeighborID_SRAM2Edge_PE_out[3].eos;
 assign NeighborID_SRAM2Edge_PE_out_Neighbor_num_Iter_3=NeighborID_SRAM2Edge_PE_out[3].Neighbor_num_Iter;
 assign NeighborID_SRAM2Edge_PE_out_Neighbor_id_3=NeighborID_SRAM2Edge_PE_out[3].Neighbor_ids;

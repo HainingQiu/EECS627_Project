@@ -4,7 +4,6 @@ module Top(
     output logic task_complete
 );
 
-
 logic[`packet_size-1:0] Edge_PE2IMEM_CNTL_out_0_packet;
 logic[`packet_size-1:0] Edge_PE2IMEM_CNTL_out_1_packet;
 logic[`packet_size-1:0] Edge_PE2IMEM_CNTL_out_2_packet;
@@ -21,22 +20,22 @@ logic [`packet_size-1-2:0] DP_task2Edge_PE_out_packet_3;
 logic [`Num_Edge_PE-1:0] DP_task2Edge_PE_out_valid;
 logic Req_Bus_arbiter_out_0_req;
 logic[$clog2(`Num_Edge_PE)-1:0] Req_Bus_arbiter_out_0_PE_tag;
-logic Req_Bus_arbiter_out_0_req_type,;
+logic Req_Bus_arbiter_out_0_req_type;
 logic[$clog2(`Max_Node_id)-1:0] Req_Bus_arbiter_out_0_Node_id;	
 
 logic Req_Bus_arbiter_out_1_req;
 logic[$clog2(`Num_Edge_PE)-1:0] Req_Bus_arbiter_out_1_PE_tag;
-logic Req_Bus_arbiter_out_1_req_type,;
+logic Req_Bus_arbiter_out_1_req_type;
 logic[$clog2(`Max_Node_id)-1:0] Req_Bus_arbiter_out_1_Node_id;	
 
 logic Req_Bus_arbiter_out_2_req;
 logic[$clog2(`Num_Edge_PE)-1:0] Req_Bus_arbiter_out_2_PE_tag;
-logic Req_Bus_arbiter_out_2_req_type,;
+logic Req_Bus_arbiter_out_2_req_type;
 logic[$clog2(`Max_Node_id)-1:0] Req_Bus_arbiter_out_2_Node_id;	
 
 logic Req_Bus_arbiter_out_3_req;
 logic[$clog2(`Num_Edge_PE)-1:0] Req_Bus_arbiter_out_3_PE_tag;
-logic Req_Bus_arbiter_out_3_req_type,;
+logic Req_Bus_arbiter_out_3_req_type;
 logic[$clog2(`Max_Node_id)-1:0] Req_Bus_arbiter_out_3_Node_id;	
 
 logic Grant_Bus_arbiter_out_0_Grant;
@@ -149,24 +148,24 @@ logic Edge_PE2Bank_out_sos_3; // start of streaming
 logic Edge_PE2Bank_out_eos_3;//  end of streaming
 
 logic Edge_PE2Req_Output_SRAM_in_Grant_valid_0;
-logic Edge_PE2Req_Output_SRAM_in_PE_tag_0;
+logic[$clog2(`Num_Edge_PE)-1:0] Edge_PE2Req_Output_SRAM_in_PE_tag_0;
 logic Edge_PE2Req_Output_SRAM_in_req_0;
-logic Edge_PE2Req_Output_SRAM_in_Node_id_0;
+logic[$clog2(`Max_Node_id)-1:0] Edge_PE2Req_Output_SRAM_in_Node_id_0;
 
 logic Edge_PE2Req_Output_SRAM_in_Grant_valid_1;
-logic Edge_PE2Req_Output_SRAM_in_PE_tag_1;
+logic[$clog2(`Num_Edge_PE)-1:0] Edge_PE2Req_Output_SRAM_in_PE_tag_1;
 logic Edge_PE2Req_Output_SRAM_in_req_1;
-logic Edge_PE2Req_Output_SRAM_in_Node_id_1;
+logic[$clog2(`Max_Node_id)-1:0] Edge_PE2Req_Output_SRAM_in_Node_id_1;
 
 logic Edge_PE2Req_Output_SRAM_in_Grant_valid_2;
-logic Edge_PE2Req_Output_SRAM_in_PE_tag_2;
+logic[$clog2(`Num_Edge_PE)-1:0] Edge_PE2Req_Output_SRAM_in_PE_tag_2;
 logic Edge_PE2Req_Output_SRAM_in_req_2;
-logic Edge_PE2Req_Output_SRAM_in_Node_id_2;
+logic[$clog2(`Max_Node_id)-1:0] Edge_PE2Req_Output_SRAM_in_Node_id_2;
 
 logic Edge_PE2Req_Output_SRAM_in_Grant_valid_3;
-logic Edge_PE2Req_Output_SRAM_in_PE_tag_3;
+logic[$clog2(`Num_Edge_PE)-1:0] Edge_PE2Req_Output_SRAM_in_PE_tag_3;
 logic Edge_PE2Req_Output_SRAM_in_req_3;
-logic Edge_PE2Req_Output_SRAM_in_Node_id_3;
+logic[$clog2(`Max_Node_id)-1:0] Edge_PE2Req_Output_SRAM_in_Node_id_3;
 
 logic [$clog2(`MAX_FV_num):0 ]    Num_FV ;
 
@@ -238,7 +237,7 @@ logic Req2Output_SRAM_Bank_out_valid_1;
 logic [$clog2(`Num_Edge_PE)-1:0]Req2Output_SRAM_Bank_out_PE_tag_1;
 logic Req2Output_SRAM_Bank_out_rd_wr_1;
 logic [$clog2(`Max_Node_id)-1:0]Req2Output_SRAM_Bank_out_Node_id_1;
-logic Req2Output_SRAM_Bank_out_data_1;
+logic [`FV_bandwidth-1:0] Req2Output_SRAM_Bank_out_data_1;
 logic Req2Output_SRAM_Bank_out_wr_sos_1;
 logic Req2Output_SRAM_Bank_out_wr_eos_1;
 
@@ -246,7 +245,7 @@ logic Req2Output_SRAM_Bank_out_valid_2;
 logic [$clog2(`Num_Edge_PE)-1:0]Req2Output_SRAM_Bank_out_PE_tag_2;
 logic Req2Output_SRAM_Bank_out_rd_wr_2;
 logic [$clog2(`Max_Node_id)-1:0]Req2Output_SRAM_Bank_out_Node_id_2;
-logic Req2Output_SRAM_Bank_out_data_2;
+logic [`FV_bandwidth-1:0] Req2Output_SRAM_Bank_out_data_2;
 logic Req2Output_SRAM_Bank_out_wr_sos_2;
 logic Req2Output_SRAM_Bank_out_wr_eos_2;
 
@@ -254,7 +253,7 @@ logic Req2Output_SRAM_Bank_out_valid_3;
 logic [$clog2(`Num_Edge_PE)-1:0]Req2Output_SRAM_Bank_out_PE_tag_3;
 logic Req2Output_SRAM_Bank_out_rd_wr_3;
 logic [$clog2(`Max_Node_id)-1:0]Req2Output_SRAM_Bank_out_Node_id_3;
-logic Req2Output_SRAM_Bank_out_data_3;
+logic [`FV_bandwidth-1:0] Req2Output_SRAM_Bank_out_data_3;
 logic Req2Output_SRAM_Bank_out_wr_sos_3;
 logic Req2Output_SRAM_Bank_out_wr_eos_3;
 
@@ -421,7 +420,7 @@ logic Edge_PE2DP_out_IDLE_flag_1;
 logic Edge_PE2DP_out_IDLE_flag_2;
 logic Edge_PE2DP_out_IDLE_flag_3;
 
-logic task_complete;
+// logic task_complete;
 
 logic[`Num_Edge_PE-1+1:0] reqs_WB_Packet;
 logic [`Num_Edge_PE+1-1:0] WB_packet_grants;
@@ -513,7 +512,7 @@ Edge_PE_0(
     .NeighborID_SRAM2Edge_PE_in_Neighbor_num_Iter(NeighborID_SRAM2Edge_PE_out_Neighbor_num_Iter_0),
     .NeighborID_SRAM2Edge_PE_in_Neighbor_ids(NeighborID_SRAM2Edge_PE_out_Neighbor_id_0),
 
-    .Grant_Bus_arbiter_in(Grant_Bus_arbiter_out_0_Grant),				// grant request signal
+    .Grant_Bus_arbiter_in_signal(Grant_Bus_arbiter_out_0_Grant),				// grant request signal
     .Grant_output_Bus_arbiter_in(Ouput_SRAM_Grants[0]),                             // grant output sram req
     .Cur_Replay_Iter(replay_Iter),		// replay iteration count
 // input [$clog2(`Max_Node_id)-1:0] Last_Node_ID,				// last node ID address
@@ -570,7 +569,7 @@ Edge_PE_1(
     .NeighborID_SRAM2Edge_PE_in_Neighbor_num_Iter(NeighborID_SRAM2Edge_PE_out_Neighbor_num_Iter_1),
     .NeighborID_SRAM2Edge_PE_in_Neighbor_ids(NeighborID_SRAM2Edge_PE_out_Neighbor_id_1),
 
-    .Grant_Bus_arbiter_in(Grant_Bus_arbiter_out_1_Grant),				// grant request signal
+    .Grant_Bus_arbiter_in_signal(Grant_Bus_arbiter_out_1_Grant),				// grant request signal
     .Grant_output_Bus_arbiter_in(Ouput_SRAM_Grants[1]),                             // grant output sram req
     .Cur_Replay_Iter(replay_Iter),		// replay iteration count
 // input [$clog2(`Max_Node_id)-1:0] Last_Node_ID,				// last node ID address
@@ -627,7 +626,7 @@ Edge_PE_2(
     .NeighborID_SRAM2Edge_PE_in_Neighbor_num_Iter(NeighborID_SRAM2Edge_PE_out_Neighbor_num_Iter_2),
     .NeighborID_SRAM2Edge_PE_in_Neighbor_ids(NeighborID_SRAM2Edge_PE_out_Neighbor_id_2),
 
-    .Grant_Bus_arbiter_in(Grant_Bus_arbiter_out_2_Grant),				// grant request signal
+    .Grant_Bus_arbiter_in_signal(Grant_Bus_arbiter_out_2_Grant),				// grant request signal
     .Grant_output_Bus_arbiter_in(Ouput_SRAM_Grants[2]),                             // grant output sram req
     .Cur_Replay_Iter(replay_Iter),		// replay iteration count
     .Grant_WB_Packet(WB_packet_grants[3]),										// write back packet
@@ -684,7 +683,7 @@ Edge_PE_3(
     .NeighborID_SRAM2Edge_PE_in_Neighbor_num_Iter(NeighborID_SRAM2Edge_PE_out_Neighbor_num_Iter_3),
     .NeighborID_SRAM2Edge_PE_in_Neighbor_ids(NeighborID_SRAM2Edge_PE_out_Neighbor_id_3),
 
-    .Grant_Bus_arbiter_in(Grant_Bus_arbiter_out_3_Grant),				// grant request signal
+    .Grant_Bus_arbiter_in_signal(Grant_Bus_arbiter_out_3_Grant),				// grant request signal
     .Grant_output_Bus_arbiter_in(Ouput_SRAM_Grants[3]),                             // grant output sram req
     .Cur_Replay_Iter(replay_Iter),		// replay iteration count
 // input [$clog2(`Max_Node_id)-1:0] Last_Node_ID,				// last node ID address
@@ -1199,7 +1198,7 @@ Vertex_PE Vertex_PE_3(
     .Node_id_out(vertex_data_pkt_3_Node_id)
 );
 //------------------------------------------------------Weight_CNTL-----------------------------------------//
-Weight_CNTL Weight_CNTL_DUT(
+Weight_CNTL Weight_CNTL_U(
     .clk(clk),
     .reset(reset),
     .Num_Weight_layer(Weights_boundary),//Num_Weight_layer-1
@@ -1437,7 +1436,7 @@ Output_BUS Output_BUS_U(
 
     .Output_SRAM2Edge_PE_out_3_sos(Output_SRAM2Edge_PE_out_3_sos),
     .Output_SRAM2Edge_PE_out_3_eos(Output_SRAM2Edge_PE_out_3_eos),
-    .Output_SRAM2Edge_PE_out_3_FV_data(Output_SRAM2Edge_PE_out_3_FV_data),
+    .Output_SRAM2Edge_PE_out_3_FV_data(Output_SRAM2Edge_PE_out_3_FV_data)
 
 );
 vertex_buffer vertex_buffer(
@@ -1491,7 +1490,7 @@ vertex_buffer vertex_buffer(
     .outbuff_pkt_3_eos(outbuff_pkt_3_eos),
     .outbuff_pkt_3_data(outbuff_pkt_3_data),
     .outbuff_pkt_3_req(outbuff_pkt_3_req),
-    .outbuff_pkt_3_Node_id(outbuff_pkt_3_Node_id),
+    .outbuff_pkt_3_Node_id(outbuff_pkt_3_Node_id)
 
 );
 

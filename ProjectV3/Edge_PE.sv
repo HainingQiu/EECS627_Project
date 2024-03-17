@@ -17,7 +17,7 @@ input NeighborID_SRAM2Edge_PE_in_eos,
 input [$clog2(`max_degree_Iter)-1:0] NeighborID_SRAM2Edge_PE_in_Neighbor_num_Iter,
 input [`Neighbor_ID_bandwidth-1:0] NeighborID_SRAM2Edge_PE_in_Neighbor_ids,
 
-input  Grant_Bus_arbiter_in,				// grant request signal
+input  Grant_Bus_arbiter_in_signal,				// grant request signal
 input Grant_output_Bus_arbiter_in,                             // grant output sram req
 input [$clog2(`Max_replay_Iter)-1:0] Cur_Replay_Iter,		// replay iteration count
 // input [$clog2(`Max_Node_id)-1:0] Last_Node_ID,				// last node ID address
@@ -61,6 +61,8 @@ Edge_PE2IMEM_CNTL Edge_PE2IMEM_CNTL_out;
 Edge_PE2Bank Edge_PE2Bank_out;
 Edge_PE2Req_Output_SRAM Req_Output_SRAM_out;
 Edge_PE2DP Edge_PE2DP_out;
+Grant_Bus_arbiter Grant_Bus_arbiter_in;
+assign Grant_Bus_arbiter_in.Grant=Grant_Bus_arbiter_in_signal;
 assign Edge_PE2DP_out_IDLE_flag=Edge_PE2DP_out.IDLE_flag;
 
 assign DP_task2Edge_PE_in.packet =DP_task2Edge_PE_in_packet;

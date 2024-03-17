@@ -27,7 +27,7 @@ module Big_FV_wrapper_0(
     input [$clog2(`Num_Edge_PE)-1:0]req_pkt_PE_tag_2,
     input req_pkt_rd_wr_2,
     input [$clog2(`Max_Node_id)-1:0]req_pkt_Node_id_2,
-    input req_pkt_data_2,
+    input [`FV_bandwidth-1:0]req_pkt_data_2,
     input req_pkt_wr_sos_2,
     input req_pkt_wr_eos_2,
 

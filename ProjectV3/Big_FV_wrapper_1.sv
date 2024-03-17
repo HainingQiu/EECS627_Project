@@ -11,7 +11,7 @@ module Big_FV_wrapper_1(
     input [$clog2(`Num_Edge_PE)-1:0]req_pkt_PE_tag_0,
     input req_pkt_rd_wr_0,
     input [$clog2(`Max_Node_id)-1:0]req_pkt_Node_id_0,
-    input req_pkt_data_0,
+    input [`FV_bandwidth-1:0]req_pkt_data_0,
     input req_pkt_wr_sos_0,
     input req_pkt_wr_eos_0,
 
@@ -19,7 +19,7 @@ module Big_FV_wrapper_1(
     input [$clog2(`Num_Edge_PE)-1:0]req_pkt_PE_tag_1,
     input req_pkt_rd_wr_1,
     input [$clog2(`Max_Node_id)-1:0]req_pkt_Node_id_1,
-    input req_pkt_data_1,
+    input [`FV_bandwidth-1:0]req_pkt_data_1,
     input req_pkt_wr_sos_1,
     input req_pkt_wr_eos_1,
 
@@ -27,7 +27,7 @@ module Big_FV_wrapper_1(
     input [$clog2(`Num_Edge_PE)-1:0]req_pkt_PE_tag_2,
     input req_pkt_rd_wr_2,
     input [$clog2(`Max_Node_id)-1:0]req_pkt_Node_id_2,
-    input req_pkt_data_2,
+    input [`FV_bandwidth-1:0]req_pkt_data_2,
     input req_pkt_wr_sos_2,
     input req_pkt_wr_eos_2,
 
@@ -35,7 +35,7 @@ module Big_FV_wrapper_1(
     input [$clog2(`Num_Edge_PE)-1:0]req_pkt_PE_tag_3,
     input req_pkt_rd_wr_3,
     input [$clog2(`Max_Node_id)-1:0]req_pkt_Node_id_3,
-    input req_pkt_data_3,
+    input [`FV_bandwidth-1:0]req_pkt_data_3,
     input req_pkt_wr_sos_3,
     input req_pkt_wr_eos_3,
 
