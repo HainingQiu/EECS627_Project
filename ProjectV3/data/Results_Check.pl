@@ -39,10 +39,10 @@ my $num_Bank=4;
 while (my $line = <$input_fh>) {
     if($line_cnt<17)
     {
-        print "Current Line:$line_cnt \n";
-        print "line Value:$line";
-        print "wait_bank_change_flag:$wait_bank_change_flag \n";
-        print "Current_Node:$Current_Node \n";
+        # print "Current Line:$line_cnt \n";
+        # print "line Value:$line";
+        # print "wait_bank_change_flag:$wait_bank_change_flag \n";
+        # print "Current_Node:$Current_Node \n";
 
 
     }
