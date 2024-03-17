@@ -90,7 +90,7 @@ assign Edge_PE2IMEM_CNTL_out_packet=Edge_PE2IMEM_CNTL_out.packet;
 assign Edge_PE2IMEM_CNTL_out_valid=Edge_PE2IMEM_CNTL_out.valid;
 
 assign Edge_PE2Bank_out_sos=Edge_PE2Bank_out.sos;
-assign Edge_PE2Bank_out_eos=Edge_PE2Bank_out.sos;
+assign Edge_PE2Bank_out_eos=Edge_PE2Bank_out.eos;
 assign Edge_PE2Bank_out_FV_data_0=Edge_PE2Bank_out.FV_data[0];
 assign Edge_PE2Bank_out_FV_data_1=Edge_PE2Bank_out.FV_data[1];
 assign Edge_PE2Bank_out_FV_data_2=Edge_PE2Bank_out.FV_data[2];
