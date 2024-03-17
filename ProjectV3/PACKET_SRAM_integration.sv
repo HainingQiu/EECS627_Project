@@ -33,9 +33,9 @@ Edge_PE2IMEM_CNTL[`Num_Edge_PE-1:0] Edge_PE2IMEM_CNTL_in;
 DP_task2Edge_PE [`Num_Edge_PE-1:0]DP_task2Edge_PE_out;
 
 assign Edge_PE2IMEM_CNTL_in[0].packet=Edge_PE2IMEM_CNTL_in_packet_0;
-assign Edge_PE2IMEM_CNTL_in[1].packet=Edge_PE2IMEM_CNTL_in_packet_0;
-assign Edge_PE2IMEM_CNTL_in[2].packet=Edge_PE2IMEM_CNTL_in_packet_0;
-assign Edge_PE2IMEM_CNTL_in[3].packet=Edge_PE2IMEM_CNTL_in_packet_0;
+assign Edge_PE2IMEM_CNTL_in[1].packet=Edge_PE2IMEM_CNTL_in_packet_1;
+assign Edge_PE2IMEM_CNTL_in[2].packet=Edge_PE2IMEM_CNTL_in_packet_2;
+assign Edge_PE2IMEM_CNTL_in[3].packet=Edge_PE2IMEM_CNTL_in_packet_3;
 assign Edge_PE2IMEM_CNTL_in[0].valid=Edge_PE2IMEM_CNTL_in_valid[0];
 assign Edge_PE2IMEM_CNTL_in[1].valid=Edge_PE2IMEM_CNTL_in_valid[1];
 assign Edge_PE2IMEM_CNTL_in[2].valid=Edge_PE2IMEM_CNTL_in_valid[2];
