@@ -20,16 +20,16 @@ FV_FIFO2FV_CNTL reg_FV_FIFO2FV_CNTL_in,nx_FV_FIFO2FV_CNTL_in;
 FV_MEM_CNTL2FV_Bank_CNTL[`Num_Banks_FV-1:0] nx_FV_MEM_CNTL2FV_Bank_CNTL_out;
 always_ff@(posedge clk)begin
     if(reset)begin
-        state<=#1 IDLE;
-        FV_CNTL2FV_FIFO_out<=#1 'd0;
-        FV_MEM_CNTL2FV_Bank_CNTL_out<=#1 'd0;
-        reg_FV_FIFO2FV_CNTL_in<=#1 'd0;
+        state<= IDLE;
+        FV_CNTL2FV_FIFO_out<= 'd0;
+        FV_MEM_CNTL2FV_Bank_CNTL_out<= 'd0;
+        reg_FV_FIFO2FV_CNTL_in<= 'd0;
     end
     else begin
-        state<=#1 nx_state;
-        FV_CNTL2FV_FIFO_out<=#1 nx_FV_CNTL2FV_FIFO_out;
-        FV_MEM_CNTL2FV_Bank_CNTL_out<=#1 nx_FV_MEM_CNTL2FV_Bank_CNTL_out;
-        reg_FV_FIFO2FV_CNTL_in<=#1 nx_FV_FIFO2FV_CNTL_in;
+        state<= nx_state;
+        FV_CNTL2FV_FIFO_out<= nx_FV_CNTL2FV_FIFO_out;
+        FV_MEM_CNTL2FV_Bank_CNTL_out<= nx_FV_MEM_CNTL2FV_Bank_CNTL_out;
+        reg_FV_FIFO2FV_CNTL_in<= nx_FV_FIFO2FV_CNTL_in;
     end
 end
 
@@ -37,6 +37,7 @@ always_comb begin
     nx_FV_CNTL2FV_FIFO_out='d0;
     nx_FV_FIFO2FV_CNTL_in=reg_FV_FIFO2FV_CNTL_in;
     nx_FV_MEM_CNTL2FV_Bank_CNTL_out='d0;
+    nx_state=state;
     case(state)
         IDLE:
             if(!FV_FIFO2FV_CNTL_in.empty)begin

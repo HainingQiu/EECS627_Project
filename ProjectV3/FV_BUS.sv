@@ -1,4 +1,4 @@
-// `include "sys_defs.svh"
+
 module FV_BUS(
 
     input clk,
@@ -10,10 +10,10 @@ FV_SRAM2Edge_PE[`Num_Edge_PE-1:0] nx_FV_SRAM2Edge_PE_out;
 
 always_ff@(posedge clk)begin
     if(reset)begin
-        FV_SRAM2Edge_PE_out<=#1 'd0;
+        FV_SRAM2Edge_PE_out<= 'd0;
     end
     else begin
-        FV_SRAM2Edge_PE_out<=#1 nx_FV_SRAM2Edge_PE_out;
+        FV_SRAM2Edge_PE_out<= nx_FV_SRAM2Edge_PE_out;
     end
 end
 always_comb begin

@@ -1,4 +1,4 @@
-// `include "sys_defs.svh"
+
 module FV_Bank_MEMCntl(
 input clk,
 input reset,
@@ -26,21 +26,21 @@ logic [$clog2(`Num_Edge_PE)-1:0] reg_PE_tag,nx_reg_PE_tag;
 FV_bank_CNTL2Edge_PE nx_FV_bank_CNTL2Edge_PE_out;
 always_ff @(posedge clk)begin
     if(reset)begin
-        state<=#1 IDLE;
-        reg_PE_tag<=#1 'd0;
-        FV_bank_CNTL2Edge_PE_out<=#1 'd0;
-        reg_FV_bank2SRAM_Interface_out.A<=#1 'd0;
-        reg_FV_bank2SRAM_Interface_out.CEN<=#1 'd1;
-        reg_FV_bank2SRAM_Interface_out.WEN<=#1 'd1;
-        reg_FV_bank2SRAM_Interface_out.D<=#1 'd0;
-        cnt<=#1 'd0;
+        state<= IDLE;
+        reg_PE_tag<= 'd0;
+        FV_bank_CNTL2Edge_PE_out<= 'd0;
+        reg_FV_bank2SRAM_Interface_out.A<= 'd0;
+        reg_FV_bank2SRAM_Interface_out.CEN<= 'd1;
+        reg_FV_bank2SRAM_Interface_out.WEN<= 'd1;
+        reg_FV_bank2SRAM_Interface_out.D<= 'd0;
+        cnt<= 'd0;
     end
     else begin
-        state<=#1 nx_state;
-        reg_PE_tag<=#1 nx_reg_PE_tag;
-        reg_FV_bank2SRAM_Interface_out<=#1 FV_bank2SRAM_Interface_out;
-        FV_bank_CNTL2Edge_PE_out<=#1 nx_FV_bank_CNTL2Edge_PE_out;
-        cnt<=#1 nx_cnt;
+        state<= nx_state;
+        reg_PE_tag<= nx_reg_PE_tag;
+        reg_FV_bank2SRAM_Interface_out<= FV_bank2SRAM_Interface_out;
+        FV_bank_CNTL2Edge_PE_out<= nx_FV_bank_CNTL2Edge_PE_out;
+        cnt<= nx_cnt;
     end
 end
 always_comb begin
@@ -49,6 +49,7 @@ always_comb begin
     nx_FV_bank_CNTL2Edge_PE_out='d0;
     Busy='d0;
     nx_reg_PE_tag=reg_PE_tag;
+        nx_state=state;
     case(state)
         IDLE: 
             if(FV_MEM2FV_Bank_in.sos)begin
