@@ -44,10 +44,10 @@ assign Edge_PE2IMEM_CNTL_in[3].valid=Edge_PE2IMEM_CNTL_in_valid[3];
 
 
 
-assign DP_task2Edge_PE_out_packet_0=DP_task2Edge_PE_out[0];
-assign DP_task2Edge_PE_out_packet_1=DP_task2Edge_PE_out[1];
-assign DP_task2Edge_PE_out_packet_2=DP_task2Edge_PE_out[2];
-assign DP_task2Edge_PE_out_packet_3=DP_task2Edge_PE_out[3];
+assign DP_task2Edge_PE_out_packet_0=DP_task2Edge_PE_out[0].packet;
+assign DP_task2Edge_PE_out_packet_1=DP_task2Edge_PE_out[1].packet;
+assign DP_task2Edge_PE_out_packet_2=DP_task2Edge_PE_out[2].packet;
+assign DP_task2Edge_PE_out_packet_3=DP_task2Edge_PE_out[3].packet;
 assign DP_task2Edge_PE_out_valid={DP_task2Edge_PE_out[3].valid,DP_task2Edge_PE_out[2].valid,DP_task2Edge_PE_out[1].valid,DP_task2Edge_PE_out[0].valid};
 
 
