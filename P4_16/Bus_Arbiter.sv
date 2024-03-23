@@ -3,12 +3,42 @@ module Bus_Arbiter
 (
 input clk,															// global clock
 input reset,														// sync active high reset
-input Req_Bus_arbiter[`Num_Edge_PE-1:0] Req_Bus_arbiter_in,			// input request from PE
+// input Req_Bus_arbiter[`Num_Edge_PE-1:0] Req_Bus_arbiter_in,			// input request from PE
+//Req_Bus_arbiter_in
+input Req_Bus_arbiter_in_0_req,
+input [$clog2(`Num_Edge_PE)-1:0] Req_Bus_arbiter_in_0_PE_tag,
+input Req_Bus_arbiter_in_0_req_type,
+input [$clog2(`Max_Node_id)-1:0]Req_Bus_arbiter_in_0_Node_id,
 
-output Grant_Bus_arbiter[`Num_Edge_PE-1:0] Grant_Bus_arbiter_out,
-output BUS2FV_info_FIFO BUS2FV_info_MEM_CNTL_out,
-output BUS2Neighbor_info_MEM_CNTL BUS2Neighbor_info_MEM_CNTL_out
-// output BUS2Output_SRAM_MEM_CNTL BUS2Output_SRAM_MEM_CNTL_out
+input Req_Bus_arbiter_in_1_req,
+input [$clog2(`Num_Edge_PE)-1:0] Req_Bus_arbiter_in_1_PE_tag,
+input Req_Bus_arbiter_in_1_req_type,
+input [$clog2(`Max_Node_id)-1:0]Req_Bus_arbiter_in_1_Node_id,
+
+input Req_Bus_arbiter_in_2_req,
+input [$clog2(`Num_Edge_PE)-1:0] Req_Bus_arbiter_in_2_PE_tag,
+input Req_Bus_arbiter_in_2_req_type,
+input [$clog2(`Max_Node_id)-1:0]Req_Bus_arbiter_in_2_Node_id,
+
+input Req_Bus_arbiter_in_3_req,
+input [$clog2(`Num_Edge_PE)-1:0] Req_Bus_arbiter_in_3_PE_tag,
+input Req_Bus_arbiter_in_3_req_type,
+input [$clog2(`Max_Node_id)-1:0]Req_Bus_arbiter_in_3_Node_id,		// input request from PE
+
+// output Grant_Bus_arbiter[`Num_Edge_PE-1:0] Grant_Bus_arbiter_out,
+output logic Grant_Bus_arbiter_out_0_Grant,
+output logic Grant_Bus_arbiter_out_1_Grant,
+output logic Grant_Bus_arbiter_out_2_Grant,
+output logic Grant_Bus_arbiter_out_3_Grant,
+// output BUS2FV_info_FIFO BUS2FV_info_MEM_CNTL_out,
+output logic BUS2FV_info_MEM_CNTL_out_valid,
+output logic [$clog2(`Max_Node_id)-1:0] BUS2FV_info_MEM_CNTL_out_Node_id,
+output logic [$clog2(`Num_Edge_PE)-1:0] BUS2FV_info_MEM_CNTL_out_PE_tag,
+
+// output BUS2Neighbor_info_MEM_CNTL BUS2Neighbor_info_MEM_CNTL_out
+output logic BUS2Neighbor_info_MEM_CNTL_out_valid,
+output logic [$clog2(`Max_Node_id)-1:0] BUS2Neighbor_info_MEM_CNTL_out_Node_id,
+output logic [$clog2(`Num_Edge_PE)-1:0] BUS2Neighbor_info_MEM_CNTL_out_PE_tag
 );
 logic [`Num_Edge_PE-1:0] local_req, local_grant;
 BUS2FV_info_FIFO nx_BUS2FV_info_MEM_CNTL_out;
@@ -16,6 +46,45 @@ BUS2FV_info_FIFO nx_BUS2FV_info_MEM_CNTL_out;
 Req_Bus_arbiter[`Num_Edge_PE-1:0] reg_Req_Bus_arbiter_in;
 BUS2Neighbor_info_MEM_CNTL nx_BUS2Neighbor_info_MEM_CNTL_out;
 // BUS2Output_SRAM_MEM_CNTL nx_BUS2Output_SRAM_MEM_CNTL_out;
+Req_Bus_arbiter[`Num_Edge_PE-1:0] Req_Bus_arbiter_in;
+Grant_Bus_arbiter[`Num_Edge_PE-1:0] Grant_Bus_arbiter_out;
+BUS2FV_info_FIFO BUS2FV_info_MEM_CNTL_out;
+BUS2Neighbor_info_MEM_CNTL BUS2Neighbor_info_MEM_CNTL_out;
+
+assign Req_Bus_arbiter_in[0].req=Req_Bus_arbiter_in_0_req;
+assign Req_Bus_arbiter_in[1].req=Req_Bus_arbiter_in_1_req;
+assign Req_Bus_arbiter_in[2].req=Req_Bus_arbiter_in_2_req;
+assign Req_Bus_arbiter_in[3].req=Req_Bus_arbiter_in_3_req;
+
+assign Req_Bus_arbiter_in[0].PE_tag=Req_Bus_arbiter_in_0_PE_tag;
+assign Req_Bus_arbiter_in[1].PE_tag=Req_Bus_arbiter_in_1_PE_tag;
+assign Req_Bus_arbiter_in[2].PE_tag=Req_Bus_arbiter_in_2_PE_tag;
+assign Req_Bus_arbiter_in[3].PE_tag=Req_Bus_arbiter_in_3_PE_tag;
+
+
+assign Req_Bus_arbiter_in[0].req_type=Req_Bus_arbiter_in_0_req_type;
+assign Req_Bus_arbiter_in[1].req_type=Req_Bus_arbiter_in_1_req_type;
+assign Req_Bus_arbiter_in[2].req_type=Req_Bus_arbiter_in_2_req_type;
+assign Req_Bus_arbiter_in[3].req_type=Req_Bus_arbiter_in_3_req_type;
+
+
+assign Req_Bus_arbiter_in[0].Node_id=Req_Bus_arbiter_in_0_Node_id;
+assign Req_Bus_arbiter_in[1].Node_id=Req_Bus_arbiter_in_1_Node_id;
+assign Req_Bus_arbiter_in[2].Node_id=Req_Bus_arbiter_in_2_Node_id;
+assign Req_Bus_arbiter_in[3].Node_id=Req_Bus_arbiter_in_3_Node_id;
+
+assign Grant_Bus_arbiter_out_0_Grant=Grant_Bus_arbiter_out[0].Grant;
+assign Grant_Bus_arbiter_out_1_Grant=Grant_Bus_arbiter_out[1].Grant;
+assign Grant_Bus_arbiter_out_2_Grant=Grant_Bus_arbiter_out[2].Grant;
+assign Grant_Bus_arbiter_out_3_Grant=Grant_Bus_arbiter_out[3].Grant;
+
+assign BUS2FV_info_MEM_CNTL_out_valid=BUS2FV_info_MEM_CNTL_out.valid;
+assign BUS2FV_info_MEM_CNTL_out_Node_id=BUS2FV_info_MEM_CNTL_out.Node_id;
+assign BUS2FV_info_MEM_CNTL_out_PE_tag=BUS2FV_info_MEM_CNTL_out.PE_tag;
+
+assign BUS2Neighbor_info_MEM_CNTL_out_valid=BUS2Neighbor_info_MEM_CNTL_out.valid;
+assign BUS2Neighbor_info_MEM_CNTL_out_Node_id=BUS2Neighbor_info_MEM_CNTL_out.Node_id;
+assign BUS2Neighbor_info_MEM_CNTL_out_PE_tag=BUS2Neighbor_info_MEM_CNTL_out.PE_tag;
 always_ff@(posedge clk)begin
     if(reset)begin
         reg_Req_Bus_arbiter_in<=#1 'd0;
