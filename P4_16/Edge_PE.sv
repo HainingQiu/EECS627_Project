@@ -3,24 +3,106 @@ module Edge_PE
 #(parameter PE_tag = 0)(
 input clk,													// global clock
 input reset,												// sync active high reset
-input DP_task2Edge_PE DP_task2Edge_PE_in,					// dispatch task from command buffer
-input FV_SRAM2Edge_PE FV_SRAM2Edge_PE_in,					// feature value from FV SRAM (for current computation)
-input Output_SRAM2Edge_PE Output_SRAM2Edge_PE_in,			// feature value from output SRAM (last computation)
-input NeighborID_SRAM2Edge_PE NeighborID_SRAM2Edge_PE_in,	// neighbor info from neighbor SRAM
-input Grant_Bus_arbiter Grant_Bus_arbiter_in,				// grant request signal
+input  [`packet_size-1-2:0]DP_task2Edge_PE_in_packet,					// dispatch task from command buffer
+input  DP_task2Edge_PE_in_valid,	
+input FV_SRAM2Edge_PE_in_sos,					// feature value from FV SRAM (for current computation)
+input FV_SRAM2Edge_PE_in_eos,	
+input [`FV_bandwidth-1:0] FV_SRAM2Edge_PE_in_FV_data,	
+input Output_SRAM2Edge_PE_in_sos,			// feature value from output SRAM (last computation)
+input Output_SRAM2Edge_PE_in_eos,	
+input [`FV_bandwidth-1:0] Output_SRAM2Edge_PE_in_FV_data,	
+
+input NeighborID_SRAM2Edge_PE_in_sos,	// neighbor info from neighbor SRAM
+input NeighborID_SRAM2Edge_PE_in_eos,
+input [$clog2(`max_degree_Iter)-1:0] NeighborID_SRAM2Edge_PE_in_Neighbor_num_Iter,
+input [`Neighbor_ID_bandwidth-1:0] NeighborID_SRAM2Edge_PE_in_Neighbor_ids,
+
+input  Grant_Bus_arbiter_in_signal,				// grant request signal
 input Grant_output_Bus_arbiter_in,                             // grant output sram req
 input [$clog2(`Max_replay_Iter)-1:0] Cur_Replay_Iter,		// replay iteration count
 // input [$clog2(`Max_Node_id)-1:0] Last_Node_ID,				// last node ID address
 input Grant_WB_Packet,										// write back packet
 
-output Req_Bus_arbiter Req_Bus_arbiter_out,					// request to arbiter
-output Edge_PE2DP Edge_PE2DP_out,							// idle flag output to dispatch
-output Edge_PE2IMEM_CNTL Edge_PE2IMEM_CNTL_out,				// packet to IMEM
+output logic Req_Bus_arbiter_out_req,
+output logic[$clog2(`Num_Edge_PE)-1:0] Req_Bus_arbiter_out_PE_tag,
+output logic Req_Bus_arbiter_out_req_type, 
+output logic[$clog2(`Max_Node_id)-1:0] Req_Bus_arbiter_out_Node_id,					// request to arbiter
+
+
+output logic Edge_PE2DP_out_IDLE_flag,							// idle flag output to dispatch
+output logic[`packet_size-1:0] Edge_PE2IMEM_CNTL_out_packet,				// packet to IMEM
+output logic Edge_PE2IMEM_CNTL_out_valid,		
+
 output logic req_WB_Packet,									// request write back packet
-output Edge_PE2Bank Edge_PE2Bank_out,						// aggregated output to bank
-output Edge_PE2Req_Output_SRAM Req_Output_SRAM_out
+
+output logic Edge_PE2Bank_out_sos, // start of streaming
+output logic Edge_PE2Bank_out_eos,//  end of streaming
+output logic [`FV_size-1:0] Edge_PE2Bank_out_FV_data_0,//16/8
+output logic [`FV_size-1:0] Edge_PE2Bank_out_FV_data_1,
+// output logic [`FV_size-1:0] Edge_PE2Bank_out_FV_data_2,
+// output logic [`FV_size-1:0] Edge_PE2Bank_out_FV_data_3,
+output logic Edge_PE2Bank_out_Done_aggr,
+output logic Edge_PE2Bank_out_WB_en,
+output logic[$clog2(`Max_Node_id)-1:0] Edge_PE2Bank_out_Node_id,
+
+output logic Req_Output_SRAM_out_Grant_valid,
+output logic[$clog2(`Num_Edge_PE)-1:0] Req_Output_SRAM_out_PE_tag,
+output logic Req_Output_SRAM_out_req,
+output logic[$clog2(`Max_Node_id)-1:0]Req_Output_SRAM_out_Node_id
 );
 
+DP_task2Edge_PE DP_task2Edge_PE_in;
+FV_SRAM2Edge_PE FV_SRAM2Edge_PE_in;
+Output_SRAM2Edge_PE Output_SRAM2Edge_PE_in;
+NeighborID_SRAM2Edge_PE NeighborID_SRAM2Edge_PE_in;
+Req_Bus_arbiter Req_Bus_arbiter_out;
+Edge_PE2IMEM_CNTL Edge_PE2IMEM_CNTL_out;
+Edge_PE2Bank Edge_PE2Bank_out;
+Edge_PE2Req_Output_SRAM Req_Output_SRAM_out;
+Edge_PE2DP Edge_PE2DP_out;
+Grant_Bus_arbiter Grant_Bus_arbiter_in;
+assign Grant_Bus_arbiter_in.Grant=Grant_Bus_arbiter_in_signal;
+assign Edge_PE2DP_out_IDLE_flag=Edge_PE2DP_out.IDLE_flag;
+
+assign DP_task2Edge_PE_in.packet =DP_task2Edge_PE_in_packet;
+assign DP_task2Edge_PE_in.valid =DP_task2Edge_PE_in_valid;
+
+assign FV_SRAM2Edge_PE_in.sos=FV_SRAM2Edge_PE_in_sos;
+assign FV_SRAM2Edge_PE_in.eos=FV_SRAM2Edge_PE_in_eos;
+assign FV_SRAM2Edge_PE_in.FV_data=FV_SRAM2Edge_PE_in_FV_data;
+
+assign Output_SRAM2Edge_PE_in.sos=Output_SRAM2Edge_PE_in_sos;
+assign Output_SRAM2Edge_PE_in.eos=Output_SRAM2Edge_PE_in_eos;
+assign Output_SRAM2Edge_PE_in.FV_data=Output_SRAM2Edge_PE_in_FV_data;
+
+assign NeighborID_SRAM2Edge_PE_in.sos=NeighborID_SRAM2Edge_PE_in_sos;
+assign NeighborID_SRAM2Edge_PE_in.eos=NeighborID_SRAM2Edge_PE_in_eos;
+assign NeighborID_SRAM2Edge_PE_in.Neighbor_num_Iter=NeighborID_SRAM2Edge_PE_in_Neighbor_num_Iter;
+assign NeighborID_SRAM2Edge_PE_in.Neighbor_ids=NeighborID_SRAM2Edge_PE_in_Neighbor_ids;
+
+assign Req_Bus_arbiter_out_req =Req_Bus_arbiter_out.req;
+assign Req_Bus_arbiter_out_PE_tag =Req_Bus_arbiter_out.PE_tag;
+assign Req_Bus_arbiter_out_req_type= Req_Bus_arbiter_out.req_type;
+assign Req_Bus_arbiter_out_Node_id =Req_Bus_arbiter_out.Node_id;
+
+assign Edge_PE2IMEM_CNTL_out_packet=Edge_PE2IMEM_CNTL_out.packet;
+assign Edge_PE2IMEM_CNTL_out_valid=Edge_PE2IMEM_CNTL_out.valid;
+
+assign Edge_PE2Bank_out_sos=Edge_PE2Bank_out.sos;
+assign Edge_PE2Bank_out_eos=Edge_PE2Bank_out.eos;
+assign Edge_PE2Bank_out_FV_data_0=Edge_PE2Bank_out.FV_data[0];
+assign Edge_PE2Bank_out_FV_data_1=Edge_PE2Bank_out.FV_data[1];
+assign Edge_PE2Bank_out_FV_data_2=Edge_PE2Bank_out.FV_data[2];
+assign Edge_PE2Bank_out_FV_data_3=Edge_PE2Bank_out.FV_data[3];
+assign Edge_PE2Bank_out_Done_aggr=Edge_PE2Bank_out.Done_aggr;
+assign Edge_PE2Bank_out_WB_en=Edge_PE2Bank_out.WB_en;
+assign Edge_PE2Bank_out_Node_id=Edge_PE2Bank_out.Node_id;
+
+
+assign Req_Output_SRAM_out_Grant_valid =Req_Output_SRAM_out.Grant_valid;
+assign Req_Output_SRAM_out_PE_tag =Req_Output_SRAM_out.PE_tag;
+assign Req_Output_SRAM_out_req= Req_Output_SRAM_out.req;
+assign Req_Output_SRAM_out_Node_id =Req_Output_SRAM_out.Node_id;
 // FSM State Def
 typedef enum reg [$clog2(12)-1:0] {
 	IDLE='d0,
