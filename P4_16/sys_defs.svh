@@ -50,9 +50,13 @@
 `define com_fifo_size 8
 `define RS_entry 4
 //----------------------WSW-----------------------------//
-
+typedef struct packed {
+    logic[$clog2(`Weight_SRAM_line)-1:0] A;
+    logic CEN;
+    logic WEN;
+} Weight_Cntl2SRAM_Interface;
 //---------------------------Vertex------------------------------//
-`define Max_Num_Weight_layer 16
+`define Max_Num_Weight_layer 32
 `define Mult_per_PE 2
 typedef struct packed {
     logic sos;
