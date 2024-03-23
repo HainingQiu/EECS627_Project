@@ -1,32 +1,121 @@
 `define NUM_PE 4
 `define BIT_WIDTH $clog2(`NUM_PE)
 
-// typedef struct packed {
-//     logic sos; // start of streaming
-//     logic eos;//  end of streaming
-//     logic [1:0][`FV_size-1:0] FV_data;
-//     logic Done_aggr;
-//     logic WB_en;
-// } Edge_PE2Bank;
-
-// typedef struct packed {
-//     logic sos;
-//     logic eos;
-//     logic [1:0][`FV_size-1:0] FV_data;
-// } out_buff2Bank;
-
 
 module edge_buffer(
     input clk, reset,
-    input Edge_PE2Bank [`Num_Edge_PE-1:0] edge_pkt,
+    input [`Num_Edge_PE-1:0] edge_pkt_sos,
+    input [`Num_Edge_PE-1:0] edge_pkt_eos,
+    input [`FV_size-1:0] edge_pkt_FV_data_0_0,
+    input [`FV_size-1:0] edge_pkt_FV_data_0_1,
+    input [`FV_size-1:0] edge_pkt_FV_data_1_0,
+    input [`FV_size-1:0] edge_pkt_FV_data_1_1,
+    input [`FV_size-1:0] edge_pkt_FV_data_2_0,
+    input [`FV_size-1:0] edge_pkt_FV_data_2_1,
+    input [`FV_size-1:0] edge_pkt_FV_data_3_0,
+    input [`FV_size-1:0] edge_pkt_FV_data_3_1,
+    input [`Num_Edge_PE-1:0] edge_pkt_Done_aggr,
+    input [`Num_Edge_PE-1:0] edge_pkt_WB_en,
+    input [$clog2(`Max_Node_id)-1:0] edge_pkt_Node_id_0,
+    input [$clog2(`Max_Node_id)-1:0] edge_pkt_Node_id_1,
+    input [$clog2(`Max_Node_id)-1:0] edge_pkt_Node_id_2,
+    input [$clog2(`Max_Node_id)-1:0] edge_pkt_Node_id_3,
+
     input [`Num_Edge_PE-1:0] req_grant,
     input RS_available, // 1 is available , 0 is not available
 
-    output Bank2RS RS_pkt_out,
+    output logic RS_pkt_out_sos,
+    output logic RS_pkt_out_eos,
+    output logic [`FV_size-1:0] RS_pkt_out_FV_data_0,
+    output logic [`FV_size-1:0] RS_pkt_out_FV_data_1,
+    output logic [$clog2(`Max_Node_id)-1:0] RS_pkt_out_Node_id,
+
     output logic [`Num_Edge_PE-1:0] bank_busy,
-    output Bank_Req2Req_Output_SRAM [`Num_Edge_PE-1:0] outbuff_pkt
+    
+    output logic [`Num_Edge_PE-1:0] outbuff_pkt_Grant_valid,
+    output logic [`Num_Edge_PE-1:0] outbuff_pkt_sos,
+    output logic [`Num_Edge_PE-1:0] outbuff_pkt_eos,
+    output logic [`FV_bandwidth-1:0] outbuff_pkt_data_0,
+    output logic [`FV_bandwidth-1:0] outbuff_pkt_data_1,
+    output logic [`FV_bandwidth-1:0] outbuff_pkt_data_2,
+    output logic [`FV_bandwidth-1:0] outbuff_pkt_data_3,
+    output logic [`Num_Edge_PE-1:0] outbuff_pkt_req,
+    output logic [$clog2(`Max_Node_id)-1:0] outbuff_pkt_Node_id_0,
+    output logic [$clog2(`Max_Node_id)-1:0] outbuff_pkt_Node_id_1,
+    output logic [$clog2(`Max_Node_id)-1:0] outbuff_pkt_Node_id_2,
+    output logic [$clog2(`Max_Node_id)-1:0] outbuff_pkt_Node_id_3
 );
     
+Edge_PE2Bank [`Num_Edge_PE-1:0] edge_pkt;
+Bank2RS RS_pkt_out;
+Bank_Req2Req_Output_SRAM [`Num_Edge_PE-1:0] outbuff_pkt;
+
+assign edge_pkt[0].sos = edge_pkt_sos[0];
+assign edge_pkt[1].sos = edge_pkt_sos[1];
+assign edge_pkt[2].sos = edge_pkt_sos[2];
+assign edge_pkt[3].sos = edge_pkt_sos[3];
+assign edge_pkt[0].eos = edge_pkt_eos[0];
+assign edge_pkt[1].eos = edge_pkt_eos[1];
+assign edge_pkt[2].eos = edge_pkt_eos[2];
+assign edge_pkt[3].eos = edge_pkt_eos[3];
+assign edge_pkt[0].FV_data[0] = edge_pkt_FV_data_0_0;
+assign edge_pkt[0].FV_data[1] = edge_pkt_FV_data_0_1;
+
+assign edge_pkt[1].FV_data[0] = edge_pkt_FV_data_1_0;
+assign edge_pkt[1].FV_data[1] = edge_pkt_FV_data_1_1;
+
+assign edge_pkt[2].FV_data[0] = edge_pkt_FV_data_2_0;
+assign edge_pkt[2].FV_data[1] = edge_pkt_FV_data_2_1;
+
+assign edge_pkt[3].FV_data[0] = edge_pkt_FV_data_3_0;
+assign edge_pkt[3].FV_data[1] = edge_pkt_FV_data_3_1;
+
+assign edge_pkt[0].Done_aggr = edge_pkt_Done_aggr[0];
+assign edge_pkt[1].Done_aggr = edge_pkt_Done_aggr[1];
+assign edge_pkt[2].Done_aggr = edge_pkt_Done_aggr[2];
+assign edge_pkt[3].Done_aggr = edge_pkt_Done_aggr[3];
+assign edge_pkt[0].WB_en = edge_pkt_WB_en[0];
+assign edge_pkt[1].WB_en = edge_pkt_WB_en[1];
+assign edge_pkt[2].WB_en = edge_pkt_WB_en[2];
+assign edge_pkt[3].WB_en = edge_pkt_WB_en[3];
+assign edge_pkt[0].Node_id = edge_pkt_Node_id_0;
+assign edge_pkt[1].Node_id = edge_pkt_Node_id_1;
+assign edge_pkt[2].Node_id = edge_pkt_Node_id_2;
+assign edge_pkt[3].Node_id = edge_pkt_Node_id_3;
+
+assign RS_pkt_out_sos = RS_pkt_out.sos;
+assign RS_pkt_out_eos = RS_pkt_out.eos;
+assign RS_pkt_out_FV_data_0 = RS_pkt_out.FV_data[0];
+assign RS_pkt_out_FV_data_1 = RS_pkt_out.FV_data[1];
+// assign RS_pkt_out_FV_data_2 = RS_pkt_out.FV_data[2];
+// assign RS_pkt_out_FV_data_3 = RS_pkt_out.FV_data[3];
+assign RS_pkt_out_Node_id = RS_pkt_out.Node_id;
+
+assign outbuff_pkt_Grant_valid[0] = outbuff_pkt[0].Grant_valid;
+assign outbuff_pkt_Grant_valid[1] = outbuff_pkt[1].Grant_valid;
+assign outbuff_pkt_Grant_valid[2] = outbuff_pkt[2].Grant_valid;
+assign outbuff_pkt_Grant_valid[3] = outbuff_pkt[3].Grant_valid;
+assign outbuff_pkt_sos[0] = outbuff_pkt[0].sos;
+assign outbuff_pkt_sos[1] = outbuff_pkt[1].sos;
+assign outbuff_pkt_sos[2] = outbuff_pkt[2].sos;
+assign outbuff_pkt_sos[3] = outbuff_pkt[3].sos;
+assign outbuff_pkt_eos[0] = outbuff_pkt[0].eos;
+assign outbuff_pkt_eos[1] = outbuff_pkt[1].eos;
+assign outbuff_pkt_eos[2] = outbuff_pkt[2].eos;
+assign outbuff_pkt_eos[3] = outbuff_pkt[3].eos;
+assign outbuff_pkt_data_0 = outbuff_pkt[0].data;
+assign outbuff_pkt_data_1 = outbuff_pkt[1].data;
+assign outbuff_pkt_data_2 = outbuff_pkt[2].data;
+assign outbuff_pkt_data_3 = outbuff_pkt[3].data;
+assign outbuff_pkt_req[0] = outbuff_pkt[0].req;
+assign outbuff_pkt_req[1] = outbuff_pkt[1].req;
+assign outbuff_pkt_req[2] = outbuff_pkt[2].req;
+assign outbuff_pkt_req[3] = outbuff_pkt[3].req;
+assign outbuff_pkt_Node_id_0 = outbuff_pkt[0].Node_id;
+assign outbuff_pkt_Node_id_1 = outbuff_pkt[1].Node_id;
+assign outbuff_pkt_Node_id_2 = outbuff_pkt[2].Node_id;
+assign outbuff_pkt_Node_id_3 = outbuff_pkt[3].Node_id;
+
     logic [`Num_Edge_PE-1:0]  rs_req, masked_rs_req, rs_req_grant, rs_req_grant_last;
     Bank2RS[`Num_Edge_PE-1:0] rs_pkt;
     
