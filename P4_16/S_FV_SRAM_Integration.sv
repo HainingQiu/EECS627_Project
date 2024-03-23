@@ -3,11 +3,52 @@ module S_FV_SRAM_integration(
     input clk,
     input reset,
     // input winc,
-	input FV_info2FV_FIFO	wdata,
-    input [$clog2(`Max_FV_num):0] Num_FV,
-    input FV_MEM2FV_Bank[`Num_Banks_all_FV-1:0]  FV_MEM2FV_Bank_in,
+	// input FV_info2FV_FIFO	wdata,
+    input wdata_valid,
+    input [`FV_info_bank_width-1:0] wdata_FV_addr,
+    input [$clog2(`Num_Edge_PE)-1:0] wdata_PE_tag,
 
-    output FV_SRAM2Edge_PE[`Num_Edge_PE-1:0] FV_SRAM2Edge_PE_out,
+    input [$clog2(`Max_FV_num):0] Num_FV,
+
+     // input FV_MEM2FV_Bank[`Num_Banks_all_FV-1:0]  FV_MEM2FV_Bank_in,
+    input FV_MEM2FV_Bank_in_0_sos,
+    input FV_MEM2FV_Bank_in_0_eos,
+    input [`FV_bandwidth-1:0] FV_MEM2FV_Bank_in_0_FV_data,
+    input [`FV_info_bank_width-2-1:0] FV_MEM2FV_Bank_in_0_A,
+
+    input FV_MEM2FV_Bank_in_1_sos,
+    input FV_MEM2FV_Bank_in_1_eos,
+    input [`FV_bandwidth-1:0] FV_MEM2FV_Bank_in_1_FV_data,
+    input [`FV_info_bank_width-2-1:0] FV_MEM2FV_Bank_in_1_A,
+
+    input FV_MEM2FV_Bank_in_2_sos,
+    input FV_MEM2FV_Bank_in_2_eos,
+    input [`FV_bandwidth-1:0] FV_MEM2FV_Bank_in_2_FV_data,
+    input [`FV_info_bank_width-2-1:0] FV_MEM2FV_Bank_in_2_A,
+
+    input FV_MEM2FV_Bank_in_3_sos,
+    input FV_MEM2FV_Bank_in_3_eos,
+    input [`FV_bandwidth-1:0] FV_MEM2FV_Bank_in_3_FV_data,
+    input [`FV_info_bank_width-2-1:0] FV_MEM2FV_Bank_in_3_A,
+
+    // output FV_SRAM2Edge_PE[`Num_Edge_PE-1:0] FV_SRAM2Edge_PE_out,
+     // output FV_SRAM2Edge_PE[`Num_Edge_PE-1:0] FV_SRAM2Edge_PE_out,
+    output logic FV_SRAM2Edge_PE_out_0_sos,
+    output logic FV_SRAM2Edge_PE_out_0_eos,
+    output logic[`FV_bandwidth-1:0] FV_SRAM2Edge_PE_out_0_FV_data,
+
+    output logic FV_SRAM2Edge_PE_out_1_sos,
+    output logic FV_SRAM2Edge_PE_out_1_eos,
+    output logic[`FV_bandwidth-1:0] FV_SRAM2Edge_PE_out_1_FV_data,
+
+    output logic FV_SRAM2Edge_PE_out_2_sos,
+    output logic FV_SRAM2Edge_PE_out_2_eos,
+    output logic[`FV_bandwidth-1:0] FV_SRAM2Edge_PE_out_2_FV_data,
+
+    output logic FV_SRAM2Edge_PE_out_3_sos,
+    output logic FV_SRAM2Edge_PE_out_3_eos,
+    output logic[`FV_bandwidth-1:0] FV_SRAM2Edge_PE_out_3_FV_data,
+
     output logic wfull
 );
 /// FV_Sync_FIFO, FV_Memcntl, FV Bank_MEMCntl,FV_Bus
@@ -19,11 +60,54 @@ logic [`Num_Banks_FV-1:0] Bank_busy;
 FV_bank_CNTL2Edge_PE[`Num_Banks_FV-1:0] FV_bank_CNTL2Edge_PE_in;
 logic [`Num_Banks_all_FV-1:0] [`FV_bandwidth-1:0 ] FV_SRAM_DATA;
 FV_MEM_CNTL2FV_Bank_CNTL[`Num_Banks_FV-1:0] FV_MEM_CNTL2FV_Bank_CNTL_out;
+FV_bank2SRAM_Interface[`Num_Banks_FV-1:0] FV_bank2SRAM_Interface_out;
+FV_info2FV_FIFO	wdata;
+FV_MEM2FV_Bank[`Num_Banks_all_FV-1:0]  FV_MEM2FV_Bank_in;
+FV_SRAM2Edge_PE[`Num_Edge_PE-1:0] FV_SRAM2Edge_PE_out;
 assign FV_FIFO2FV_CNTL_out.valid=temp_rdata.valid;
 assign FV_FIFO2FV_CNTL_out.PE_tag=temp_rdata.PE_tag;
 assign FV_FIFO2FV_CNTL_out.FV_addr=temp_rdata.FV_addr;
 assign FV_FIFO2FV_CNTL_out.empty=rempty;
-FV_bank2SRAM_Interface[`Num_Banks_FV-1:0] FV_bank2SRAM_Interface_out;
+assign wdata.valid=wdata_valid;
+assign wdata.FV_addr=wdata_FV_addr;
+assign wdata.PE_tag=wdata_PE_tag;
+
+assign FV_MEM2FV_Bank_in[0].sos=FV_MEM2FV_Bank_in_0_sos;
+assign FV_MEM2FV_Bank_in[0].eos=FV_MEM2FV_Bank_in_0_eos;
+assign FV_MEM2FV_Bank_in[0].FV_data=FV_MEM2FV_Bank_in_0_FV_data;
+assign FV_MEM2FV_Bank_in[0].A=FV_MEM2FV_Bank_in_0_A;
+
+assign FV_MEM2FV_Bank_in[1].sos=FV_MEM2FV_Bank_in_1_sos;
+assign FV_MEM2FV_Bank_in[1].eos=FV_MEM2FV_Bank_in_1_eos;
+assign FV_MEM2FV_Bank_in[1].FV_data=FV_MEM2FV_Bank_in_1_FV_data;
+assign FV_MEM2FV_Bank_in[1].A=FV_MEM2FV_Bank_in_1_A;
+
+assign FV_MEM2FV_Bank_in[2].sos=FV_MEM2FV_Bank_in_2_sos;
+assign FV_MEM2FV_Bank_in[2].eos=FV_MEM2FV_Bank_in_2_eos;
+assign FV_MEM2FV_Bank_in[2].FV_data=FV_MEM2FV_Bank_in_2_FV_data;
+assign FV_MEM2FV_Bank_in[2].A=FV_MEM2FV_Bank_in_2_A;
+
+assign FV_MEM2FV_Bank_in[3].sos=FV_MEM2FV_Bank_in_3_sos;
+assign FV_MEM2FV_Bank_in[3].eos=FV_MEM2FV_Bank_in_3_eos;
+assign FV_MEM2FV_Bank_in[3].FV_data=FV_MEM2FV_Bank_in_3_FV_data;
+assign FV_MEM2FV_Bank_in[3].A=FV_MEM2FV_Bank_in_3_A;
+
+assign FV_SRAM2Edge_PE_out_0_sos=FV_SRAM2Edge_PE_out[0].sos;
+assign FV_SRAM2Edge_PE_out_0_eos=FV_SRAM2Edge_PE_out[0].eos;
+assign FV_SRAM2Edge_PE_out_0_FV_data=FV_SRAM2Edge_PE_out[0].FV_data;
+
+assign FV_SRAM2Edge_PE_out_1_sos=FV_SRAM2Edge_PE_out[1].sos;
+assign FV_SRAM2Edge_PE_out_1_eos=FV_SRAM2Edge_PE_out[1].eos;
+assign FV_SRAM2Edge_PE_out_1_FV_data=FV_SRAM2Edge_PE_out[1].FV_data;
+
+assign FV_SRAM2Edge_PE_out_2_sos=FV_SRAM2Edge_PE_out[2].sos;
+assign FV_SRAM2Edge_PE_out_2_eos=FV_SRAM2Edge_PE_out[2].eos;
+assign FV_SRAM2Edge_PE_out_2_FV_data=FV_SRAM2Edge_PE_out[2].FV_data;
+
+assign FV_SRAM2Edge_PE_out_3_sos=FV_SRAM2Edge_PE_out[3].sos;
+assign FV_SRAM2Edge_PE_out_3_eos=FV_SRAM2Edge_PE_out[3].eos;
+assign FV_SRAM2Edge_PE_out_3_FV_data=FV_SRAM2Edge_PE_out[3].FV_data;
+
 FV_Sync_FIFO FV_Sync_FIFO_U(
 	.clk(clk), 
 	.rst(reset),

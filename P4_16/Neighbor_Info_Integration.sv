@@ -3,10 +3,30 @@ module Neighbor_info_Integration(
     input reset,
     input [$clog2(`Max_replay_Iter)-1:0]  Current_replay_Iter,//from current_replay_iteration
     input Neighbor_CNTL2Neighbor_Info_CNTL_full,
-    input BUS2Neighbor_info_MEM_CNTL BUS2Neighbor_info_MEM_CNTL_in,
-
-    output Neighbor_info2Neighbor_FIFO Neighbor_info2Neighbor_FIFO_out
+    // input BUS2Neighbor_info_MEM_CNTL BUS2Neighbor_info_MEM_CNTL_in,
+    input BUS2Neighbor_info_MEM_CNTL_in_valid,
+    input [$clog2(`Max_Node_id)-1:0] BUS2Neighbor_info_MEM_CNTL_in_Node_id,
+    input [$clog2(`Num_Edge_PE)-1:0] BUS2Neighbor_info_MEM_CNTL_PE_tag,
+    
+    
+    //output Neighbor_info2Neighbor_FIFO Neighbor_info2Neighbor_FIFO_out
+    output 	logic Neighbor_info2Neighbor_FIFO_out_valid, // If low, the data in this struct is garbage
+    output  logic [`Neighbor_info_bandwidth-1:0] Neighbor_info2Neighbor_FIFO_out_addr,
+    output  logic [$clog2(`Num_Edge_PE)-1:0] Neighbor_info2Neighbor_FIFO_out_PE_tag
 );
+
+BUS2Neighbor_info_MEM_CNTL BUS2Neighbor_info_MEM_CNTL_in;
+
+Neighbor_info2Neighbor_FIFO Neighbor_info2Neighbor_FIFO_out;
+
+
+assign BUS2Neighbor_info_MEM_CNTL_in.valid=BUS2Neighbor_info_MEM_CNTL_in_valid;
+assign BUS2Neighbor_info_MEM_CNTL_in.Node_id=BUS2Neighbor_info_MEM_CNTL_in_Node_id;
+assign BUS2Neighbor_info_MEM_CNTL_in.PE_tag=BUS2Neighbor_info_MEM_CNTL_PE_tag;
+
+assign Neighbor_info2Neighbor_FIFO_out_valid =Neighbor_info2Neighbor_FIFO_out.valid;
+assign Neighbor_info2Neighbor_FIFO_out_addr =Neighbor_info2Neighbor_FIFO_out.addr;
+assign Neighbor_info2Neighbor_FIFO_out_PE_tag =Neighbor_info2Neighbor_FIFO_out.PE_tag;
 
 logic rempty;
 logic wfull;
