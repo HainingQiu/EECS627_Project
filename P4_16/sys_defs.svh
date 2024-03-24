@@ -50,7 +50,7 @@
 `define Max_packet_line 256
 `define com_fifo_size 8
 `define RS_entry 4
-`define Weight_SRAM_BW 64
+`define Weight_SRAM_BW 16
 `define Weight_SRAM_line 256
 `define Weight_num_per_line `Weight_SRAM_BW/`FV_size
 //----------------------WSW-----------------------------//

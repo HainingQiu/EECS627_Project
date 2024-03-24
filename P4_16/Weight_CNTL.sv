@@ -175,6 +175,6 @@ Weight_SRAM Weight_SRAM_DUT(
                 .CEN(Weight_Cntl2SRAM_Interface_out.CEN),
                 .WEN(Weight_Cntl2SRAM_Interface_out.WEN),
                 .A(Weight_Cntl2SRAM_Interface_out.A),
-                .D(64'b0)
+                .D(16'b0)
                 );
 endmodule
