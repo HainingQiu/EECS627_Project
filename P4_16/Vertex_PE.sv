@@ -36,8 +36,8 @@ always_comb begin
         nx_vertex_output=Mul_output[i]+Mul_output[i+1];
     end
 end
-always_ff@(posedge clk)begin
-    if(reset)begin
+always_ff@(posedge clk or negedge reset)begin
+    if(!reset)begin
         Vertex_output<=#1 'd0;
         Node_id_out<=#1 'd0;
     end

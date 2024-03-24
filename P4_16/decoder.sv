@@ -17,17 +17,17 @@ module decoder(
     output logic fifo_stall,
     output logic current_replay_iter_flag,
     output logic [$clog2(`Max_replay_Iter)-1:0]  replay_Iter,
-    output logic [$clog2(16):0 ]    Num_FV ,
-    output logic [$clog2(16)-1:0 ] Weights_boundary,
+    output logic [$clog2(`MAX_FV_num):0 ]    Num_FV ,
+    output logic [$clog2(`Max_Num_Weight_layer)-1:0 ] Weights_boundary,
     output  DP2mem_packet DP2mem_packet_out,
     output logic stream_begin
 );
 parameter IDLE='d0, wait_grant='d1,wait_replay_iter='d2,wait_stream='d3,wait_task_complete='d4;
 logic [2:0]state,nx_state;
-logic [$clog2(16)-1:0 ] nx_Weights_boundary,current_Weights_boundary;
+logic [$clog2(`Max_Num_Weight_layer)-1:0] nx_Weights_boundary,current_Weights_boundary;
 logic [$clog2(`Max_replay_Iter)-1:0] nx_replay_Iter ,current_replay_Iter;
 logic [`packet_size-1:0] nx_packet ,current_packet;
-logic [$clog2(16):0 ] nx_Num_FV,current_Num_FV;
+logic [$clog2(`MAX_FV_num):0 ] nx_Num_FV,current_Num_FV;
 logic nx_Req,current_Req;
 logic bank_busy;
 logic [3:0] Iter;
@@ -42,8 +42,8 @@ assign Num_FV =current_Num_FV;
 assign Weights_boundary =current_Weights_boundary;
 assign Req =nx_Req;
 assign bank_busy=|bank_busy_in;
-always_ff @( posedge clk ) begin 
-    if(reset)begin
+always_ff @( posedge clk or negedge reset) begin 
+    if(!reset)begin
         state <= #1 'd0;
         current_Weights_boundary <= #1 'd0;
         current_replay_Iter <= #1 'd0;
@@ -78,7 +78,7 @@ always_comb begin
         cntl_done=0;
         task_complete='d0;
         nx_stream_begin=0;
-    if(com2DPpacket.valid && !replay_iter_flag) begin 
+    if(com2DPpacket.valid) begin 
         case(com2DPpacket.packet[`packet_size-1:`packet_size-2])
             'b00 :   begin 
                         if (Iter[current_replay_Iter]) begin 
@@ -106,11 +106,11 @@ always_comb begin
 
                     end
             'b10:   begin
-                        nx_Num_FV= com2DPpacket.packet[$clog2(16):0 ];
+                        nx_Num_FV= com2DPpacket.packet[$clog2(`MAX_FV_num):0 ];
                         nx_stream_begin='d1;
                     end
             'b11:   begin 
-                        nx_Weights_boundary = com2DPpacket.packet[$clog2(16)-1:0 ];
+                        nx_Weights_boundary = com2DPpacket.packet[$clog2(`Max_Num_Weight_layer)-1:0 ];
 			nx_state =  wait_stream;
 			fifo_stall = 'd1;
                         

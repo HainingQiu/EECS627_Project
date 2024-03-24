@@ -9,6 +9,8 @@ module RS(
     output DP_task2Edge_PE [`Num_Edge_PE-1:0] DP_task2Edge_PE_out,
     output logic RS_empty,
     output logic RS_full
+
+
 );
 logic [`RS_entry-1:0] [`packet_size-1-2:0]nx_entry,current_entry;
 logic [`RS_entry-1:0] nx_entry_valid,current_entry_valid;
@@ -17,8 +19,8 @@ DP_task2Edge_PE DP_task2Edge_PE;
 assign RS_full = &nx_entry_valid; 
 assign RS_empty = ~(|nx_entry_valid); 
 logic [`RS_entry-1:0][3:0] Iter;
-always_ff @(posedge clk ) begin
-    if(reset)begin
+always_ff @(posedge clk or negedge reset) begin
+    if(!reset)begin
         current_entry <= #1  'd0;
         current_entry_valid <= #1  'd0;
 
@@ -38,14 +40,14 @@ always_comb begin
         
         for (int i=0; i<`RS_entry;i=i+1)begin
             // Iter[i][0]='d0;
-            Iter[i] = {current_entry[i][9:7],1'b0};
+            Iter[i] = {1'b0,current_entry[i][9:7]};
         end
         for (int i=0; i<`RS_entry;i=i+1)begin
-        weights = weights | Iter[replay_Iter];
+        weights = weights | Iter[i][replay_Iter];
         end
 
         if(|PE_IDLE )begin
-            if(!weights)begin 
+            if(!weights ||(replay_Iter=='d3))begin 
                 for (int i=0; i<`RS_entry;i=i+1)begin
                     if(current_entry_valid[i])begin
                         for(int j=0; j<`Num_Edge_PE;j=j+1)begin

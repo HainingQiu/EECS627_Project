@@ -22,8 +22,8 @@ logic[$clog2(`max_degree_Iter)-1:0] cnt,nx_cnt;
 logic [$clog2(`Num_Edge_PE)-1:0] reg_PE_tag,nx_reg_PE_tag;
 Neighbor_bank_CNTL2Edge_PE nx_Neighbor_bank_CNTL2Edge_PE_out;
 logic [$clog2(`max_degree_Iter):0] Num_neighbor_Iter,nx_Num_neighbor_Iter;
-always_ff @(posedge clk)begin
-    if(reset)begin
+always_ff @(posedge clk or negedge reset)begin
+    if(!reset)begin
         state<=#1 IDLE;
         reg_PE_tag<=#1 'd0;
         Num_neighbor_Iter<=#1 'd0;

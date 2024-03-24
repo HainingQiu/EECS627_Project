@@ -329,8 +329,8 @@ always_comb begin
         end
     end
 end
-always_ff@(posedge clk)begin
-    if(reset)begin
+always_ff@(posedge clk or negedge reset)begin
+    if(!reset)begin
         Bank_Busy<=#1 'd0;
         Req2Output_SRAM_Bank_out<=#1 'd0;
         target_bank<=#1 'd0;

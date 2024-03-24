@@ -32,8 +32,8 @@ logic [$clog2(`Max_packet_line)-1:0] nx_wr_addr,current_wr_addr;
  
 logic Edge_PE_WB_valid;
 logic nx_wr_en;
-always_ff@(posedge clk)begin
-    if(reset )begin
+always_ff@(posedge clk or negedge reset)begin
+    if(!reset )begin
       current_re_addr <=#1 'd0;
       current_wr_addr <=#1 'd0;
       state<=#1 IDLE;
@@ -89,7 +89,7 @@ always_comb begin
 
     end
 case(state)
-  IDLE: begin nx_state = reset ? IDLE : stream;
+  IDLE: begin nx_state = !reset ? IDLE : stream;
   nx_wr_en=0;
   end
  stream:  begin

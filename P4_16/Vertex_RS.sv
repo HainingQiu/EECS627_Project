@@ -44,8 +44,8 @@ assign Bank2RS_in.sos = Bank2RS_in_sos;
 assign Bank2RS_in.eos = Bank2RS_in_eos;
 assign Bank2RS_in.FV_data[0] = Bank2RS_in_FV_data_0;
 assign Bank2RS_in.FV_data[1] = Bank2RS_in_FV_data_1;
-assign Bank2RS_in.FV_data[2] = Bank2RS_in_FV_data_2;
-assign Bank2RS_in.FV_data[3] = Bank2RS_in_FV_data_3;
+// assign Bank2RS_in.FV_data[2] = Bank2RS_in_FV_data_2;
+// assign Bank2RS_in.FV_data[3] = Bank2RS_in_FV_data_3;
 assign Bank2RS_in.Node_id = Bank2RS_in_Node_id;
 
 assign RS2Vertex_PE_out_0_0 = RS2Vertex_PE_out.FV_data[0][0];
@@ -76,7 +76,7 @@ Wait_vertex_buffer='d4
 state_t state,nx_state;
 RS2Vertex_PE nx_RS2Vertex_PE_out;
 logic [`Num_RS2Vertex_PE-1:0][`Max_FV_num-1:0][`FV_size-1:0] RS_FV_data,nx_RS_FV_data;
-logic [`Num_RS2Vertex_PE-1:0][$clog2(`Max_Node_id)-1:0] RS_Node_id,nx_RS_Node_id;;
+logic [`Num_RS2Vertex_PE-1:0][$clog2(`Max_Node_id)-1:0] RS_Node_id,nx_RS_Node_id;
 logic [$clog2(`Num_Edge_PE):0] rs_cnt,nx_rs_cnt;
 logic [$clog2(`Num_Edge_PE)-1:0]rs_ptr,nx_rs_ptr;
 logic [$clog2(`Max_FV_num)-1:0] num_fv,nx_num_fv;

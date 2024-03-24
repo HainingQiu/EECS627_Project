@@ -44,10 +44,11 @@ module Command_FIFO(
 	output com_packet rdata
 );
 reg [$clog2(`com_fifo_size):0] wr_ptr, rd_ptr;
+wire rempty;
 assign wfull={~wr_ptr[$clog2(`com_fifo_size)],wr_ptr[$clog2(`com_fifo_size)-1:0]}==rd_ptr;
 assign rempty=wr_ptr==rd_ptr;
-always@(posedge clk )begin
-	if(reset )begin
+always@(posedge clk or negedge reset)begin
+	if(!reset )begin
 		wr_ptr<= #1'd0;
 	end
         else if (replay_iter_flag)begin
@@ -60,8 +61,8 @@ always@(posedge clk )begin
 		wr_ptr<= #1 wr_ptr;
 	end
 end
-always@(posedge clk)begin
-	if(reset )begin
+always@(posedge clk or negedge reset)begin
+	if(!reset )begin
 		rd_ptr<= #1'd0;
 	end
         else if (replay_iter_flag)begin

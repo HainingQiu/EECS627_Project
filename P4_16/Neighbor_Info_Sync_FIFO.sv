@@ -12,7 +12,7 @@ module NeighborInfo_Sync_FIFO_dual_port_RAM(
 
 BUS2Neighbor_info_MEM_CNTL[`Num_Edge_PE-1:0] RAM_MEM;
 
-always_ff @(posedge wclk) begin
+always_ff @(posedge wclk ) begin
 	if(wenc)
 		RAM_MEM[waddr] <= #1 wdata;
 end 
@@ -42,8 +42,8 @@ module NeighborInfo_Sync_FIFO(
 reg [$clog2(`Num_Edge_PE):0] wr_ptr, rd_ptr;
 assign wfull={~wr_ptr[$clog2(`Num_Edge_PE)],wr_ptr[$clog2(`Num_Edge_PE)-1:0]}==rd_ptr;
 assign rempty=wr_ptr==rd_ptr;
-always_ff@(posedge clk)begin
-	if(rst)begin
+always_ff@(posedge clk or negedge rst)begin
+	if(!rst)begin
 		wr_ptr<= #1'd0;
 	end
 	else if(winc&& !wfull)begin
@@ -53,8 +53,8 @@ always_ff@(posedge clk)begin
 		wr_ptr<= #1 wr_ptr;
 	end
 end
-always_ff@(posedge clk)begin
-	if(rst)begin
+always_ff@(posedge clk or negedge rst)begin
+	if(!rst)begin
 		rd_ptr<= #1 'd0;
 	end
 	else if(rinc&& !rempty)begin

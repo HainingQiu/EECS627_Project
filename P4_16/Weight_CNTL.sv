@@ -134,8 +134,8 @@ always_comb begin
                 end
         endcase
 end
-always_ff@(posedge clk)begin
-    if(reset)begin
+always_ff@(posedge clk or negedge reset)begin
+    if(!reset)begin
         state<=#1 IDLE;
         Cur_Weight_layer<=#1 'd0;
         Cur_FV_num<=#1 'd0;

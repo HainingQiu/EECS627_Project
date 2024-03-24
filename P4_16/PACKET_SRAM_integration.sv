@@ -4,22 +4,42 @@ module PACKET_SRAM_integration(
     input reset,
     input grant,
     input [`Num_Edge_PE-1:0]PE_IDLE,
-    input Edge_PE2IMEM_CNTL[`Num_Edge_PE-1:0] Edge_PE2IMEM_CNTL_in,
-    input [`packet_size-1:0] Data_SRAM_in,
+    input [`packet_size-1:0] Edge_PE2IMEM_CNTL_in_packet_0,
+    input [`packet_size-1:0] Edge_PE2IMEM_CNTL_in_packet_1,
+    input [`packet_size-1:0] Edge_PE2IMEM_CNTL_in_packet_2,
+    input [`packet_size-1:0] Edge_PE2IMEM_CNTL_in_packet_3,
+    input [`Num_Edge_PE-1:0]  Edge_PE2IMEM_CNTL_in_valid,
     input [`Num_Edge_PE-1:0]bank_busy,
-    input stream_end,
-    input vertex_done,
+    //input stream_end,
+    //input vertex_done,
+    input Big_FV2Sm_FV_eos_0,
+    input Big_FV2Sm_FV_eos_1,
+    input Big_FV2Sm_FV_eos_2,
+    input Big_FV2Sm_FV_eos_3,
+    //.vertex_done(Vertex_empty&&Vertex_RS_empty),
+    input Vertex_empty,
+    input Vertex_RS_empty,
     input outbuff_available,
 
     output logic task_complete,
-    output PACKET_CNTL2SRAM  PACKET_CNTL_SRAM_out,
-    output DP_task2Edge_PE [`Num_Edge_PE-1:0]DP_task2Edge_PE_out,
+
+    output logic [`packet_size-1-2:0] DP_task2Edge_PE_out_packet_0,
+    output logic [`packet_size-1-2:0] DP_task2Edge_PE_out_packet_1,
+    output logic [`packet_size-1-2:0] DP_task2Edge_PE_out_packet_2,
+    output logic [`packet_size-1-2:0] DP_task2Edge_PE_out_packet_3,
+    output logic [`Num_Edge_PE-1:0] DP_task2Edge_PE_out_valid,
     output logic Req,
     output logic [$clog2(`Max_replay_Iter)-1:0]  replay_Iter,
-    output logic [$clog2(16):0 ]    Num_FV ,
-    output logic [$clog2(16)-1:0 ] Weights_boundary,
+    output logic [$clog2(`MAX_FV_num):0 ]    Num_FV ,
+    output logic [$clog2(`Max_Num_Weight_layer)-1:0 ] Weights_boundary,
     output logic stream_begin
 );
+
+logic vertex_done,stream_end;
+
+Edge_PE2IMEM_CNTL[`Num_Edge_PE-1:0] Edge_PE2IMEM_CNTL_in;
+DP_task2Edge_PE [`Num_Edge_PE-1:0]DP_task2Edge_PE_out;
+
 DP2mem_packet DP2mem_packet_in;
 logic fifo_full;
 logic replay_iter_flag;
@@ -30,6 +50,37 @@ DP_task2RS DP_task2RS_out;
 logic cntl_done;
 logic RS_empty;
 logic wr_en;
+logic [`packet_size-1:0] Data_SRAM_in;
+PACKET_CNTL2SRAM  PACKET_CNTL_SRAM_out;
+
+assign Edge_PE2IMEM_CNTL_in[0].packet=Edge_PE2IMEM_CNTL_in_packet_0;
+assign Edge_PE2IMEM_CNTL_in[1].packet=Edge_PE2IMEM_CNTL_in_packet_1;
+assign Edge_PE2IMEM_CNTL_in[2].packet=Edge_PE2IMEM_CNTL_in_packet_2;
+assign Edge_PE2IMEM_CNTL_in[3].packet=Edge_PE2IMEM_CNTL_in_packet_3;
+assign Edge_PE2IMEM_CNTL_in[0].valid=Edge_PE2IMEM_CNTL_in_valid[0];
+assign Edge_PE2IMEM_CNTL_in[1].valid=Edge_PE2IMEM_CNTL_in_valid[1];
+assign Edge_PE2IMEM_CNTL_in[2].valid=Edge_PE2IMEM_CNTL_in_valid[2];
+assign Edge_PE2IMEM_CNTL_in[3].valid=Edge_PE2IMEM_CNTL_in_valid[3];
+
+
+
+
+assign DP_task2Edge_PE_out_packet_0=DP_task2Edge_PE_out[0].packet;
+assign DP_task2Edge_PE_out_packet_1=DP_task2Edge_PE_out[1].packet;
+assign DP_task2Edge_PE_out_packet_2=DP_task2Edge_PE_out[2].packet;
+assign DP_task2Edge_PE_out_packet_3=DP_task2Edge_PE_out[3].packet;
+assign DP_task2Edge_PE_out_valid={DP_task2Edge_PE_out[3].valid,DP_task2Edge_PE_out[2].valid,DP_task2Edge_PE_out[1].valid,DP_task2Edge_PE_out[0].valid};
+assign vertex_done=Vertex_empty&Vertex_RS_empty;
+
+assign stream_end=Big_FV2Sm_FV_eos_3&Big_FV2Sm_FV_eos_2&Big_FV2Sm_FV_eos_1&Big_FV2Sm_FV_eos_0;
+IMem_Sram IMem_Sram_U(
+    .Q(Data_SRAM_in ),
+    .CLK(clk),
+    .CEN(1'b0),
+    .WEN(PACKET_CNTL_SRAM_out.wen),
+    .A(PACKET_CNTL_SRAM_out.SRAM_addr),
+    .D(PACKET_CNTL_SRAM_out.SRAM_DATA)
+);
  PACKET_CNTL PACKET_CNTL_0(
     .clk(clk),
     .reset(reset),

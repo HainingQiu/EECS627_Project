@@ -82,8 +82,8 @@ module vertex_buffer_one(
     end
 
 
-    always_ff @(posedge clk) begin
-        if (reset) begin
+    always_ff @(posedge clk or negedge reset) begin
+        if (!reset) begin
             buffer <= #1  0;
             state <= #1  IDLE;
             cnt <= #1  'd0;

@@ -24,8 +24,8 @@ logic[$clog2(`Num_Edge_PE)-1:0] reg_PE_tag,nx_PE_tag;
 // logic nx_rinc2Neighbor_FIFO;
 Neighbor_info_CNTL2SRAM_interface[`num_bank_neighbor_info-1:0] reg_Neighbor_info_CNTL2SRAM_interface_out;
 Neighbor_info2Neighbor_FIFO nx_Neighbor_info2Neighbor_FIFO_out;
-always_ff@(posedge clk)begin
-    if(reset)begin
+always_ff@(posedge clk or negedge reset)begin
+    if(!reset)begin
         state<=#1 IDLE;
         reg_PE_tag<=#1 'd0;
         // for(int i=0;i<`num_bank_neighbor_info;i++)begin

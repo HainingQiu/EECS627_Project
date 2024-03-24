@@ -45,10 +45,14 @@
 `define Neighbor_bank_bandwidth `Neighbor_ID_bandwidth //2 nodes in one line
 `define Num_Vertex_Unit 4
 `define Num_Total_reqs2Output `Num_Vertex_Unit+2*`Num_Edge_PE
+`define num_fv_line (`FV_bandwidth/`FV_size)
 //------------------------LST--------------------------//
 `define Max_packet_line 256
 `define com_fifo_size 8
 `define RS_entry 4
+`define Weight_SRAM_BW 64
+`define Weight_SRAM_line 256
+`define Weight_num_per_line `Weight_SRAM_BW/`FV_size
 //----------------------WSW-----------------------------//
 typedef struct packed {
     logic[$clog2(`Weight_SRAM_line)-1:0] A;

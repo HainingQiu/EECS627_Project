@@ -7,8 +7,8 @@ module Neighbor_BUS(
 );
 NeighborID_SRAM2Edge_PE[`Num_Edge_PE-1:0] nx_NeighborID_SRAM2Edge_PE_out;
 
-always_ff@(posedge clk)begin
-    if(reset)begin
+always_ff@(posedge clk or negedge reset)begin
+    if(!reset)begin
         NeighborID_SRAM2Edge_PE_out<=#1 'd0;
     end
     else begin

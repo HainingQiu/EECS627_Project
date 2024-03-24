@@ -42,8 +42,8 @@ module Neighbor_Sync_FIFO(
 reg [$clog2(`Num_Banks_Neighbor):0] wr_ptr, rd_ptr;
 assign wfull={~wr_ptr[$clog2(`Num_Banks_Neighbor)],wr_ptr[$clog2(`Num_Banks_Neighbor)-1:0]}==rd_ptr;
 assign rempty=wr_ptr==rd_ptr;
-always@(posedge clk )begin
-	if(rst)begin
+always@(posedge clk or negedge rst )begin
+	if(!rst)begin
 		wr_ptr<= #1 'd0;
 	end
 	else if(winc&& !wfull)begin
@@ -53,8 +53,8 @@ always@(posedge clk )begin
 		wr_ptr<= #1 wr_ptr;
 	end
 end
-always@(posedge clk )begin
-	if(rst)begin
+always@(posedge clk or negedge rst )begin
+	if(!rst)begin
 		rd_ptr<= #1 'd0;
 	end
 	else if(rinc&& !rempty)begin

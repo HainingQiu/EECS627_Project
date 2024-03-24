@@ -1,5 +1,5 @@
 // `include "sys_defs.svh"
-module S_FV_SRAM_integration(
+module S_FV_SRAM_Integration(
     input clk,
     input reset,
     // input winc,

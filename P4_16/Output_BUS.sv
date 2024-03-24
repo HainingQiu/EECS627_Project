@@ -89,8 +89,8 @@ assign Output_SRAM2Edge_PE_out_3_eos=Output_SRAM2Edge_PE_out[3].eos;
 assign Output_SRAM2Edge_PE_out_3_FV_data=Output_SRAM2Edge_PE_out[3].FV_data;
 
 
-always_ff@(posedge clk)begin
-    if(reset)begin
+always_ff@(posedge clk or negedge reset)begin
+    if(!reset )begin
         Output_SRAM2Edge_PE_out<=#1 'd0;
     end
     else begin

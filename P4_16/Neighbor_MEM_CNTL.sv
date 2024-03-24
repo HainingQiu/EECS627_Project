@@ -19,8 +19,8 @@ state_t state,nx_state;
 logic nx_rinc_Neighbor_CNTL2FIFO;
 Neighbor_info2Neighbor_FIFO reg_Neighbor_info2Neighbor_FIFO,nx_Neighbor_info2Neighbor_FIFO;
 Neighbor_MEM_CNTL2Neighbor_Bank_CNTL[`Num_Banks_Neighbor-1:0] nx_Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_out;
-always_ff@(posedge clk)begin
-    if(reset)begin
+always_ff@(posedge clk or negedge reset)begin
+    if(!reset)begin
         state<=#1 IDLE;
         reg_Neighbor_info2Neighbor_FIFO<=#1 'd0;
         rinc_Neighbor_CNTL2FIFO<=#1 'd0;
