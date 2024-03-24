@@ -36,7 +36,7 @@ module buffer_one(
             not last iteration ? then do write back to output buffer, wait for grant 
     */
 
-    always_ff @(posedge clk) begin
+    always_ff @(posedge clk or negedge reset) begin
         if (!reset) begin
             for (int i = 0; i < `MAX_FV_num; i++) begin
                 buffer[i] <= 'd0;

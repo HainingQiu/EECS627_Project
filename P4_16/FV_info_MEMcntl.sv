@@ -22,8 +22,8 @@ FV_info2FV_FIFO nx_FV_info2FV_FIFO_out;
 
 logic[$clog2(`Num_Edge_PE)-1:0] reg_PE_tag,nx_PE_tag;
 // FV_info_MEM_CNTL2FIFO nx_FV_info_MEM_CNTL2FIFO_out;
-always_ff@(posedge clk)begin
-    if(reset)begin
+always_ff@(posedge clk or negedge reset)begin
+    if(!reset)begin
         state<=#1 IDLE;
         // reg_FV_info_CNTL2SRAM_Interface_out.A<='d0;
         // reg_FV_info_CNTL2SRAM_Interface_out.CEN<=1'b1;

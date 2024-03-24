@@ -457,8 +457,8 @@ module Big_FV_BankCntl_1(
     end
 
 
-    always_ff @(posedge clk) begin
-        if (reset) begin
+    always_ff @(posedge clk or negedge reset) begin
+        if (!reset) begin
             cnt <= #1 'd0;
             state <= #1 IDLE;
             // Big_FV2Sm_FV <= 0;

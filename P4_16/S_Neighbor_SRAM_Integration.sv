@@ -74,8 +74,8 @@ Neighbor_Sync_FIFO Neighbor_Sync_FIFO(
 );
 
 Neighbor_MEM_CNTL Neighbor_MEM_CNTL_U(
-    .clk,
-    .reset,
+    .clk(clk),
+    .reset(reset),
     .Neighbor_info2Neighbor_FIFO_in(rdata),
     .Bank_busy(Bank_busy),
     .empty(empty),

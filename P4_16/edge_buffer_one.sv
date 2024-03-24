@@ -107,8 +107,8 @@ module edge_buffer_one(
 
     logic complete_before;
 
-    always_ff @(posedge clk) begin
-        if (reset) begin
+    always_ff @(posedge clk or negedge reset) begin
+        if (!reset) begin
             for (int i = 0; i < `MAX_FV_num; i++) begin
                 buffer[i] <= #1 'd0;
             end

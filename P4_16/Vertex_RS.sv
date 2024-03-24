@@ -82,8 +82,8 @@ logic [$clog2(`Num_Edge_PE)-1:0]rs_ptr,nx_rs_ptr;
 logic [$clog2(`Max_FV_num)-1:0] num_fv,nx_num_fv;
 logic [`Mult_per_PE-1:0][$clog2(`Max_FV_num)-1:0]vertex_fv_idx;
 assign Vertex_RS_empty=rs_cnt=='d0;;
-always_ff@(posedge clk)begin
-    if(reset)begin
+always_ff@(posedge clk or negedge reset)begin
+    if(!reset)begin
         state<=#1 IDLE;
         rs_cnt<=#1 'd0;
         rs_ptr<=#1 'd0;

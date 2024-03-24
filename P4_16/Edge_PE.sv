@@ -137,8 +137,8 @@ logic[$clog2(`max_degree_Iter)-1:0] reg_Neighbor_num_Iter,nx_reg_Neighbor_num_It
 logic Cal_replay_Iter,NonCal_replay_Iter;
 Edge_PE2DP nx_Edge_PE2DP_out;
 // logic [$clog2(`Max_replay_Iter)-1:0] fence_nx_Replay_Iter;
-always_ff@(posedge clk)begin
-    if(reset)begin
+always_ff@(posedge clk or negedge reset)begin
+    if(!reset)begin
         state<=#1 IDLE;
         Neighbor_ids<=#1 'd0;
         Target_node<=#1 'd0;

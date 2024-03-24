@@ -10,8 +10,8 @@ integer file1, file2, file3, file4;
 ///// Replay Iteration FF /////
 
 logic [1:0] replay_Iter_ff;
-always @(posedge clk) begin
-	if (reset)
+always @(posedge clk or negedge reset) begin
+	if (!reset)
 		replay_Iter_ff <= '0;
 	else
 		replay_Iter_ff <= iTop_DUT.replay_Iter;
@@ -34,8 +34,8 @@ $readmemb("../data/feature_value_bank3.txt",
 		  
 ////// weight data SRAM///////
 
-$readmemb("../data/weights.txt",
-		  iTop_DUT.Weight_CNTL_U.Weight_SRAM_DUT.mem);
+// $readmemb("../data/weights.txt",
+// 		  iTop_DUT.Weight_CNTL_U.Weight_SRAM_DUT.mem);
 
  
 ///// FV Pointer SRAM /////
@@ -81,8 +81,8 @@ $readmemb("../data/feature_value_bank3.txt",
 		  
 ////// weight data SRAM///////
 
-$readmemb("../data/weights.txt",
-		  iTop_DUT.Weight_CNTL_U.Weight_SRAM_DUT.mem);
+// $readmemb("../data/weights.txt",
+// 		  iTop_DUT.Weight_CNTL_U.Weight_SRAM_DUT.mem);
 
  
 ///// FV Pointer SRAM /////
@@ -183,7 +183,9 @@ clk = 0;
 reset = 1; // avtive high sync reset
 repeat (10) @(posedge clk);
 #1 reset = 0; // go
-
+repeat (10) @(posedge clk);
+reset = 1;
+@(posedge clk);
 endtask
 
 // Dump all contents in 4 BIG_FV_SRAMs into a single file
@@ -212,19 +214,19 @@ task automatic dumpPongBuf2file (integer filex);
 `else
 	for (int j = 0; j < 1024; j++) begin
 		$fwrite(filex, "%h\n",
-		iTop_DUT.Big_FV_wrapper_1_U.ping_buffer[0].BIG_FV_SRAM_u.mem[j][63:0]);
+		iTop_DUT.Big_FV_wrapper_1_U.ping_buffer[0].BIG_FV_SRAM_u.mem[j][15:0]);
 	end
 	for (int j = 0; j < 1024; j++) begin
 		$fwrite(filex, "%h\n",
-		iTop_DUT.Big_FV_wrapper_1_U.ping_buffer[1].BIG_FV_SRAM_u.mem[j][63:0]);
+		iTop_DUT.Big_FV_wrapper_1_U.ping_buffer[1].BIG_FV_SRAM_u.mem[j][15:0]);
 	end
 	for (int j = 0; j < 1024; j++) begin
 		$fwrite(filex, "%h\n",
-		iTop_DUT.Big_FV_wrapper_1_U.ping_buffer[2].BIG_FV_SRAM_u.mem[j][63:0]);
+		iTop_DUT.Big_FV_wrapper_1_U.ping_buffer[2].BIG_FV_SRAM_u.mem[j][15:0]);
 	end
 	for (int j = 0; j < 1024; j++) begin
 		$fwrite(filex, "%h\n",
-		iTop_DUT.Big_FV_wrapper_1_U.ping_buffer[3].BIG_FV_SRAM_u.mem[j][63:0]);
+		iTop_DUT.Big_FV_wrapper_1_U.ping_buffer[3].BIG_FV_SRAM_u.mem[j][15:0]);
 	end
 `endif
 endtask

@@ -24,8 +24,8 @@ FV_bank2SRAM_Interface reg_FV_bank2SRAM_Interface_out;
 logic[$clog2(`Max_FV_num):0] cnt,nx_cnt;
 logic [$clog2(`Num_Edge_PE)-1:0] reg_PE_tag,nx_reg_PE_tag;
 FV_bank_CNTL2Edge_PE nx_FV_bank_CNTL2Edge_PE_out;
-always_ff @(posedge clk)begin
-    if(reset)begin
+always_ff @(posedge clk or negedge reset)begin
+    if(!reset)begin
         state<=#1 IDLE;
         reg_PE_tag<=#1 'd0;
         FV_bank_CNTL2Edge_PE_out<=#1 'd0;

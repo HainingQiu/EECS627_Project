@@ -138,8 +138,8 @@ assign outbuff_pkt_Node_id_3 = outbuff_pkt[3].Node_id;
     end
 
 
-    always_ff @(posedge clk) begin
-        if (reset) begin
+    always_ff @(posedge clk or negedge reset) begin
+        if (!reset) begin
             state <= #1 IDLE;
             rs_req_grant_last <= 'd0;
         end else begin
