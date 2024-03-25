@@ -23,7 +23,7 @@ typedef enum reg [$clog2(2)-1:0] {
     Work='d1
 } state_t;
 logic[`Mult_per_PE-1:0][`FV_size-1:0] Weight_data2Vertex;
-logic [`Max_Num_Weight_layer-1:0][`Max_FV_num-1:0][`FV_size-1:0]Weight_Buffer;
+// logic [`Max_Num_Weight_layer-1:0][`Max_FV_num-1:0][`FV_size-1:0]Weight_Buffer;
 logic[$clog2(`Max_Num_Weight_layer)-1:0] Cur_Weight_layer,nx_Weight_layer;
 logic [$clog2(`Max_FV_num):0]  Cur_FV_num,nx_FV_num,Cur_Weight_num,nx_Weight_num;
 logic partial_FV;
@@ -88,7 +88,7 @@ always_comb begin
                     nx_Weight_Cntl2SRAM_Interface_out.WEN=1'b1;
                     nx_Weight_Cntl2SRAM_Interface_out.CEN=1'b0;
                     
-                    $display("nx_Weight_Cntl2SRAM_Interface_out.A:",{nx_Weight_layer,Weight_line_cnt});
+                    // $display("nx_Weight_Cntl2SRAM_Interface_out.A:",{nx_Weight_layer,Weight_line_cnt});
                     nx_Weight_line_cnt=Weight_line_cnt+1'b1;
                     nx_Weight_Cntl2bank_out.change=partial_FV;
                     nx_Weight_layer=partial_FV?nx_Weight_layer+1'b1:nx_Weight_layer;

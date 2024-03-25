@@ -48,8 +48,8 @@
 //
 //      Known Work Arounds: N/A
 //
-`timescale 1 ns/1 ps
-`celldefine
+// `timescale 1 ns/1 ps
+// `celldefine
   module Weight_SRAM (
                 Q,
                 CLK,

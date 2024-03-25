@@ -26,9 +26,12 @@ logic [`Mult_per_PE-1:0][`FV_size-1:0] FV_RS;
 assign Weight_data_in[0]=Weight_data_in_0;
 assign Weight_data_in[1]=Weight_data_in_1;
 
+assign FV_RS[0]=FV_RS_0;
+assign FV_RS[1]=FV_RS_1;
 
 always_comb begin
     Mul_output='d0;
+    nx_vertex_output='d0;
     for(int i=0;i<`Mult_per_PE;i++)begin
         Mul_output[i]=Weight_data_in[i]*FV_RS[i];
     end

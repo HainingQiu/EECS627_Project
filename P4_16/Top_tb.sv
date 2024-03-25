@@ -34,8 +34,8 @@ $readmemb("../data/feature_value_bank3.txt",
 		  
 ////// weight data SRAM///////
 
-// $readmemb("../data/weights.txt",
-// 		  iTop_DUT.Weight_CNTL_U.Weight_SRAM_DUT.mem);
+$readmemb("../data/weights.txt",
+		  iTop_DUT.Weight_CNTL_U.Weight_SRAM_DUT.mem);
 
  
 ///// FV Pointer SRAM /////
@@ -81,8 +81,8 @@ $readmemb("../data/feature_value_bank3.txt",
 		  
 ////// weight data SRAM///////
 
-// $readmemb("../data/weights.txt",
-// 		  iTop_DUT.Weight_CNTL_U.Weight_SRAM_DUT.mem);
+$readmemb("weights.txt",
+		  iTop_DUT.Weight_CNTL_U.Weight_SRAM_DUT.mem);
 
  
 ///// FV Pointer SRAM /////
@@ -180,12 +180,16 @@ if (!file4) begin
 end
 
 clk = 0;
-reset = 1; // avtive high sync reset
-repeat (10) @(posedge clk);
-#1 reset = 0; // go
-repeat (10) @(posedge clk);
-reset = 1;
-@(posedge clk);
+reset = 0; // avtive high sync reset
+@(negedge clk);
+#0.5 reset = 1; // go
+// @(negedge clk);
+// #0.5 reset = 0; // go
+
+// repeat (10) @(posedge clk);
+// #1 reset = 1; // go
+ @(posedge clk);
+  @(posedge clk);
 endtask
 
 // Dump all contents in 4 BIG_FV_SRAMs into a single file
