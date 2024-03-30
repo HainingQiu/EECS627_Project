@@ -1,0 +1,69 @@
+Invoking simulator...
+
+./simv -sml=verdi +UVM_VERDI_TRACE=UVM_AWARE +fsdb+gate=off -ucli2Proc -ucli
+debImport "-i" "-simflow" "-dbdir" "./simv.daidir"
+*Verdi* Loading libsscore_vcs202012.so
+
+FSDB Dumper for VCS, Release Verdi_R-2020.12-SP2-1, Linux x86_64/64bit, 07/19/2021
+(C) 1996 - 2021 by Synopsys, Inc.
+*Verdi* : Create FSDB file '/home/zzyyds/EECS627_Project/P5_SPI/inter.fsdb'
+*Verdi* : Flush all FSDB Files at 0 ps.
+
+*Verdi* : Enable RPC Server(32096)
+
+srcTBInvokeSim
+Chronologic VCS simulator copyright 1991-2020
+Contains Synopsys proprietary information.
+Compiler version R-2020.12-SP2-1_Full64; Runtime version R-2020.12-SP2-1_Full64;  Mar 30 15:51 2024
+xterm-256color is Not a valid terminal...
+Verdi>config keepfuture on
+on
+Verdi>fsdbDumpvars 0 "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.SRAM_Instantiations\[0\].Neighbor_SRAM_U.mem"  +all +trace_process;fsdbDumpflush 
+
+*Verdi* : Dumping the signal (Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.SRAM_Instantiations[0].Neighbor_SRAM_U.mem).
+*Verdi* : Flush all FSDB Files at 0 ps.
+
+Verdi>fsdbDumpvars 0 "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.SRAM_Instantiations\[1\].Neighbor_SRAM_U.mem"  +all +trace_process;fsdbDumpflush 
+
+*Verdi* : Dumping the signal (Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.SRAM_Instantiations[1].Neighbor_SRAM_U.mem).
+*Verdi* : Flush all FSDB Files at 0 ps.
+
+Verdi>fsdbDumpvars 1 "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U"  +all +trace_process;fsdbDumpflush 
+
+*Verdi* : Begin traversing the scope (Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U), layer (1).
+*Verdi* : Enable +trace_process and +all dumping.
+*Verdi* : End of traversing.
+*Verdi* : Flush all FSDB Files at 0 ps.
+
+Verdi>fsdbDumpvars 1 "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_BUS_U"  +all +trace_process;fsdbDumpflush 
+
+*Verdi* : Begin traversing the scope (Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_BUS_U), layer (1).
+*Verdi* : Enable +trace_process and +all dumping.
+*Verdi* : End of traversing.
+*Verdi* : Flush all FSDB Files at 0 ps.
+
+Verdi>fsdbDumpvars 1 "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_Sync_FIFO"  +all +trace_process;fsdbDumpflush 
+
+*Verdi* : Begin traversing the scope (Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_Sync_FIFO), layer (1).
+*Verdi* : Enable +trace_process and +all dumping.
+*Verdi* : End of traversing.
+*Verdi* : Flush all FSDB Files at 0 ps.
+
+Verdi>fsdbDumpvars 0 "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_Bank_MEMCntl\[0\].Neighbor_Bank_MEMCntl_U"  +all +trace_process;fsdbDumpflush 
+
+*Verdi* : Begin traversing the scope (Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_Bank_MEMCntl[0].Neighbor_Bank_MEMCntl_U), layer (0).
+*Verdi* : Enable +trace_process and +all dumping.
+*Verdi* : End of traversing.
+*Verdi* : Flush all FSDB Files at 0 ps.
+
+Verdi>run
+Sim completed. Check files..
+$finish called from file "Top_tb.sv", line 142.
+$finish at simulation time            100240000
+Simulation complete, time is 100240000 ps.
+Top_tb.sv, 142 : $finish; 
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 100240000 ps
+CPU Time:      0.860 seconds;       Data structure size:   0.8Mb
+Sat Mar 30 15:55:04 2024
+debExit

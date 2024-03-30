@@ -1,0 +1,180 @@
+simSetSimulator "-vcssv" -exec "./simv" -args " " -uvmDebug on
+debImport "-i" "-simflow" "-dbdir" "./simv.daidir"
+srcTBInvokeSim
+srcHBSelect "Top_tb.iTop_DUT" -win $_nTrace1
+srcSetScope "Top_tb.iTop_DUT" -delim "." -win $_nTrace1
+srcHBSelect "Top_tb.iTop_DUT" -win $_nTrace1
+srcHBSelect "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U" -win $_nTrace1
+srcSetScope "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U" -delim "." -win \
+           $_nTrace1
+srcHBSelect "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U" -win $_nTrace1
+srcHBSelect \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.SRAM_Instantiations\[0\]" \
+           -win $_nTrace1
+srcHBSelect \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.SRAM_Instantiations\[0\]" \
+           -win $_nTrace1
+srcSetScope \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.SRAM_Instantiations\[0\]" \
+           -delim "." -win $_nTrace1
+srcHBSelect \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.SRAM_Instantiations\[0\]" \
+           -win $_nTrace1
+srcHBSelect \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.SRAM_Instantiations\[0\].Neighbor_SRAM_U" \
+           -win $_nTrace1
+srcSetScope \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.SRAM_Instantiations\[0\].Neighbor_SRAM_U" \
+           -delim "." -win $_nTrace1
+srcHBSelect \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.SRAM_Instantiations\[0\].Neighbor_SRAM_U" \
+           -win $_nTrace1
+srcSelect -signal "mem" -line 89 -pos 1 -win $_nTrace1
+wvCreateWindow
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave3
+srcHBSelect \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.SRAM_Instantiations\[1\]" \
+           -win $_nTrace1
+srcSetScope \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.SRAM_Instantiations\[1\]" \
+           -delim "." -win $_nTrace1
+srcHBSelect \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.SRAM_Instantiations\[1\]" \
+           -win $_nTrace1
+srcHBSelect \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.SRAM_Instantiations\[1\].Neighbor_SRAM_U" \
+           -win $_nTrace1
+srcSetScope \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.SRAM_Instantiations\[1\].Neighbor_SRAM_U" \
+           -delim "." -win $_nTrace1
+srcHBSelect \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.SRAM_Instantiations\[1\].Neighbor_SRAM_U" \
+           -win $_nTrace1
+srcDeselectAll -win $_nTrace1
+srcSelect -signal "mem" -line 89 -pos 1 -win $_nTrace1
+srcAddSelectedToWave -clipboard -win $_nTrace1
+wvDrop -win $_nWave3
+srcHBSelect \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.SRAM_Instantiations\[0\]" \
+           -win $_nTrace1
+srcHBSelect \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_Bank_MEMCntl\[3\]" \
+           -win $_nTrace1
+srcSetScope \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_Bank_MEMCntl\[3\]" \
+           -delim "." -win $_nTrace1
+srcHBSelect \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_Bank_MEMCntl\[3\]" \
+           -win $_nTrace1
+srcHBSelect "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U" -win $_nTrace1
+srcSetScope "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U" -delim "." -win \
+           $_nTrace1
+srcHBSelect "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U" -win $_nTrace1
+srcHBSelect "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U" -win $_nTrace1
+srcHBAddObjectToWave -clipboard
+wvDrop -win $_nWave3
+srcHBSelect "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_BUS_U" -win \
+           $_nTrace1
+srcSetScope "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_BUS_U" -delim \
+           "." -win $_nTrace1
+srcHBSelect "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_BUS_U" -win \
+           $_nTrace1
+srcHBAddObjectToWave -clipboard
+wvDrop -win $_nWave3
+srcHBSelect "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_Sync_FIFO" \
+           -win $_nTrace1
+srcSetScope "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_Sync_FIFO" \
+           -delim "." -win $_nTrace1
+srcHBSelect "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_Sync_FIFO" \
+           -win $_nTrace1
+srcHBAddObjectToWave -clipboard
+wvDrop -win $_nWave3
+srcHBSelect \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_Bank_MEMCntl\[3\].Neighbor_Bank_MEMCntl_U" \
+           -win $_nTrace1
+srcSetScope \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_Bank_MEMCntl\[3\].Neighbor_Bank_MEMCntl_U" \
+           -delim "." -win $_nTrace1
+srcHBSelect \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_Bank_MEMCntl\[3\].Neighbor_Bank_MEMCntl_U" \
+           -win $_nTrace1
+srcHBSelect \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_Bank_MEMCntl\[0\]" \
+           -win $_nTrace1
+srcSetScope \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_Bank_MEMCntl\[0\]" \
+           -delim "." -win $_nTrace1
+srcHBSelect \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_Bank_MEMCntl\[0\]" \
+           -win $_nTrace1
+srcHBSelect \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_Bank_MEMCntl\[0\].Neighbor_Bank_MEMCntl_U" \
+           -win $_nTrace1
+srcSetScope \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_Bank_MEMCntl\[0\].Neighbor_Bank_MEMCntl_U" \
+           -delim "." -win $_nTrace1
+srcHBSelect \
+           "Top_tb.iTop_DUT.S_Neighbor_SRAM_integration_U.Neighbor_Bank_MEMCntl\[0\].Neighbor_Bank_MEMCntl_U" \
+           -win $_nTrace1
+srcHBAddObjectToWave -clipboard
+wvDrop -win $_nWave3
+srcTBRunSim
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvScrollUp -win $_nWave3 20
+wvScrollUp -win $_nWave3 6
+wvSelectSignal -win $_nWave3 {( "G1" 1 )} 
+wvSetPosition -win $_nWave3 {("G1" 1)}
+wvExpandBus -win $_nWave3
+wvSetPosition -win $_nWave3 \
+           {("G1/S_Neighbor_SRAM_integration_U/Neighbor_BUS_U/Neighbor_Sync_FIFO/Neighbor_Bank_MEMCntl_U" 7)}
+wvScrollUp -win $_nWave3 3
+wvScrollUp -win $_nWave3 3
+wvScrollUp -win $_nWave3 8
+wvScrollUp -win $_nWave3 13
+wvScrollUp -win $_nWave3 15
+wvScrollUp -win $_nWave3 13
+wvScrollUp -win $_nWave3 17
+wvScrollUp -win $_nWave3 19
+wvScrollUp -win $_nWave3 20
+wvScrollUp -win $_nWave3 21
+wvScrollUp -win $_nWave3 24
+wvScrollUp -win $_nWave3 26
+wvScrollUp -win $_nWave3 31
+wvScrollUp -win $_nWave3 28
+wvScrollUp -win $_nWave3 28
+wvScrollUp -win $_nWave3 28
+wvScrollUp -win $_nWave3 24
+wvScrollUp -win $_nWave3 23
+wvScrollUp -win $_nWave3 20
+wvScrollUp -win $_nWave3 15
+wvScrollUp -win $_nWave3 14
+wvScrollUp -win $_nWave3 10
+wvScrollUp -win $_nWave3 10
+wvScrollUp -win $_nWave3 7
+wvScrollUp -win $_nWave3 10
+wvScrollUp -win $_nWave3 10
+wvScrollUp -win $_nWave3 12
+wvScrollUp -win $_nWave3 8
+wvScrollUp -win $_nWave3 6
+wvScrollUp -win $_nWave3 6
+wvScrollUp -win $_nWave3 3
+wvScrollUp -win $_nWave3 4
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 4
+wvScrollUp -win $_nWave3 3
+wvScrollUp -win $_nWave3 4
+wvSetCursor -win $_nWave3 4390373.716632 -snap {("G1" 2)}
+debExit
