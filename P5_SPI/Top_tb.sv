@@ -5,18 +5,53 @@ module Top_tb();
 logic clk, reset;
 logic task_complete;
 integer file1, file2, file3, file4;
+parameter max_bw=16,Max_cache_line=35,Packet_MEM_BW=16, Packet_MEM_DEPTH=256, Packet_num_valid_lines=35;
+logic Packet_Bank_data;
+logic Neighbor_Info_Bank0_data;
+logic Neighbor_Info_Bank1_data;
 
+logic Neighbor_ID_Bank0_data;
+logic Neighbor_ID_Bank1_data;
+logic Neighbor_ID_Bank2_data;
+logic Neighbor_ID_Bank3_data;
 
+logic FV_Info_Bank0_data;
+
+logic FV_Bank0_data;
+logic FV_Bank1_data;
+logic FV_Bank2_data;
+logic FV_Bank3_data;
+
+logic Big_FV_Bank0_data;
+logic Big_FV_Bank1_data;
+logic Big_FV_Bank2_data;
+logic Big_FV_Bank3_data;
+logic sos,eos;
+logic[$clog2(Max_cache_line*max_bw )-1:0] cnt;
 ///// Replay Iteration FF /////
 
 logic [1:0] replay_Iter_ff;
-always @(posedge clk) begin
-	if (reset)
+logic SPI_complete_flag;
+always @(posedge clk or negedge reset) begin
+	if (!reset) begin
 		replay_Iter_ff <= '0;
-	else
+		cnt<='d0;
+		SPI_complete_flag<='d0;
+	end
+	else begin
 		replay_Iter_ff <= iTop_DUT.replay_Iter;
+		SPI_complete_flag<= SPI_complete_flag?1'b1:(cnt==(Max_cache_line*max_bw))?1'b1:1'b0;
+		cnt<=SPI_complete_flag?'d0:cnt+1'b1;
+	end
 end
+assign eos=cnt==(Max_cache_line*max_bw);
+TX#(.MEM_BW(Packet_MEM_BW),.MEM_DEPTH(Packet_MEM_DEPTH), .num_valid_lines(Packet_num_valid_lines))
+Packet_Bank_TX(
+    .wclk(clk),
+    .wrst(reset),
 
+    .data_out(Packet_Bank_data)
+);
 `ifdef SYN
 initial begin
  $sdf_annotate("../syn/Top.syn.sdf", iTop_DUT);
@@ -99,7 +134,7 @@ $readmemb("nb_info_bank1.txt",
 		  
 ///// Packet SRAM /////
 $readmemb("packet_bank.txt",
-		  iTop_DUT.PACKET_SRAM_integration_U.IMem_Sram_U.mem);
+		  Packet_Bank_TX.MEM);
 
 ///// Neighbor SRAM /////
 $readmemb("nb_bank0.txt",
@@ -120,7 +155,34 @@ end
 
 
 Top iTop_DUT(
-.*
+	.clk(clk),
+    .reset(reset),
+
+    .sos(sos),
+    .eos(eos),
+    //SPI input data//
+    .Packet_Bank_data(Packet_Bank_data),
+	.Neighbor_Info_Bank0_data(Neighbor_Info_Bank0_data),
+    .Neighbor_Info_Bank1_data(Neighbor_Info_Bank1_data),
+
+    .Neighbor_ID_Bank0_data(Neighbor_ID_Bank0_data),
+    .Neighbor_ID_Bank1_data(Neighbor_ID_Bank1_data),
+    .Neighbor_ID_Bank2_data(Neighbor_ID_Bank2_data),
+    .Neighbor_ID_Bank3_data(Neighbor_ID_Bank3_data),
+
+    .FV_Info_Bank0_data(FV_Info_Bank0_data),
+
+    .FV_Bank0_data(FV_Bank0_data),
+    .FV_Bank1_data(FV_Bank1_data),
+    .FV_Bank2_data(FV_Bank2_data),
+    .FV_Bank3_data(FV_Bank3_data),
+
+    .Big_FV_Bank0_data(Big_FV_Bank0_data),
+    .Big_FV_Bank1_data(Big_FV_Bank1_data),
+    .Big_FV_Bank2_data(Big_FV_Bank2_data),
+    .Big_FV_Bank3_data(Big_FV_Bank3_data),
+
+	.task_complete(task_complete)
 );
 
 ///// Clock Gen /////
@@ -181,8 +243,15 @@ end
 
 clk = 0;
 reset = 0; // avtive high sync reset
+sos=0;
+
 @(negedge clk);
-#0.5 reset = 1; // go
+@(posedge clk);
+#0.1 reset = 1; // go
+@(posedge clk);
+	sos=1;
+@(posedge clk);
+#1 sos=0;
 // @(negedge clk);
 // #0.5 reset = 0; // go
 

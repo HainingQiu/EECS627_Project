@@ -1,6 +1,33 @@
 module Top(
     input clk,
     input reset,
+
+    input sos,
+    input eos,
+    //SPI input data//
+    input Packet_Bank_data,
+
+    input Neighbor_Info_Bank0_data,
+    input Neighbor_Info_Bank1_data,
+
+    input Neighbor_ID_Bank0_data,
+    input Neighbor_ID_Bank1_data,
+    input Neighbor_ID_Bank2_data,
+    input Neighbor_ID_Bank3_data,
+
+    input FV_Info_Bank0_data,
+
+    input FV_Bank0_data,
+    input FV_Bank1_data,
+    input FV_Bank2_data,
+    input FV_Bank3_data,
+
+    input Big_FV_Bank0_data,
+    input Big_FV_Bank1_data,
+    input Big_FV_Bank2_data,
+    input Big_FV_Bank3_data,
+
+
     output logic task_complete
 );
 
@@ -493,7 +520,8 @@ assign PE_IDLE[3]=Edge_PE2DP_out_IDLE_flag_3;
 // assign stream_end=Big_FV2Sm_FV_eos_3&Big_FV2Sm_FV_eos_2&Big_FV2Sm_FV_eos_1&Big_FV2Sm_FV_eos_0;
 PACKET_SRAM_integration PACKET_SRAM_integration_U(
     .clk(clk),														
-    .reset(reset),	
+    .reset(reset),
+    
     .grant(WB_packet_grants[0]),
     .PE_IDLE(PE_IDLE),
     .Edge_PE2IMEM_CNTL_in_packet_0(Edge_PE2IMEM_CNTL_out_0_packet),
@@ -511,7 +539,9 @@ PACKET_SRAM_integration PACKET_SRAM_integration_U(
     .Vertex_empty(Vertex_empty),
     .Vertex_RS_empty(Vertex_RS_empty),
     .outbuff_available(outbuff_available),
-
+    .Packet_Bank_data(Packet_Bank_data),
+    .sos(sos),
+    .eos(eos), 
     .task_complete(task_complete),
 
     .DP_task2Edge_PE_out_packet_0(DP_task2Edge_PE_out_packet_0),

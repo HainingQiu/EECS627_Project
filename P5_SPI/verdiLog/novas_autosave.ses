@@ -26,7 +26,7 @@ fdb_campaign =
 fdb_tool = 
 [hb]
 postSimFile = /home/zzyyds/EECS627_Project/P5_SPI/inter.fsdb
-syncTime = 10000
+syncTime = 100100000
 viewport = 0 0 2560 1376 0 0 541 1695
 activeNode = "Top_tb"
 activeScope = "Top_tb"
@@ -34,7 +34,7 @@ activeFile = "Top_tb.sv"
 interactiveMode = False
 viewType = Source
 simulatorMode = False
-sourceBeginLine = 115
+sourceBeginLine = 177
 baMode = False
 srcLineNum = True
 AutoWrap = True
@@ -52,10 +52,7 @@ leadingZero = False
 signalPane = False
 SourceVerticalScrollLines = 5
 Scope1 = "Top_tb"
-Scope2 = "Top_tb.iTop_DUT.Weight_CNTL_U"
-Scope3 = "Top_tb.iTop_DUT.Weight_CNTL_U.Weight_SRAM_DUT"
-Scope4 = "Top_tb.iTop_DUT"
-rangeSelection = 142 142 1 4 1 1
+rangeSelection = 204 204 1 4 1 1
 sdfCheckUndef = FALSE
 simFlow = FALSE
 [hb.design]
@@ -64,7 +61,7 @@ invokeDir = /home/zzyyds/EECS627_Project/P5_SPI
 [hb.sourceTab.1]
 scope = Top_tb
 File = /home/zzyyds/EECS627_Project/P5_SPI/Top_tb.sv
-Line = 116
+Line = 178
 [nMemoryManager]
 WaveformFile = /home/zzyyds/EECS627_Project/P5_SPI/inter.fsdb
 UserActionNum = 0

@@ -21,6 +21,11 @@ module PACKET_SRAM_integration(
     input Vertex_RS_empty,
     input outbuff_available,
 
+//SPI//
+    input Packet_Bank_data,
+    input sos,
+    input eos, 
+
     output logic task_complete,
 
     output logic [`packet_size-1-2:0] DP_task2Edge_PE_out_packet_0,
@@ -88,6 +93,10 @@ IMem_Sram IMem_Sram_U(
     .Edge_PE2IMEM_CNTL_in(Edge_PE2IMEM_CNTL_in),
     .full(fifo_full),
     .cntl_done(cntl_done),
+
+    .Packet_Bank_data(Packet_Bank_data),
+    .sos(sos),
+    .eos(eos), 
     .wr_en(wr_en),
     .fifo_stall(fifo_stall),
     .replay_iter_flag(replay_iter_flag),
