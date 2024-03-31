@@ -25,7 +25,8 @@ module PACKET_CNTL(
     input fifo_stall,
     input [`packet_size-1:0] Data_SRAM_in,
     output PACKET_CNTL2SRAM  PACKET_CNTL_SRAM_out,
-    output com_packet mem2fifo
+    output com_packet mem2fifo,
+    output logic CEN
 
     
 );
@@ -104,7 +105,7 @@ always_comb begin
     Edge_PE_WB_valid='d0;
     nx_wr_en=0;
     nx_prepare_wr_addr=prepare_wr_addr;
-    
+    CEN='d0;
     for(int i=0;i<`Num_Edge_PE;i++)begin
         Edge_PE_WB_valid =Edge_PE_WB_valid | Edge_PE2IMEM_CNTL_in[i].valid;
 
@@ -213,6 +214,7 @@ wait_fifo_stall:begin
            PACKET_CNTL_SRAM_out=0;
            mem2fifo =0;
             nx_wr_en=0;
+            CEN='d1;
    end
 
 

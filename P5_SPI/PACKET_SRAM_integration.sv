@@ -57,7 +57,7 @@ logic RS_empty;
 logic wr_en;
 logic [`packet_size-1:0] Data_SRAM_in;
 PACKET_CNTL2SRAM  PACKET_CNTL_SRAM_out;
-
+logic CEN;
 assign Edge_PE2IMEM_CNTL_in[0].packet=Edge_PE2IMEM_CNTL_in_packet_0;
 assign Edge_PE2IMEM_CNTL_in[1].packet=Edge_PE2IMEM_CNTL_in_packet_1;
 assign Edge_PE2IMEM_CNTL_in[2].packet=Edge_PE2IMEM_CNTL_in_packet_2;
@@ -81,7 +81,7 @@ assign stream_end=Big_FV2Sm_FV_eos_3&Big_FV2Sm_FV_eos_2&Big_FV2Sm_FV_eos_1&Big_F
 IMem_Sram IMem_Sram_U(
     .Q(Data_SRAM_in ),
     .CLK(clk),
-    .CEN(1'b0),
+    .CEN(CEN),
     .WEN(PACKET_CNTL_SRAM_out.wen),
     .A(PACKET_CNTL_SRAM_out.SRAM_addr),
     .D(PACKET_CNTL_SRAM_out.SRAM_DATA)
@@ -102,7 +102,8 @@ IMem_Sram IMem_Sram_U(
     .replay_iter_flag(replay_iter_flag),
     .Data_SRAM_in(Data_SRAM_in),
     .PACKET_CNTL_SRAM_out(PACKET_CNTL_SRAM_out),
-    .mem2fifo(mem2fifo)
+    .mem2fifo(mem2fifo),
+    .CEN(CEN)
     // .cntl_done(cntl_done)
     
 );
