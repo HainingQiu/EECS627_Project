@@ -9,9 +9,10 @@ wvRestoreSignal -win $_nWave3 "/home/zzyyds/EECS627_Project/P5_SPI/signal.rc" \
 srcTBRunSim
 wvZoomOut -win $_nWave3
 wvZoomOut -win $_nWave3
-wvScrollUp -win $_nWave3 9
-wvScrollUp -win $_nWave3 9
-wvScrollUp -win $_nWave3 63
-wvScrollDown -win $_nWave3 13
-wvSelectSignal -win $_nWave3 {( "PACKET_SRAM_integration_U" 28 )} 
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvZoom -win $_nWave3 0.000000 131808065.607318
+wvZoom -win $_nWave3 0.000000 70775788.822000
+wvZoom -win $_nWave3 0.000000 40547115.156751
 debExit

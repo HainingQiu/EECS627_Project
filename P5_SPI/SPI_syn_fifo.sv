@@ -5,11 +5,11 @@ module SPI_dual_port_RAM#(
 )(
 	 input wclk
 	,input wenc
-	,input [$clog2(DEPTH):0] waddr
+	,input  waddr
 	,input [WIDTH-1:0] wdata
 	,input rclk
 	,input renc
-	,input [$clog2(DEPTH):0] raddr
+	,input raddr
 	,output logic[WIDTH-1:0] rdata
 );
 

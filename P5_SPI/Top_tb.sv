@@ -5,7 +5,7 @@ module Top_tb();
 logic clk, reset;
 logic task_complete;
 integer file1, file2, file3, file4;
-parameter max_bw=16,Max_cache_line=35,Packet_MEM_BW=16, Packet_MEM_DEPTH=256, Packet_num_valid_lines=35;
+parameter max_bw=18,Max_cache_line=256, Neighbor_Info_Bank_BW=18,Neighbor_Info_Bank_Depth=256,Neighbor_info_num_valid_lines=256,Packet_MEM_BW=16, Packet_MEM_DEPTH=256, Packet_num_valid_lines=35;
 logic Packet_Bank_data;
 logic Neighbor_Info_Bank0_data;
 logic Neighbor_Info_Bank1_data;
@@ -52,6 +52,23 @@ Packet_Bank_TX(
 
     .data_out(Packet_Bank_data)
 );
+
+TX#(.MEM_BW(Neighbor_Info_Bank_BW),.MEM_DEPTH(Neighbor_Info_Bank_Depth), .num_valid_lines(Neighbor_info_num_valid_lines))
+Neighbor_Info_Bank0_TX(
+    .wclk(clk),
+    .wrst(reset),
+
+    .data_out(Neighbor_Info_Bank0_data)
+);
+
+TX#(.MEM_BW(Neighbor_Info_Bank_BW),.MEM_DEPTH(Neighbor_Info_Bank_Depth), .num_valid_lines(Neighbor_info_num_valid_lines))
+Neighbor_Info_Bank1_TX(
+    .wclk(clk),
+    .wrst(reset),
+
+    .data_out(Neighbor_Info_Bank1_data)
+);
+
 `ifdef SYN
 initial begin
  $sdf_annotate("../syn/Top.syn.sdf", iTop_DUT);
@@ -125,12 +142,8 @@ $readmemb("feature_value_pointer.txt",
 		  iTop_DUT.FV_info_Integration_U.FV_info_SRAM_U.mem);
 		  
 ///// Neighbor Pointer SRAM /////
-$readmemb("nb_info_bank0.txt",
-		  iTop_DUT.Neighbor_info_Integration_U.
-		  Nb_Info_SRAM_init[0].Neighbor_Info_SRAM_U.mem);
-$readmemb("nb_info_bank1.txt",
-		  iTop_DUT.Neighbor_info_Integration_U.
-		  Nb_Info_SRAM_init[1].Neighbor_Info_SRAM_U.mem);
+$readmemb("nb_info_bank0.txt",Neighbor_Info_Bank0_TX.MEM);
+$readmemb("nb_info_bank1.txt",Neighbor_Info_Bank1_TX.MEM);
 		  
 ///// Packet SRAM /////
 $readmemb("packet_bank.txt",
@@ -192,7 +205,7 @@ initial begin
 
 init();
 
-repeat (5000) @(negedge clk);
+repeat (10000) @(negedge clk);
 
 ///// File Close /////
 $fclose(file1);

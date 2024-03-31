@@ -1,97 +1,324 @@
 simSetSimulator "-vcssv" -exec "./simv" -args " " -uvmDebug on
 debImport "-i" "-simflow" "-dbdir" "./simv.daidir"
 srcTBInvokeSim
+srcDeselectAll -win $_nTrace1
 wvCreateWindow
 wvDrop -win $_nWave3
-srcHBSelect "Top_tb.Packet_Bank_TX" -win $_nTrace1
-srcSetScope "Top_tb.Packet_Bank_TX" -delim "." -win $_nTrace1
-srcHBSelect "Top_tb.Packet_Bank_TX" -win $_nTrace1
-srcHBSelect "Top_tb.dumpPongBuf2file" -win $_nTrace1
-srcSetScope "Top_tb.dumpPongBuf2file" -delim "." -win $_nTrace1
-srcHBSelect "Top_tb.dumpPongBuf2file" -win $_nTrace1
-srcHBSelect "Top_tb.iTop_DUT" -win $_nTrace1
-srcSetScope "Top_tb.iTop_DUT" -delim "." -win $_nTrace1
-srcHBSelect "Top_tb.iTop_DUT" -win $_nTrace1
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U" -win $_nTrace1
-srcSetScope "Top_tb.iTop_DUT.PACKET_SRAM_integration_U" -delim "." -win $_nTrace1
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U" -win $_nTrace1
-srcHBAddObjectToWave -clipboard
-wvDrop -win $_nWave3
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.decoder_0" -win $_nTrace1
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.decoder_0" -win $_nTrace1
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.RS_0" -win $_nTrace1 -add
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.decoder_0" -win $_nTrace1
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.RS_0" -win $_nTrace1 -add
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.PACKET_CNTL_0" -win \
-           $_nTrace1 -add
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.decoder_0" -win $_nTrace1
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.RS_0" -win $_nTrace1 -add
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.PACKET_CNTL_0" -win \
-           $_nTrace1 -add
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.IMem_Sram_U" -win \
-           $_nTrace1 -add
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.decoder_0" -win $_nTrace1
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.RS_0" -win $_nTrace1 -add
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.PACKET_CNTL_0" -win \
-           $_nTrace1 -add
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.IMem_Sram_U" -win \
-           $_nTrace1 -add
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.Command_FIFO_0" -win \
-           $_nTrace1 -add
-srcHBAddObjectToWave -clipboard
-wvDrop -win $_nWave3
-wvScrollDown -win $_nWave3 1
-wvScrollUp -win $_nWave3 4
+wvRestoreSignal -win $_nWave3 "/home/zzyyds/EECS627_Project/P5_SPI/signal.rc" \
+           -overWriteAutoAlias on -appendSignals on
 srcTBRunSim
 wvZoomOut -win $_nWave3
 wvZoomOut -win $_nWave3
 wvZoomOut -win $_nWave3
 wvZoomOut -win $_nWave3
-wvZoomOut -win $_nWave3
-wvZoomOut -win $_nWave3
-wvZoomOut -win $_nWave3
-wvScrollUp -win $_nWave3 15
-wvSelectSignal -win $_nWave3 {( "PACKET_SRAM_integration_U/PACKET_CNTL_0" 13 )} \
-           
+wvSelectSignal -win $_nWave3 \
+           {( "Neighbor_Info_Bank0_TX/Neighbor_Info_SRAM_U/Neighbor_Info_CNTL_U/Nb_Info_Rx_init[0]/Neighbor_Info_Rx/SPI_Sync_FIFO_RX/tb_dual_port_RAM/Neighbor_info_Integration_U" \
+           15 )} 
+wvExpandBus -win $_nWave3
+wvScrollUp -win $_nWave3 1
+wvScrollUp -win $_nWave3 3
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 4
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 6
+wvScrollUp -win $_nWave3 7
+wvScrollUp -win $_nWave3 7
+wvScrollUp -win $_nWave3 6
+wvScrollUp -win $_nWave3 7
+wvScrollUp -win $_nWave3 6
+wvScrollUp -win $_nWave3 6
+wvScrollUp -win $_nWave3 5
+wvScrollUp -win $_nWave3 5
+wvScrollUp -win $_nWave3 4
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 4
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 4
+wvScrollUp -win $_nWave3 3
+wvScrollUp -win $_nWave3 3
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 3
+wvScrollUp -win $_nWave3 1
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 3
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 3
+wvScrollUp -win $_nWave3 3
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 3
+wvScrollUp -win $_nWave3 4
+wvScrollUp -win $_nWave3 6
+wvScrollUp -win $_nWave3 5
+wvScrollUp -win $_nWave3 3
+wvScrollUp -win $_nWave3 3
+wvScrollUp -win $_nWave3 6
+wvScrollUp -win $_nWave3 5
+wvScrollUp -win $_nWave3 3
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 4
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 1
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 1
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 4
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 1
+wvScrollUp -win $_nWave3 1
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 4
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 1
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 3
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 3
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 4
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 4
+wvScrollUp -win $_nWave3 4
+wvScrollUp -win $_nWave3 3
+wvScrollUp -win $_nWave3 1
+wvScrollUp -win $_nWave3 3
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 4
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 3
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 4
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 1
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 2
+wvScrollDown -win $_nWave3 0
+wvScrollUp -win $_nWave3 1
+wvScrollUp -win $_nWave3 1
+wvScrollUp -win $_nWave3 3
+wvScrollUp -win $_nWave3 1
+wvScrollUp -win $_nWave3 1
+wvScrollUp -win $_nWave3 2
+wvScrollUp -win $_nWave3 1
+wvScrollUp -win $_nWave3 1
+wvScrollUp -win $_nWave3 1
+wvScrollUp -win $_nWave3 1
+wvScrollUp -win $_nWave3 1
 wvScrollDown -win $_nWave3 2
-wvScrollDown -win $_nWave3 7
-wvScrollDown -win $_nWave3 7
-wvScrollUp -win $_nWave3 45
-wvScrollDown -win $_nWave3 7
-wvZoomOut -win $_nWave3
-wvZoomOut -win $_nWave3
-wvZoomOut -win $_nWave3
-wvZoomOut -win $_nWave3
-wvZoomOut -win $_nWave3
-wvZoomOut -win $_nWave3
-wvZoomOut -win $_nWave3
-wvZoomOut -win $_nWave3
-wvZoomOut -win $_nWave3
-wvSetCursor -win $_nWave3 11438521.560575 -snap {("decoder_0" 18)}
-wvZoomOut -win $_nWave3
-wvZoomOut -win $_nWave3
-wvZoomIn -win $_nWave3
-wvZoomIn -win $_nWave3
-wvZoom -win $_nWave3 61841903.966597 121221077.244259
-wvZoomOut -win $_nWave3
-wvSetCursor -win $_nWave3 19996271.904592 -snap {("decoder_0" 7)}
-wvSelectSignal -win $_nWave3 {( "PACKET_SRAM_integration_U/decoder_0" 6 )} 
-wvSelectSignal -win $_nWave3 {( "PACKET_SRAM_integration_U/decoder_0" 7 )} 
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.decoder_0" -win $_nTrace1
-srcSetScope "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.decoder_0" -delim "." -win \
-           $_nTrace1
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.decoder_0" -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "nx_state" -line 26 -pos 1 -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "state" -line 26 -pos 1 -win $_nTrace1
-srcSelect -signal "nx_state" -line 26 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave3
+wvScrollDown -win $_nWave3 3
+wvScrollDown -win $_nWave3 5
+wvScrollDown -win $_nWave3 3
+wvScrollDown -win $_nWave3 4
+wvScrollDown -win $_nWave3 4
+wvScrollDown -win $_nWave3 4
+wvScrollDown -win $_nWave3 4
+wvScrollDown -win $_nWave3 2
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 2
+wvScrollDown -win $_nWave3 0
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 0
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 0
+wvScrollDown -win $_nWave3 1
+wvScrollUp -win $_nWave3 6
+wvScrollUp -win $_nWave3 5
+wvScrollUp -win $_nWave3 3
 wvScrollUp -win $_nWave3 1
+wvScrollUp -win $_nWave3 16
+wvScrollUp -win $_nWave3 7
 wvScrollUp -win $_nWave3 1
-wvScrollUp -win $_nWave3 1
-wvZoom -win $_nWave3 13290205.107321 20362057.366262
+wvSelectSignal -win $_nWave3 \
+           {( "Neighbor_Info_Bank0_TX/Neighbor_Info_SRAM_U/Neighbor_Info_CNTL_U" \
+           11 )} 
+wvSelectSignal -win $_nWave3 \
+           {( "Neighbor_Info_Bank0_TX/Neighbor_Info_SRAM_U/Neighbor_Info_CNTL_U" \
+           13 )} 
+wvSelectSignal -win $_nWave3 \
+           {( "Neighbor_Info_Bank0_TX/Neighbor_Info_SRAM_U/Neighbor_Info_CNTL_U" \
+           13 )} 
+wvSetPosition -win $_nWave3 \
+           {("Neighbor_Info_Bank0_TX/Neighbor_Info_SRAM_U/Neighbor_Info_CNTL_U" 13)}
+wvExpandBus -win $_nWave3
+wvSetPosition -win $_nWave3 \
+           {("Neighbor_Info_Bank0_TX/Neighbor_Info_SRAM_U/Neighbor_Info_CNTL_U/Nb_Info_Rx_init[0]/Neighbor_Info_Rx/SPI_Sync_FIFO_RX/tb_dual_port_RAM/Neighbor_info_Integration_U" 271)}
+wvSelectSignal -win $_nWave3 \
+           {( "Neighbor_Info_Bank0_TX/Neighbor_Info_SRAM_U/Neighbor_Info_CNTL_U" \
+           15 )} 
+wvSelectSignal -win $_nWave3 \
+           {( "Neighbor_Info_Bank0_TX/Neighbor_Info_SRAM_U/Neighbor_Info_CNTL_U" \
+           15 )} 
+wvSetPosition -win $_nWave3 \
+           {("Neighbor_Info_Bank0_TX/Neighbor_Info_SRAM_U/Neighbor_Info_CNTL_U" 15)}
+wvExpandBus -win $_nWave3
+wvSetPosition -win $_nWave3 \
+           {("Neighbor_Info_Bank0_TX/Neighbor_Info_SRAM_U/Neighbor_Info_CNTL_U/Nb_Info_Rx_init[0]/Neighbor_Info_Rx/SPI_Sync_FIFO_RX/tb_dual_port_RAM/Neighbor_info_Integration_U" 271)}
+wvSelectSignal -win $_nWave3 \
+           {( "Neighbor_Info_Bank0_TX/Neighbor_Info_SRAM_U/Neighbor_Info_CNTL_U" \
+           16 )} 
+wvZoom -win $_nWave3 778925.316052 1136564.177119
+wvZoomOut -win $_nWave3
+wvZoom -win $_nWave3 978307.145169 1275727.553243
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvZoom -win $_nWave3 91786554.295127 93345110.519778
+wvZoom -win $_nWave3 92297005.461099 93053881.327896
+wvZoom -win $_nWave3 92432994.451531 92816094.864601
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvZoom -win $_nWave3 90992173.267646 91199849.877607
+wvSelectSignal -win $_nWave3 \
+           {( "Neighbor_Info_Bank0_TX/Neighbor_Info_SRAM_U/Neighbor_Info_CNTL_U" \
+           16 )} 
+wvSetRadix -win $_nWave3 -format UDec
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvSetCursor -win $_nWave3 92647999.774443 -snap {("Neighbor_Info_CNTL_U" 16)}
+wvZoom -win $_nWave3 92606208.588044 92674439.096450
+wvSelectSignal -win $_nWave3 \
+           {( "Neighbor_Info_Bank0_TX/Neighbor_Info_SRAM_U/Neighbor_Info_CNTL_U" \
+           18 )} 
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvZoom -win $_nWave3 91920751.170431 92469957.726799
+wvScrollUp -win $_nWave3 11
+wvScrollDown -win $_nWave3 16
+wvScrollDown -win $_nWave3 7
+wvScrollUp -win $_nWave3 30
+wvSelectSignal -win $_nWave3 {( "Neighbor_Info_Bank0_TX/Neighbor_Info_SRAM_U" \
+           5 )} 
+wvSelectSignal -win $_nWave3 {( "Neighbor_Info_Bank0_TX/Neighbor_Info_SRAM_U" \
+           5 )} 
+wvSetRadix -win $_nWave3 -format UDec
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvZoom -win $_nWave3 92154756.017343 92853951.222574
+wvZoom -win $_nWave3 92432567.664593 92750579.446849
+wvZoom -win $_nWave3 92532476.910350 92672219.254093
+wvSelectSignal -win $_nWave3 {( "Neighbor_Info_Bank0_TX/Neighbor_Info_SRAM_U" \
+           6 )} 
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvSetCursor -win $_nWave3 91172212.884649 -snap {("Neighbor_Info_SRAM_U" 4)}
+wvZoomOut -win $_nWave3
+wvSetCursor -win $_nWave3 91529746.684046 -snap {("Neighbor_Info_SRAM_U" 6)}
+wvZoom -win $_nWave3 91393160.738211 91582544.612688
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvSelectSignal -win $_nWave3 \
+           {( "Neighbor_Info_Bank0_TX/Neighbor_Info_SRAM_U/Neighbor_Info_CNTL_U/Nb_Info_Rx_init[0]/Neighbor_Info_Rx/SPI_Sync_FIFO_RX/tb_dual_port_RAM/Neighbor_info_Integration_U" \
+           15 )} 
+wvSetPosition -win $_nWave3 \
+           {("Neighbor_Info_Bank0_TX/Neighbor_Info_SRAM_U/Neighbor_Info_CNTL_U/Nb_Info_Rx_init[0]/Neighbor_Info_Rx/SPI_Sync_FIFO_RX/tb_dual_port_RAM/Neighbor_info_Integration_U" 15)}
+wvCollapseBus -win $_nWave3
+wvSetPosition -win $_nWave3 \
+           {("Neighbor_Info_Bank0_TX/Neighbor_Info_SRAM_U/Neighbor_Info_CNTL_U/Nb_Info_Rx_init[0]/Neighbor_Info_Rx/SPI_Sync_FIFO_RX/tb_dual_port_RAM/Neighbor_info_Integration_U" 15)}
+wvScrollUp -win $_nWave3 54
+wvSelectSignal -win $_nWave3 {( "Neighbor_Info_Bank0_TX/Neighbor_Info_SRAM_U" \
+           4 )} 
+wvSelectSignal -win $_nWave3 {( "Neighbor_Info_Bank0_TX/Neighbor_Info_SRAM_U" \
+           3 )} 
+wvSelectSignal -win $_nWave3 {( "Neighbor_Info_Bank0_TX/Neighbor_Info_SRAM_U" \
+           3 )} 
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
+wvZoomOut -win $_nWave3
 wvZoomOut -win $_nWave3
 wvZoomOut -win $_nWave3
 wvZoomOut -win $_nWave3
@@ -99,81 +326,11 @@ wvScrollDown -win $_nWave3 1
 wvScrollDown -win $_nWave3 1
 wvScrollDown -win $_nWave3 1
 wvScrollDown -win $_nWave3 1
-wvScrollDown -win $_nWave3 0
-wvScrollDown -win $_nWave3 0
-wvZoom -win $_nWave3 13243386.571159 23872946.845379
-wvScrollUp -win $_nWave3 20
-wvSelectGroup -win $_nWave3 {PACKET_SRAM_integration_U/PACKET_CNTL_0}
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U" -win $_nTrace1
-srcSetScope "Top_tb.iTop_DUT.PACKET_SRAM_integration_U" -delim "." -win $_nTrace1
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U" -win $_nTrace1
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.PACKET_CNTL_0" -win \
-           $_nTrace1
-srcSetScope "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.PACKET_CNTL_0" -delim "." \
-           -win $_nTrace1
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.PACKET_CNTL_0" -win \
-           $_nTrace1
-srcSelect -signal "state" -line 36 -pos 1 -win $_nTrace1
-srcSelect -signal "nx_state" -line 36 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave3
-wvSetCursor -win $_nWave3 20162422.725006 -snap {("Command_FIFO_0" 11)}
 wvScrollDown -win $_nWave3 1
-wvScrollDown -win $_nWave3 0
-wvScrollDown -win $_nWave3 0
-wvZoom -win $_nWave3 18754606.220514 21231926.736169
-wvZoom -win $_nWave3 19944940.924131 20471435.119963
-wvSelectSignal -win $_nWave3 {( "PACKET_SRAM_integration_U/Command_FIFO_0" 11 \
-           )} 
-wvSelectSignal -win $_nWave3 {( "PACKET_SRAM_integration_U/Command_FIFO_0" 12 \
-           )} 
-wvSelectSignal -win $_nWave3 {( "PACKET_SRAM_integration_U/Command_FIFO_0" 11 \
-           )} 
-wvSelectSignal -win $_nWave3 {( "PACKET_SRAM_integration_U/Command_FIFO_0" 12 \
-           )} 
-srcHBSelect \
-           "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.PACKET_CNTL_0.unnamed\$\$_0" \
-           -win $_nTrace1
-srcSetScope \
-           "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.PACKET_CNTL_0.unnamed\$\$_0" \
-           -delim "." -win $_nTrace1
-srcHBSelect \
-           "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.PACKET_CNTL_0.unnamed\$\$_0" \
-           -win $_nTrace1
-srcHBSelect \
-           "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.PACKET_CNTL_0.RX_Packet_CNTL" \
-           -win $_nTrace1
-srcSetScope \
-           "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.PACKET_CNTL_0.RX_Packet_CNTL" \
-           -delim "." -win $_nTrace1
-srcHBSelect \
-           "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.PACKET_CNTL_0.RX_Packet_CNTL" \
-           -win $_nTrace1
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.PACKET_CNTL_0" -win \
-           $_nTrace1
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.PACKET_CNTL_0" -win \
-           $_nTrace1
-srcSetScope "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.PACKET_CNTL_0" -delim "." \
-           -win $_nTrace1
-srcHBSelect "Top_tb.iTop_DUT.PACKET_SRAM_integration_U.PACKET_CNTL_0" -win \
-           $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "state" -line 36 -pos 1 -win $_nTrace1
-srcSelect -signal "nx_state" -line 36 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave3
-wvZoom -win $_nWave3 20100078.330910 20256296.834602
-wvZoomOut -win $_nWave3
-wvZoomOut -win $_nWave3
-wvZoomOut -win $_nWave3
-wvZoomOut -win $_nWave3
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "state" -line 75 -pos 1 -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "IDLE" -line 75 -pos 1 -win $_nTrace1
-srcDeselectAll -win $_nTrace1
-srcSelect -signal "replay_iter_flag" -line 72 -pos 1 -win $_nTrace1
-srcAddSelectedToWave -clipboard -win $_nTrace1
-wvDrop -win $_nWave3
+wvScrollDown -win $_nWave3 1
+wvScrollDown -win $_nWave3 1
+wvSelectSignal -win $_nWave3 \
+           {( "Neighbor_Info_Bank0_TX/Neighbor_Info_SRAM_U/Neighbor_Info_CNTL_U" \
+           17 )} 
 wvSaveSignal -win $_nWave3 "/home/zzyyds/EECS627_Project/P5_SPI/signal.rc"
 debExit

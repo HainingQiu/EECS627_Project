@@ -6,6 +6,11 @@ module Neighbor_info_Integration(
     input BUS2Neighbor_info_MEM_CNTL_in_valid,
     input [$clog2(`Max_Node_id)-1:0] BUS2Neighbor_info_MEM_CNTL_in_Node_id,
     input [$clog2(`Num_Edge_PE)-1:0] BUS2Neighbor_info_MEM_CNTL_PE_tag,
+    input sos,
+    input eos,
+    input Neighbor_Info_Bank0_data,
+    input Neighbor_Info_Bank1_data,
+
 
     output 	logic Neighbor_info2Neighbor_FIFO_out_valid, // If low, the data in this struct is garbage
     output  logic [`Neighbor_info_bandwidth-1:0] Neighbor_info2Neighbor_FIFO_out_addr,
@@ -53,6 +58,12 @@ Neighbor_Info_CNTL Neighbor_Info_CNTL_U(
     .Current_replay_Iter(Current_replay_Iter),
     .Neighbor_ID_FIFO_full(Neighbor_CNTL2Neighbor_Info_CNTL_full),
     .Data_SRAM_in(Data_SRAM_in),
+    .sos(sos),
+    .eos(eos),
+    .Neighbor_Info_Bank0_data(Neighbor_Info_Bank0_data),
+    .Neighbor_Info_Bank1_data(Neighbor_Info_Bank1_data),
+
+    
 
     .rinc2Neighbor_FIFO(rinc2Neighbor_FIFO),
     .Neighbor_info_CNTL2SRAM_interface_out(Neighbor_info_CNTL2SRAM_interface_out),
@@ -68,9 +79,9 @@ generate
             .Q(Data_SRAM_in[i]),
             .CLK(clk),
             .CEN(Neighbor_info_CNTL2SRAM_interface_out[i].CEN),
-            .WEN(1'b1),
+            .WEN(Neighbor_info_CNTL2SRAM_interface_out[i].WEN),
             .A(Neighbor_info_CNTL2SRAM_interface_out[i].A),
-            .D(18'd0) // 17'd0
+            .D(Neighbor_info_CNTL2SRAM_interface_out[i].Data) // 17'd0
         );
         end 
 endgenerate

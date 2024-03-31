@@ -34,7 +34,7 @@ activeFile = "Top_tb.sv"
 interactiveMode = False
 viewType = Source
 simulatorMode = False
-sourceBeginLine = 177
+sourceBeginLine = 190
 baMode = False
 srcLineNum = True
 AutoWrap = True
@@ -52,7 +52,7 @@ leadingZero = False
 signalPane = False
 SourceVerticalScrollLines = 5
 Scope1 = "Top_tb"
-rangeSelection = 204 204 1 4 1 1
+rangeSelection = 217 217 1 4 1 1
 sdfCheckUndef = FALSE
 simFlow = FALSE
 [hb.design]
@@ -61,7 +61,7 @@ invokeDir = /home/zzyyds/EECS627_Project/P5_SPI
 [hb.sourceTab.1]
 scope = Top_tb
 File = /home/zzyyds/EECS627_Project/P5_SPI/Top_tb.sv
-Line = 178
+Line = 191
 [nMemoryManager]
 WaveformFile = /home/zzyyds/EECS627_Project/P5_SPI/inter.fsdb
 UserActionNum = 0
