@@ -964,6 +964,10 @@ Neighbor_info_Integration Neighbor_info_Integration_U(
     .BUS2Neighbor_info_MEM_CNTL_in_Node_id(BUS2Neighbor_info_MEM_CNTL_out_Node_id),
     .BUS2Neighbor_info_MEM_CNTL_PE_tag(BUS2Neighbor_info_MEM_CNTL_out_PE_tag),
 
+    .sos()
+    .Neighbor_Info_Bank0_data,
+    .Neighbor_Info_Bank1_data,
+
     .Neighbor_info2Neighbor_FIFO_out_valid(Neighbor_info2Neighbor_FIFO_out_valid), // If low, the data in this struct is garbage
     .Neighbor_info2Neighbor_FIFO_out_addr(Neighbor_info2Neighbor_FIFO_out_addr),
     .Neighbor_info2Neighbor_FIFO_out_PE_tag(Neighbor_info2Neighbor_FIFO_out_PE_tag)
