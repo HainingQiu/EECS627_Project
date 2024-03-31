@@ -28,7 +28,7 @@ Neighbor_bank_CNTL2Edge_PE nx_Neighbor_bank_CNTL2Edge_PE_out;
 logic [$clog2(`max_degree_Iter):0] Num_neighbor_Iter,nx_Num_neighbor_Iter;
 logic reg_eos;
 logic data_valid;
-logic [$clog2(256):0] prepare_wr_addr,nx_prepare_wr_addr;
+logic [$clog2(512):0] prepare_wr_addr,nx_prepare_wr_addr;
 always_ff @(posedge clk or negedge reset)begin
     if(!reset)begin
         state<=#1 IDLE;
@@ -92,12 +92,12 @@ always_comb begin
         Prepare:
                 begin
                    
-                    if(reg_eos && prepare_wr_addr=='d256)begin
-                        nx_state=IDLE;
-                        nx_prepare_wr_addr='d0;
-                    end
-                    else if(prepare_wr_addr=='d256)begin
+                    if(prepare_wr_addr=='d512)begin
                         Neighbor_bank2SRAM_Interface_out.WEN='d1;
+                        if(reg_eos )begin
+                            nx_state=IDLE;
+                            nx_prepare_wr_addr='d0;
+                        end
                     end
                     else if(reg_eos && data_valid)begin
                         Neighbor_bank2SRAM_Interface_out.WEN='d0;
@@ -107,6 +107,7 @@ always_comb begin
                         nx_prepare_wr_addr='d0;
                         nx_state=IDLE;
                     end
+
                     else if(data_valid)begin
                         nx_state=Prepare;
                         Neighbor_bank2SRAM_Interface_out.WEN='d0;

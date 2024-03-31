@@ -92,23 +92,25 @@ always_comb begin
 
         Prepare:
                 begin
-                    if(reg_eos && prepare_wr_addr=='d256)begin
-                        nx_state=IDLE;
-                        nx_prepare_wr_addr='d0;
-                    end
-                    else if(prepare_wr_addr=='d256)begin
+                    if(prepare_wr_addr=='d256)begin
                         nx_state=Prepare;
                         Neighbor_info_CNTL2SRAM_interface_out[0].WEN='d1;
                         Neighbor_info_CNTL2SRAM_interface_out[1].WEN='d1;
+                        if(reg_eos)begin
+                            nx_prepare_wr_addr='d0;
+                            nx_state=IDLE; 
+                        end
                     end
                     else if(reg_eos )begin
+                        nx_state=IDLE;
+                        nx_prepare_wr_addr='d0;
                         for(int i=0;i<`num_bank_neighbor_info;i++)begin
                             if(data_valid[i])begin
                                 Neighbor_info_CNTL2SRAM_interface_out[i].WEN='d0;
                                 Neighbor_info_CNTL2SRAM_interface_out[i].CEN=1'b0;
                                 Neighbor_info_CNTL2SRAM_interface_out[i].A=prepare_wr_addr;
-                                nx_prepare_wr_addr='d0;
-                                nx_state=IDLE;
+                                // nx_prepare_wr_addr='d0;
+                                // nx_state=IDLE;
                             end
                         end
                     end

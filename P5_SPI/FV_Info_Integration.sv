@@ -7,7 +7,9 @@ input FV_FIFO2FV_info_MEM_CNTL_in_full,
 input BUS2FV_info_FIFO_in_valid,
 input [$clog2(`Max_Node_id)-1:0] BUS2FV_info_FIFO_in_Node_id,
 input [$clog2(`Num_Edge_PE)-1:0] BUS2FV_info_FIFO_in_PE_tag,
-
+input sos,
+input eos,
+input FV_Info_Bank0_data,
 
 output 	logic FV_info2FV_FIFO_out_valid,
 output  logic [`FV_info_bank_width-1:0] FV_info2FV_FIFO_out_FV_addr,
@@ -48,6 +50,10 @@ FV_info_MEMcntl FV_info_MEMcntl_U0(
     .FIFO2FV_info_MEM_CNTL_in(FIFO2FV_info_MEM_CNTL_in),
     .FV_FIFO2FV_info_MEM_CNTL_in(FV_FIFO2FV_info_MEM_CNTL_in),
     .FV_Info_SRAM2CNTL_in(FV_Info_SRAM2CNTL_in),
+    .sos(sos),
+    .eos(eos),
+    .FV_Info_Bank0_data(FV_Info_Bank0_data),
+
     .FV_info_CNTL2SRAM_Interface_out(FV_info_CNTL2SRAM_Interface_out),
     .FV_info_MEM_CNTL2FIFO_out(FV_info_MEM_CNTL2FIFO_out),
     .FV_info2FV_FIFO_out(FV_info2FV_FIFO_out)
@@ -59,9 +65,9 @@ FV_info_SRAM FV_info_SRAM_U(
     .Q(FV_Info_SRAM2CNTL_in.D ),
     .CLK(clk),
     .CEN(FV_info_CNTL2SRAM_Interface_out.CEN),
-    .WEN(1'b1),
+    .WEN(FV_info_CNTL2SRAM_Interface_out.WEN),
     .A(FV_info_CNTL2SRAM_Interface_out.A),
-    .D(10'd0)
+    .D(FV_info_CNTL2SRAM_Interface_out.Data)
 );
 
 endmodule

@@ -16,16 +16,16 @@ signalSpacing 5
 
 ; windowTimeUnit is used for zoom, cursor & marker
 ; waveform viewport range
-zoom 1022432.106747 1832763.936031
-cursor 1351000.000000
+zoom 0.000000 5339771006.160164
+cursor 1000100000.000000
 marker 0.000000
 
 ; user define markers
 ; userMarker time_pos marker_name color linestyle
 ; visible top row signal index
-top 61
+top 78
 ; marker line index
-markerPos 82
+markerPos 99
 
 ; event list
 ; addEvent event_name event_expression
@@ -45,97 +45,111 @@ COMPLEX_EVENT_END
 curSTATUS ByChange
 
 
-addGroup "Neighbor_ID_Bank0_TX"
+addGroup "PACKET_SRAM_integration_U"
 activeDirFile "" "/home/zzyyds/EECS627_Project/P5_SPI/inter.fsdb"
-addSignal -h 15 /Top_tb/Neighbor_ID_Bank0_TX/wclk
-addSignal -h 15 /Top_tb/Neighbor_ID_Bank0_TX/wrst
-addSignal -h 15 /Top_tb/Neighbor_ID_Bank0_TX/data_out
-addSubGroup "S_Neighbor_SRAM_integration_U"
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/clk
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/reset
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/wdata_valid
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/wdata_addr[17:0]
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/wdata_PE_tag[1:0]
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/sos
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/eos
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_ID_Bank0_data
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_ID_Bank1_data
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_ID_Bank2_data
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_ID_Bank3_data
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/NeighborID_SRAM2Edge_PE_out_sos_0
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/NeighborID_SRAM2Edge_PE_out_eos_0
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/NeighborID_SRAM2Edge_PE_out_Neighbor_num_Iter_0[6:0]
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/NeighborID_SRAM2Edge_PE_out_Neighbor_id_0[62:0]
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/NeighborID_SRAM2Edge_PE_out_sos_1
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/NeighborID_SRAM2Edge_PE_out_eos_1
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/NeighborID_SRAM2Edge_PE_out_Neighbor_num_Iter_1[6:0]
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/NeighborID_SRAM2Edge_PE_out_Neighbor_id_1[62:0]
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/NeighborID_SRAM2Edge_PE_out_sos_2
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/NeighborID_SRAM2Edge_PE_out_eos_2
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/NeighborID_SRAM2Edge_PE_out_Neighbor_num_Iter_2[6:0]
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/NeighborID_SRAM2Edge_PE_out_Neighbor_id_2[62:0]
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/NeighborID_SRAM2Edge_PE_out_sos_3
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/NeighborID_SRAM2Edge_PE_out_eos_3
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/NeighborID_SRAM2Edge_PE_out_Neighbor_num_Iter_3[6:0]
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/NeighborID_SRAM2Edge_PE_out_Neighbor_id_3[62:0]
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/wfull
-addSubGroup "Neighbor_Bank_MEMCntl[0]"
-addSubGroup "Neighbor_Bank_MEMCntl_U"
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/clk
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/reset
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_in
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_SRAM_DATA[62:0]
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/sos
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/eos
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Bank_data
-addSignal -expanded -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_bank2SRAM_Interface_out
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_bank2SRAM_Interface_out.A[8:0]
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_bank2SRAM_Interface_out.CEN
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_bank2SRAM_Interface_out.WEN
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_bank2SRAM_Interface_out.Data[62:0]
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_bank_CNTL2Edge_PE_out
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Busy
-addSubGroup "Neighbor_ID_Rx"
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Rx/clk
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Rx/reset
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Rx/data_in
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Rx/SOS
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Rx/EOS
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Rx/valid
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Rx/data_out[62:0]
-addSubGroup "SPI_Sync_FIFO_RX"
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Rx/SPI_Sync_FIFO_RX/clk
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Rx/SPI_Sync_FIFO_RX/rst
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Rx/SPI_Sync_FIFO_RX/winc
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Rx/SPI_Sync_FIFO_RX/rinc
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Rx/SPI_Sync_FIFO_RX/wdata[62:0]
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Rx/SPI_Sync_FIFO_RX/wfull
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Rx/SPI_Sync_FIFO_RX/rempty
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Rx/SPI_Sync_FIFO_RX/rdata[62:0]
-addSubGroup "tb_dual_port_RAM"
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Rx/SPI_Sync_FIFO_RX/tb_dual_port_RAM/wclk
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Rx/SPI_Sync_FIFO_RX/tb_dual_port_RAM/wenc
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Rx/SPI_Sync_FIFO_RX/tb_dual_port_RAM/waddr
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Rx/SPI_Sync_FIFO_RX/tb_dual_port_RAM/wdata[62:0]
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Rx/SPI_Sync_FIFO_RX/tb_dual_port_RAM/rclk
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Rx/SPI_Sync_FIFO_RX/tb_dual_port_RAM/renc
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Rx/SPI_Sync_FIFO_RX/tb_dual_port_RAM/raddr
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/Neighbor_Bank_MEMCntl[0]/Neighbor_Bank_MEMCntl_U/Neighbor_ID_Rx/SPI_Sync_FIFO_RX/tb_dual_port_RAM/rdata[62:0]
-addSubGroup "Neighbor_SRAM_U"
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/SRAM_Instantiations[0]/Neighbor_SRAM_U/Q[62:0]
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/SRAM_Instantiations[0]/Neighbor_SRAM_U/CLK
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/SRAM_Instantiations[0]/Neighbor_SRAM_U/CEN
-addSignal -h 15 /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/SRAM_Instantiations[0]/Neighbor_SRAM_U/WEN
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/SRAM_Instantiations[0]/Neighbor_SRAM_U/A[8:0]
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/SRAM_Instantiations[0]/Neighbor_SRAM_U/D[62:0]
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/S_Neighbor_SRAM_integration_U/SRAM_Instantiations[0]/Neighbor_SRAM_U/mem[0:511]
-endSubGroup "Neighbor_SRAM_U"
-endSubGroup "tb_dual_port_RAM"
-endSubGroup "SPI_Sync_FIFO_RX"
-endSubGroup "Neighbor_ID_Rx"
-endSubGroup "Neighbor_Bank_MEMCntl_U"
-endSubGroup "Neighbor_Bank_MEMCntl[0]"
-endSubGroup "S_Neighbor_SRAM_integration_U"
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/clk
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/reset
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/grant
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PE_IDLE[3:0]
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Edge_PE2IMEM_CNTL_in_packet_0[15:0]
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Edge_PE2IMEM_CNTL_in_packet_1[15:0]
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Edge_PE2IMEM_CNTL_in_packet_2[15:0]
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Edge_PE2IMEM_CNTL_in_packet_3[15:0]
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Edge_PE2IMEM_CNTL_in_valid[3:0]
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/bank_busy[3:0]
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Big_FV2Sm_FV_eos_0
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Big_FV2Sm_FV_eos_1
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Big_FV2Sm_FV_eos_2
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Big_FV2Sm_FV_eos_3
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Vertex_empty
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Vertex_RS_empty
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/outbuff_available
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Packet_Bank_data
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/sos
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/eos
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/task_complete
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/DP_task2Edge_PE_out_packet_0[13:0]
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/DP_task2Edge_PE_out_packet_1[13:0]
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/DP_task2Edge_PE_out_packet_2[13:0]
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/DP_task2Edge_PE_out_packet_3[13:0]
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/DP_task2Edge_PE_out_valid[3:0]
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Req
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/replay_Iter[1:0]
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Num_FV[7:0]
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Weights_boundary[2:0]
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/stream_begin
+addSubGroup "decoder_0"
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/clk
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/reset
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/com2DPpacket
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/RS_empty
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/grant
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/bank_busy_in[3:0]
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/PE_IDLE[3:0]
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/stream_end
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/vertex_done
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/outbuff_available
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/cntl_done
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/task_complete
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/DP_task2RS_out
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/Req
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/fifo_stall
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/current_replay_iter_flag
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/replay_Iter[1:0]
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/Num_FV[7:0]
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/Weights_boundary[2:0]
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/DP2mem_packet_out
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/stream_begin
+addSubGroup "PACKET_CNTL_0"
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/clk
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/reset
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/DP2mem_packet_in
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/Edge_PE2IMEM_CNTL_in[3:0]
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/full
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/cntl_done
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/Packet_Bank_data
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/sos
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/eos
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/wr_en
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/replay_iter_flag
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/fifo_stall
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/Data_SRAM_in[15:0]
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/PACKET_CNTL_SRAM_out
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/mem2fifo
+addSubGroup "IMem_Sram_U"
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/IMem_Sram_U/Q[15:0]
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/IMem_Sram_U/CLK
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/IMem_Sram_U/CEN
+addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/IMem_Sram_U/WEN
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/IMem_Sram_U/A[7:0]
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/IMem_Sram_U/D[15:0]
+addSubGroup "iTop_DUT"
+addSignal -h 15 /Top_tb/iTop_DUT/clk
+addSignal -h 15 /Top_tb/iTop_DUT/reset
+addSignal -h 15 /Top_tb/iTop_DUT/sos
+addSignal -h 15 /Top_tb/iTop_DUT/eos
+addSignal -h 15 /Top_tb/iTop_DUT/Packet_Bank_data
+addSignal -h 15 /Top_tb/iTop_DUT/Neighbor_Info_Bank0_data
+addSignal -h 15 /Top_tb/iTop_DUT/Neighbor_Info_Bank1_data
+addSignal -h 15 /Top_tb/iTop_DUT/Neighbor_ID_Bank0_data
+addSignal -h 15 /Top_tb/iTop_DUT/Neighbor_ID_Bank1_data
+addSignal -h 15 /Top_tb/iTop_DUT/Neighbor_ID_Bank2_data
+addSignal -h 15 /Top_tb/iTop_DUT/Neighbor_ID_Bank3_data
+addSignal -h 15 /Top_tb/iTop_DUT/FV_Info_Bank0_data
+addSignal -h 15 /Top_tb/iTop_DUT/FV_Bank0_data
+addSignal -h 15 /Top_tb/iTop_DUT/FV_Bank1_data
+addSignal -h 15 /Top_tb/iTop_DUT/FV_Bank2_data
+addSignal -h 15 /Top_tb/iTop_DUT/FV_Bank3_data
+addSignal -h 15 /Top_tb/iTop_DUT/Big_FV_Bank0_data
+addSignal -h 15 /Top_tb/iTop_DUT/Big_FV_Bank1_data
+addSignal -h 15 /Top_tb/iTop_DUT/Big_FV_Bank2_data
+addSignal -h 15 /Top_tb/iTop_DUT/Big_FV_Bank3_data
+addSignal -h 15 /Top_tb/iTop_DUT/task_complete
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/nx_state[2:0]
+endSubGroup "iTop_DUT"
+endSubGroup "IMem_Sram_U"
+endSubGroup "PACKET_CNTL_0"
+endSubGroup "decoder_0"
 addGroup "G2"
 
 ; getSignalForm Scope Hierarchy Status

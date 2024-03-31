@@ -116,12 +116,12 @@ case(state)
         end
     Prepare:
         begin
-            if(reg_eos && prepare_wr_addr=='d256)begin
-                nx_state=stream;
-                nx_prepare_wr_addr='d0;
-            end
-            else if(prepare_wr_addr=='d256)begin
+            if(prepare_wr_addr=='d256)begin
                 PACKET_CNTL_SRAM_out.wen='d1;
+                if(reg_eos )begin
+                    nx_state=stream;
+                    nx_prepare_wr_addr='d0;
+                end
             end
             else if(reg_eos && data_valid)begin
                 PACKET_CNTL_SRAM_out.wen='d0;
@@ -130,6 +130,7 @@ case(state)
                 nx_prepare_wr_addr='d0;
                 nx_state=stream;
             end
+
             else if(data_valid)begin
                 nx_state=Prepare;
                 PACKET_CNTL_SRAM_out.wen='d0;

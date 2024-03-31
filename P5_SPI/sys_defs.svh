@@ -180,6 +180,7 @@ typedef struct packed {
     logic[$clog2(`Max_Node_id):0] A;
     logic CEN;
     logic WEN;
+    logic [`FV_info_bank_width-1:0]Data;
 } FV_info_CNTL2SRAM_Interface;
 typedef struct packed {
     logic[$clog2(`Max_Node_id):0] A;

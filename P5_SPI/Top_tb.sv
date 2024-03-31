@@ -5,7 +5,7 @@ module Top_tb();
 logic clk, reset;
 logic task_complete;
 integer file1, file2, file3, file4;
-parameter max_bw=18,Max_cache_line=256, Neighbor_ID_Bank_BW=63,Neighbor_ID_Bank_Depth=256,Neighbor_ID_num_valid_lines=256,Neighbor_Info_Bank_BW=18,Neighbor_Info_Bank_Depth=256,Neighbor_info_num_valid_lines=256,Packet_MEM_BW=16, Packet_MEM_DEPTH=256, Packet_num_valid_lines=35;
+parameter max_bw=63,Max_cache_line=256,FV_Info_Bank_BW=10,FV_Info_Bank_Depth=256,FV_Info_num_valid_lines=32, Neighbor_ID_Bank_BW=63,Neighbor_ID_Bank_Depth=512,Neighbor_ID_num_valid_lines=512,Neighbor_Info_Bank_BW=18,Neighbor_Info_Bank_Depth=256,Neighbor_info_num_valid_lines=256,Packet_MEM_BW=16, Packet_MEM_DEPTH=256, Packet_num_valid_lines=35;
 logic Packet_Bank_data;
 logic Neighbor_Info_Bank0_data;
 logic Neighbor_Info_Bank1_data;
@@ -27,7 +27,7 @@ logic Big_FV_Bank1_data;
 logic Big_FV_Bank2_data;
 logic Big_FV_Bank3_data;
 logic sos,eos;
-logic[$clog2(Max_cache_line*max_bw )-1:0] cnt;
+logic[$clog2(Max_cache_line*max_bw ):0] cnt;
 ///// Replay Iteration FF /////
 
 logic [1:0] replay_Iter_ff;
@@ -96,6 +96,14 @@ Neighbor_ID_Bank3_TX(
     .wrst(reset),
 
     .data_out(Neighbor_ID_Bank3_data)
+);
+
+TX#(.MEM_BW(FV_Info_Bank_BW),.MEM_DEPTH(FV_Info_Bank_Depth), .num_valid_lines(FV_Info_num_valid_lines))
+FV_Info_Bank_TX(
+    .wclk(clk),
+    .wrst(reset),
+
+    .data_out(FV_Info_Bank0_data)
 );
 
 `ifdef SYN
@@ -167,16 +175,14 @@ $readmemb("weights.txt",
 
  
 ///// FV Pointer SRAM /////
-$readmemb("feature_value_pointer.txt",
-		  iTop_DUT.FV_info_Integration_U.FV_info_SRAM_U.mem);
+$readmemb("feature_value_pointer.txt",FV_Info_Bank_TX.MEM);
 		  
 ///// Neighbor Pointer SRAM /////
 $readmemb("nb_info_bank0.txt",Neighbor_Info_Bank0_TX.MEM);
 $readmemb("nb_info_bank1.txt",Neighbor_Info_Bank1_TX.MEM);
 		  
 ///// Packet SRAM /////
-$readmemb("packet_bank.txt",
-		  Packet_Bank_TX.MEM);
+$readmemb("packet_bank.txt",Packet_Bank_TX.MEM);
 
 ///// Neighbor SRAM /////
 $readmemb("nb_bank0.txt",Neighbor_ID_Bank0_TX.MEM);
@@ -226,7 +232,7 @@ initial begin
 
 init();
 
-repeat (10000) @(negedge clk);
+repeat (50000) @(negedge clk);
 
 ///// File Close /////
 $fclose(file1);

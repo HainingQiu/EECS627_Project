@@ -893,6 +893,9 @@ FV_info_Integration FV_info_Integration_U(
     .BUS2FV_info_FIFO_in_valid(BUS2FV_info_MEM_CNTL_out_valid),
     .BUS2FV_info_FIFO_in_Node_id(BUS2FV_info_MEM_CNTL_out_Node_id),
     .BUS2FV_info_FIFO_in_PE_tag(BUS2FV_info_MEM_CNTL_out_PE_tag),
+    .sos(sos),
+    .eos(eos),
+    .FV_Info_Bank0_data(FV_Info_Bank0_data),
 
 
     .FV_info2FV_FIFO_out_valid(FV_info2FV_FIFO_out_valid),
