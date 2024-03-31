@@ -222,6 +222,7 @@ typedef struct packed {
     // logic [`Neighbor_bank_bandwidth-1:0]Q;
     logic CEN;
     logic WEN;
+    logic[`Neighbor_ID_bandwidth-1:0] Data;
 } Neighbor_bank2SRAM_Interface;
 typedef struct packed {
     logic[$clog2(`Weight_SRAM_line)-1:0] A;

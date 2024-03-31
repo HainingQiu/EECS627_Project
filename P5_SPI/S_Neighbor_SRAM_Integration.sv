@@ -6,7 +6,12 @@ module S_Neighbor_SRAM_integration(
 	input 	wdata_valid,
 	input 	[`Neighbor_info_bandwidth-1:0]wdata_addr,
     input 	[$clog2(`Num_Edge_PE)-1:0]wdata_PE_tag,
-
+    input sos,
+    input eos,
+    input Neighbor_ID_Bank0_data,
+    input Neighbor_ID_Bank1_data,
+    input Neighbor_ID_Bank2_data,
+    input Neighbor_ID_Bank3_data,
 
 	output logic NeighborID_SRAM2Edge_PE_out_sos_0, // start of streaming
     output logic NeighborID_SRAM2Edge_PE_out_eos_0,//  end of streaming
@@ -34,6 +39,12 @@ module S_Neighbor_SRAM_integration(
 
 Neighbor_info2Neighbor_FIFO	wdata;
 NeighborID_SRAM2Edge_PE [`Num_Edge_PE-1:0] NeighborID_SRAM2Edge_PE_out;
+logic [`Num_Banks_Neighbor-1:0] Neighbor_ID_Bank_data;
+assign Neighbor_ID_Bank_data[0]=Neighbor_ID_Bank0_data;
+assign Neighbor_ID_Bank_data[1]=Neighbor_ID_Bank1_data;
+assign Neighbor_ID_Bank_data[2]=Neighbor_ID_Bank2_data;
+assign Neighbor_ID_Bank_data[3]=Neighbor_ID_Bank3_data;
+
 assign wdata.valid=wdata_valid;
 assign wdata.addr=wdata_addr;
 assign wdata.PE_tag=wdata_PE_tag;
@@ -100,6 +111,9 @@ generate
         .Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_in(Neighbor_MEM_CNTL2Neighbor_Bank_CNTL_out[i]),
         // input FV_MEM2FV_Bank  FV_MEM2FV_Bank_in,
         .Neighbor_SRAM_DATA(Neighbor_SRAM_DATA[i]),
+        .sos(sos),
+        .eos(eos),
+        .Neighbor_ID_Bank_data(Neighbor_ID_Bank_data[i]),
 
         .Neighbor_bank2SRAM_Interface_out(Neighbor_bank2SRAM_Interface_out[i]),
         .Neighbor_bank_CNTL2Edge_PE_out(Neighbor_bank_CNTL2Edge_PE_out[i]),
@@ -115,9 +129,9 @@ generate
             .Q(Neighbor_SRAM_DATA[i]),
             .CLK(clk),
             .CEN(Neighbor_bank2SRAM_Interface_out[i].CEN),
-            .WEN(1'b1),
+            .WEN(Neighbor_bank2SRAM_Interface_out[i].WEN),
             .A(Neighbor_bank2SRAM_Interface_out[i].A),
-            .D(63'd0)
+            .D(Neighbor_bank2SRAM_Interface_out[i].Data)
         );
         end 
 endgenerate

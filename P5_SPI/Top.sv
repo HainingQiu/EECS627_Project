@@ -982,6 +982,12 @@ S_Neighbor_SRAM_integration S_Neighbor_SRAM_integration_U(
 	.wdata_valid(Neighbor_info2Neighbor_FIFO_out_valid),
     .wdata_addr(Neighbor_info2Neighbor_FIFO_out_addr),
     .wdata_PE_tag(Neighbor_info2Neighbor_FIFO_out_PE_tag),
+    .sos(sos),
+    .eos(eos),
+    .Neighbor_ID_Bank0_data(Neighbor_ID_Bank0_data),
+    .Neighbor_ID_Bank1_data(Neighbor_ID_Bank1_data),
+    .Neighbor_ID_Bank2_data(Neighbor_ID_Bank2_data),
+    .Neighbor_ID_Bank3_data(Neighbor_ID_Bank3_data),
 
 
 	.NeighborID_SRAM2Edge_PE_out_sos_0(NeighborID_SRAM2Edge_PE_out_sos_0), // start of streaming

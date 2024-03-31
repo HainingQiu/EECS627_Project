@@ -5,7 +5,7 @@ module Top_tb();
 logic clk, reset;
 logic task_complete;
 integer file1, file2, file3, file4;
-parameter max_bw=18,Max_cache_line=256, Neighbor_Info_Bank_BW=18,Neighbor_Info_Bank_Depth=256,Neighbor_info_num_valid_lines=256,Packet_MEM_BW=16, Packet_MEM_DEPTH=256, Packet_num_valid_lines=35;
+parameter max_bw=18,Max_cache_line=256, Neighbor_ID_Bank_BW=63,Neighbor_ID_Bank_Depth=256,Neighbor_ID_num_valid_lines=256,Neighbor_Info_Bank_BW=18,Neighbor_Info_Bank_Depth=256,Neighbor_info_num_valid_lines=256,Packet_MEM_BW=16, Packet_MEM_DEPTH=256, Packet_num_valid_lines=35;
 logic Packet_Bank_data;
 logic Neighbor_Info_Bank0_data;
 logic Neighbor_Info_Bank1_data;
@@ -67,6 +67,35 @@ Neighbor_Info_Bank1_TX(
     .wrst(reset),
 
     .data_out(Neighbor_Info_Bank1_data)
+);
+
+TX#(.MEM_BW(Neighbor_ID_Bank_BW),.MEM_DEPTH(Neighbor_ID_Bank_Depth), .num_valid_lines(Neighbor_ID_num_valid_lines))
+Neighbor_ID_Bank0_TX(
+    .wclk(clk),
+    .wrst(reset),
+
+    .data_out(Neighbor_ID_Bank0_data)
+);
+TX#(.MEM_BW(Neighbor_ID_Bank_BW),.MEM_DEPTH(Neighbor_ID_Bank_Depth), .num_valid_lines(Neighbor_ID_num_valid_lines))
+Neighbor_ID_Bank1_TX(
+    .wclk(clk),
+    .wrst(reset),
+
+    .data_out(Neighbor_ID_Bank1_data)
+);
+TX#(.MEM_BW(Neighbor_ID_Bank_BW),.MEM_DEPTH(Neighbor_ID_Bank_Depth), .num_valid_lines(Neighbor_ID_num_valid_lines))
+Neighbor_ID_Bank2_TX(
+    .wclk(clk),
+    .wrst(reset),
+
+    .data_out(Neighbor_ID_Bank2_data)
+);
+TX#(.MEM_BW(Neighbor_ID_Bank_BW),.MEM_DEPTH(Neighbor_ID_Bank_Depth), .num_valid_lines(Neighbor_ID_num_valid_lines))
+Neighbor_ID_Bank3_TX(
+    .wclk(clk),
+    .wrst(reset),
+
+    .data_out(Neighbor_ID_Bank3_data)
 );
 
 `ifdef SYN
@@ -150,18 +179,10 @@ $readmemb("packet_bank.txt",
 		  Packet_Bank_TX.MEM);
 
 ///// Neighbor SRAM /////
-$readmemb("nb_bank0.txt",
-		  iTop_DUT.S_Neighbor_SRAM_integration_U.
-		  SRAM_Instantiations[0].Neighbor_SRAM_U.mem);
-$readmemb("nb_bank1.txt",
-		  iTop_DUT.S_Neighbor_SRAM_integration_U.
-		  SRAM_Instantiations[1].Neighbor_SRAM_U.mem);
-$readmemb("nb_bank2.txt",
-		  iTop_DUT.S_Neighbor_SRAM_integration_U.
-		  SRAM_Instantiations[2].Neighbor_SRAM_U.mem);
-$readmemb("nb_bank3.txt",
-		  iTop_DUT.S_Neighbor_SRAM_integration_U.
-		  SRAM_Instantiations[3].Neighbor_SRAM_U.mem);
+$readmemb("nb_bank0.txt",Neighbor_ID_Bank0_TX.MEM);
+$readmemb("nb_bank1.txt",Neighbor_ID_Bank1_TX.MEM);
+$readmemb("nb_bank2.txt",Neighbor_ID_Bank2_TX.MEM);
+$readmemb("nb_bank3.txt",Neighbor_ID_Bank3_TX.MEM);
 end
 `endif
 
