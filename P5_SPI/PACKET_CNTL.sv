@@ -41,7 +41,7 @@ logic Edge_PE_WB_valid;
 logic nx_wr_en;
 logic data_valid;
 logic[BW_MEM-1:0] data_out;
-logic [$clog2(`Max_packet_line)-1:0] prepare_wr_addr,nx_prepare_wr_addr;
+logic [$clog2(`Max_packet_line):0] prepare_wr_addr,nx_prepare_wr_addr;
 logic reg_eos;
 
 RX#(.BW_MEM(BW_MEM))
@@ -116,7 +116,14 @@ case(state)
         end
     Prepare:
         begin
-            if(reg_eos && data_valid)begin
+            if(reg_eos && prepare_wr_addr=='d256)begin
+                nx_state=stream;
+                nx_prepare_wr_addr='d0;
+            end
+            else if(prepare_wr_addr=='d256)begin
+                PACKET_CNTL_SRAM_out.wen='d1;
+            end
+            else if(reg_eos && data_valid)begin
                 PACKET_CNTL_SRAM_out.wen='d0;
                 PACKET_CNTL_SRAM_out.SRAM_addr=prepare_wr_addr;
                 PACKET_CNTL_SRAM_out.SRAM_DATA =data_out;
