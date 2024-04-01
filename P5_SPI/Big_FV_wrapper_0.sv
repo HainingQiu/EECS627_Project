@@ -48,7 +48,7 @@ module Big_FV_wrapper_0(
     input Big_FV_Bank2_data,
     input Big_FV_Bank3_data,
 
-    
+
     output logic Big_FV2Sm_FV_sos_0,
     output logic Big_FV2Sm_FV_eos_0,
     output logic [`FV_bandwidth-1:0] Big_FV2Sm_FV_FV_data_0,
@@ -102,9 +102,12 @@ Req2Output_SRAM_Bank [`Num_Banks_all_FV-1:0] req_pkt;
 
 FV_MEM2FV_Bank [`Num_Banks_all_FV-1:0] Big_FV2Sm_FV;
 FV_bank_CNTL2Edge_PE [`Num_Banks_all_FV-1:0] EdgePE_rd_out;
+logic[3:0] Big_FV_Bank_Data;
 
-
-
+assign Big_FV_Bank_Data[0]=Big_FV_Bank0_data;
+assign Big_FV_Bank_Data[1]=Big_FV_Bank1_data;
+assign Big_FV_Bank_Data[2]=Big_FV_Bank2_data;
+assign Big_FV_Bank_Data[3]=Big_FV_Bank3_data;
 assign req_pkt[0].valid=req_pkt_valid_0;
 assign req_pkt[0].PE_tag=req_pkt_PE_tag_0;
 assign req_pkt[0].rd_wr=req_pkt_rd_wr_0;
@@ -211,6 +214,9 @@ assign EdgePE_rd_out_valid_3=EdgePE_rd_out[3].valid;
                 .FV_SRAM_data(FV_SRAM_DATA[i]),
                 .FV_num(FV_num),
                 .req_pkt(req_pkt[i]),
+                .sos(sos),
+                .eos(eos),
+                .Big_FV_Bank_Data(Big_FV_Bank_Data[i]),
                 .stream_begin(stream_begin),
                 .FV2SRAM_out(FV2SRAM_out[i]),
                 .Big_FV2Sm_FV(Big_FV2Sm_FV[i]), 

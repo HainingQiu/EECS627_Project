@@ -5,7 +5,7 @@ module Top_tb();
 logic clk, reset;
 logic task_complete;
 integer file1, file2, file3, file4;
-parameter max_bw=63,Max_cache_line=256,FV_Info_Bank_BW=10,FV_Info_Bank_Depth=256,FV_Info_num_valid_lines=32, Neighbor_ID_Bank_BW=63,Neighbor_ID_Bank_Depth=512,Neighbor_ID_num_valid_lines=512,Neighbor_Info_Bank_BW=18,Neighbor_Info_Bank_Depth=256,Neighbor_info_num_valid_lines=256,Packet_MEM_BW=16, Packet_MEM_DEPTH=256, Packet_num_valid_lines=35;
+parameter max_bw=64,Max_cache_line=1024,FV_Info_Bank_BW=10,FV_Info_Bank_Depth=256,FV_Info_num_valid_lines=32, Neighbor_ID_Bank_BW=63,Neighbor_ID_Bank_Depth=512,Neighbor_ID_num_valid_lines=512,Neighbor_Info_Bank_BW=18,Neighbor_Info_Bank_Depth=256,Neighbor_info_num_valid_lines=256,Packet_MEM_BW=16, Packet_MEM_DEPTH=256, Packet_num_valid_lines=35;
 logic Packet_Bank_data;
 logic Neighbor_Info_Bank0_data;
 logic Neighbor_Info_Bank1_data;
@@ -113,6 +113,35 @@ Weight_Bank_TX(
 
     .data_out(Weight_Bank_Data)
 );
+
+TX#(.MEM_BW(64),.MEM_DEPTH(1024), .num_valid_lines(1024))
+Big_FV_Bank0_TX(
+    .wclk(clk),
+    .wrst(reset),
+
+    .data_out(Big_FV_Bank0_data)
+);
+TX#(.MEM_BW(64),.MEM_DEPTH(1024), .num_valid_lines(1024))
+Big_FV_Bank1_TX(
+    .wclk(clk),
+    .wrst(reset),
+
+    .data_out(Big_FV_Bank1_data)
+);
+TX#(.MEM_BW(64),.MEM_DEPTH(1024), .num_valid_lines(1024))
+Big_FV_Bank2_TX(
+    .wclk(clk),
+    .wrst(reset),
+
+    .data_out(Big_FV_Bank2_data)
+);
+TX#(.MEM_BW(64),.MEM_DEPTH(1024), .num_valid_lines(1024))
+Big_FV_Bank3_TX(
+    .wclk(clk),
+    .wrst(reset),
+
+    .data_out(Big_FV_Bank3_data)
+);
 `ifdef SYN
 initial begin
  $sdf_annotate("../syn/Top.syn.sdf", iTop_DUT);
@@ -166,14 +195,10 @@ end
 `else
 initial begin
 ///// FV SRAM Initialization /////
-$readmemb("feature_value_bank0.txt",
-		  iTop_DUT.Big_FV_wrapper_0_U.ping_buffer[0].BIG_FV_SRAM_u.mem);
-$readmemb("feature_value_bank1.txt",
-		  iTop_DUT.Big_FV_wrapper_0_U.ping_buffer[1].BIG_FV_SRAM_u.mem);
-$readmemb("feature_value_bank2.txt",
-		  iTop_DUT.Big_FV_wrapper_0_U.ping_buffer[2].BIG_FV_SRAM_u.mem);
-$readmemb("feature_value_bank3.txt",
-		  iTop_DUT.Big_FV_wrapper_0_U.ping_buffer[3].BIG_FV_SRAM_u.mem);
+$readmemb("feature_value_bank0.txt",Big_FV_Bank0_TX.MEM);
+$readmemb("feature_value_bank1.txt",Big_FV_Bank1_TX.MEM);
+$readmemb("feature_value_bank2.txt",Big_FV_Bank2_TX.MEM);
+$readmemb("feature_value_bank3.txt",Big_FV_Bank3_TX.MEM);
 		  
 ////// weight data SRAM///////
 
@@ -239,7 +264,7 @@ initial begin
 
 init();
 
-repeat (50000) @(negedge clk);
+repeat (100000) @(negedge clk);
 
 ///// File Close /////
 $fclose(file1);

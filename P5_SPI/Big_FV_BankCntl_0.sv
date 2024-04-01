@@ -12,7 +12,9 @@ module Big_FV_BankCntl_0(
     input stream_begin,
     // input [`FV_bandwidth-1:0] FV_WB_data, 
     input Req2Output_SRAM_Bank req_pkt, // data write back to output buffer, either from acc_buff or vertex_buff
-
+    input sos,
+    input eos,
+    input Big_FV_Bank_Data,
     // interface packet to SRAM Bank
     output Big_FV2SRAM_pkt FV2SRAM_out,
 
@@ -25,24 +27,19 @@ module Big_FV_BankCntl_0(
     output available
 
 );
-    typedef enum logic [1:0] {
+    typedef enum logic [2:0] {
         // logic [2:0] state;
         IDLE = 'd0,
         STREAM_ITER_FV = 'd1,
         FV_WB = 'd2,
-        FV_RD_TO_EDGE = 'd3
+        FV_RD_TO_EDGE = 'd3,
+        Prepare='d4
     } state_t;
 
     state_t state, nx_state;
 
     assign available = (state == IDLE);
 
-    // localparam IDLE = 0;
-    // localparam STREAM_ITER_FV = 1;
-    // localparam FV_WB = 2;
-    // localparam FV_RD_TO_EDGE = 3;
-    // logic [1:0] state;
-    // logic [1:0] nx_state;
 
     logic [$clog2(`FV_SRAM_bank_cache_line)-1:0] node_offset;
     logic [$clog2(`MAX_NODE_PER_ITER_BANK):0] node_cnt;
@@ -78,7 +75,11 @@ module Big_FV_BankCntl_0(
 
     logic [$clog2(`Max_Node_id)-1:0] curr_nodeid;
     logic [$clog2(`Max_Node_id)-1:0] nxt_nodeid;
+    logic reg_eos;
+    logic data_valid;
+    logic [$clog2(1024):0] prepare_wr_addr,nx_prepare_wr_addr;
 
+    logic [`FV_bandwidth-1:0] Data_out; 
     always_comb begin
         FV2SRAM_out.CEN = 1'b1;
         FV2SRAM_out.WEN = 1'b1;
@@ -105,10 +106,14 @@ module Big_FV_BankCntl_0(
 
         nxt_nodeid = curr_nodeid;
         nx_PE_tag = PE_tag;
+        nx_prepare_wr_addr=prepare_wr_addr;
 
         case (state)
             IDLE: begin
-                if (~Cur_Update_Iter[0]) begin
+                if(sos)begin
+                    nx_state=Prepare;
+                end
+                else if (~Cur_Update_Iter[0]) begin
                     if (stream_begin || change) begin
                         nx_state = STREAM_ITER_FV;
                         // nx_reg_reset = 1'b0;
@@ -148,6 +153,43 @@ module Big_FV_BankCntl_0(
                     end
                 end
             end
+
+            Prepare:
+                begin
+                    FV2SRAM_out.FV_data=Data_out;
+                    if(prepare_wr_addr=='d1024)begin
+                        FV2SRAM_out.WEN='d1;
+                        if(reg_eos )begin
+                            nx_state=IDLE;
+                            nx_prepare_wr_addr='d0;
+                        end
+                    end
+                    else if(reg_eos && data_valid)begin
+                        FV2SRAM_out.WEN='d0;
+                        FV2SRAM_out.addr=prepare_wr_addr;
+                      
+                        FV2SRAM_out.CEN='d0;
+                        nx_prepare_wr_addr='d0;
+                        nx_state=IDLE;
+                    end
+
+                    else if(data_valid)begin
+                        nx_state=Prepare;
+                        FV2SRAM_out.WEN='d0;
+                        FV2SRAM_out.addr=prepare_wr_addr;
+                        
+                        FV2SRAM_out.CEN='d0;
+                        nx_prepare_wr_addr=prepare_wr_addr+1'd1;
+                    end
+                    else begin
+                        FV2SRAM_out.WEN='d1;
+                        FV2SRAM_out.addr=prepare_wr_addr;
+                        
+                        FV2SRAM_out.CEN='d1;
+                    end
+                
+                end
+
             STREAM_ITER_FV: begin
                 FV2SRAM_out.CEN = 1'b0;
                 // FV2SRAM_out.WEN = 1'b1;
@@ -247,6 +289,8 @@ module Big_FV_BankCntl_0(
             Big_FV2Sm_FV <= #1 'd0;
             EdgePE_rd_out <= #1 'd0;
             curr_nodeid <= #1 'd0;
+            reg_eos<=#1 'd0;
+            prepare_wr_addr<=#1 'd0;
         end else begin
             // total_FV_line <= nx_total_FV_line;
             state <= #1 nx_state;
@@ -259,8 +303,24 @@ module Big_FV_BankCntl_0(
             Big_FV2Sm_FV <= #1 nx_Big_FV2Sm_FV;
             EdgePE_rd_out <= #1 nx_EdgePE_rd_out;
             curr_nodeid <= #1 nxt_nodeid;
+            reg_eos<=#1 state!=Prepare ?1'b0 :reg_eos? 1'b1: eos;
+            prepare_wr_addr<=#1 nx_prepare_wr_addr;
         end
     end
 
-    
+RX#(.BW_MEM(64))
+        Big_FV_Bank_Rx(
+            .clk(clk),
+            // input wclk,
+            .reset(reset),//rd
+            // input wrst,
+
+            .data_in(Big_FV_Bank_Data),//from TX
+            .SOS(sos),
+            .EOS(eos),
+
+        // output logic wr_full,
+            .valid(data_valid),
+            .data_out(Data_out)
+        );
 endmodule
