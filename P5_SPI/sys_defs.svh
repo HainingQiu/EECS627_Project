@@ -229,6 +229,7 @@ typedef struct packed {
     logic[$clog2(`Weight_SRAM_line)-1:0] A;
     logic CEN;
     logic WEN;
+    logic [63:0] D;
 } Weight_Cntl2SRAM_Interface;
 
 typedef struct packed {

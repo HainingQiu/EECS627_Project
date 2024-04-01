@@ -17,11 +17,11 @@ logic Neighbor_ID_Bank3_data;
 
 logic FV_Info_Bank0_data;
 
-logic FV_Bank0_data;
-logic FV_Bank1_data;
-logic FV_Bank2_data;
-logic FV_Bank3_data;
-
+// logic FV_Bank0_data;
+// logic FV_Bank1_data;
+// logic FV_Bank2_data;
+// logic FV_Bank3_data;
+logic Weight_Bank_Data;
 logic Big_FV_Bank0_data;
 logic Big_FV_Bank1_data;
 logic Big_FV_Bank2_data;
@@ -106,6 +106,13 @@ FV_Info_Bank_TX(
     .data_out(FV_Info_Bank0_data)
 );
 
+TX#(.MEM_BW(64),.MEM_DEPTH(256), .num_valid_lines(64))
+Weight_Bank_TX(
+    .wclk(clk),
+    .wrst(reset),
+
+    .data_out(Weight_Bank_Data)
+);
 `ifdef SYN
 initial begin
  $sdf_annotate("../syn/Top.syn.sdf", iTop_DUT);
@@ -170,8 +177,7 @@ $readmemb("feature_value_bank3.txt",
 		  
 ////// weight data SRAM///////
 
-$readmemb("weights.txt",
-		  iTop_DUT.Weight_CNTL_U.Weight_SRAM_DUT.mem);
+$readmemb("weights.txt",Weight_Bank_TX.MEM);
 
  
 ///// FV Pointer SRAM /////
@@ -212,15 +218,16 @@ Top iTop_DUT(
 
     .FV_Info_Bank0_data(FV_Info_Bank0_data),
 
-    .FV_Bank0_data(FV_Bank0_data),
-    .FV_Bank1_data(FV_Bank1_data),
-    .FV_Bank2_data(FV_Bank2_data),
-    .FV_Bank3_data(FV_Bank3_data),
+    // .FV_Bank0_data(FV_Bank0_data),
+    // .FV_Bank1_data(FV_Bank1_data),
+    // .FV_Bank2_data(FV_Bank2_data),
+    // .FV_Bank3_data(FV_Bank3_data),
 
     .Big_FV_Bank0_data(Big_FV_Bank0_data),
     .Big_FV_Bank1_data(Big_FV_Bank1_data),
     .Big_FV_Bank2_data(Big_FV_Bank2_data),
     .Big_FV_Bank3_data(Big_FV_Bank3_data),
+	.Weight_Bank_Data(Weight_Bank_Data),
 
 	.task_complete(task_complete)
 );

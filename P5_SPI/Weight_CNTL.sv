@@ -4,6 +4,9 @@ module Weight_CNTL(
     input[$clog2(`Max_Num_Weight_layer)-1:0] Num_Weight_layer,//Num_Weight_layer-1
     input[$clog2(`Max_FV_num):0]  Num_FV,
     input fire, //from RS
+    input sos,
+    input eos,
+    input Weight_Bank_Data,
 
     // output logic[`Mult_per_PE-1:0][`FV_size-1:0] Weight_data2Vertex,
     output logic[`FV_size-1:0] Weight_data2Vertex_0,
@@ -18,9 +21,10 @@ module Weight_CNTL(
     output logic RS_IDLE
 );
 //And Wight Buffer
-typedef enum reg [$clog2(2)-1:0] {
+typedef enum reg [$clog2(3)-1:0] {
     IDLE='d0,
-    Work='d1
+    Work='d1,
+    Prepare='d2
 } state_t;
 logic[`Mult_per_PE-1:0][`FV_size-1:0] Weight_data2Vertex;
 logic [`Max_Num_Weight_layer-1:0][`Max_FV_num-1:0][`FV_size-1:0]Weight_Buffer;
@@ -41,6 +45,11 @@ logic [`Weight_SRAM_BW-1:0] Weight_SRAM_Data_in;
 Weight_Cntl2RS nx_Weight_Cntl2RS_out;
 Weight_Cntl2RS Weight_Cntl2RS_out;
 Weight_Cntl2bank Weight_Cntl2bank_out;
+
+logic reg_eos;
+logic[$clog2(256):0] prepare_wr_addr,nx_prepare_wr_addr;
+logic data_valid;
+
 assign Weight_Cntl2RS_out_Cur_FV_num=Weight_Cntl2RS_out.Cur_FV_num;
 assign Weight_Cntl2bank_out_sos=Weight_Cntl2bank_out.sos;
 assign Weight_Cntl2bank_out_eos=Weight_Cntl2bank_out.eos;
@@ -62,9 +71,13 @@ always_comb begin
         nx_Weight_Cntl2SRAM_Interface_out.A='d0;
         nx_Weight_line_cnt=Weight_line_cnt;
         nx_Weight_num=Cur_Weight_num;
+        nx_prepare_wr_addr=prepare_wr_addr;
         case(state)
             IDLE:
-                if(fire)begin
+                if(sos)begin
+                    nx_state=Prepare;   
+                end
+                else if(fire)begin
                     nx_state=Work;
                     nx_Weight_Cntl2SRAM_Interface_out.WEN=1'b1;
                     nx_Weight_Cntl2SRAM_Interface_out.CEN=1'b0;
@@ -76,6 +89,36 @@ always_comb begin
                     nx_state=IDLE;
                     nx_RS_IDLE=1'b1;
                 end
+
+            Prepare:
+                begin
+                    if(prepare_wr_addr=='d256)begin
+                        nx_Weight_Cntl2SRAM_Interface_out.WEN='d1;
+                        if(reg_eos )begin
+                            nx_state=IDLE;
+                            nx_prepare_wr_addr='d0;
+                        end
+                    end
+                    else if(reg_eos && data_valid)begin
+                        nx_Weight_Cntl2SRAM_Interface_out.WEN='d0;
+                        nx_Weight_Cntl2SRAM_Interface_out.A=prepare_wr_addr;
+                      
+                        nx_Weight_Cntl2SRAM_Interface_out.CEN='d0;
+                        nx_prepare_wr_addr='d0;
+                        nx_state=IDLE;
+                    end
+
+                    else if(data_valid)begin
+                        nx_state=Prepare;
+                        nx_Weight_Cntl2SRAM_Interface_out.WEN='d0;
+                        nx_Weight_Cntl2SRAM_Interface_out.A=prepare_wr_addr;
+                        
+                        nx_Weight_Cntl2SRAM_Interface_out.CEN='d0;
+                        nx_prepare_wr_addr=prepare_wr_addr+1'd1;
+                    end
+                
+                end
+
             Work:
                 begin
                     nx_FV_num=nx_FV_num+`Mult_per_PE;
@@ -149,6 +192,8 @@ always_ff@(posedge clk or negedge reset )begin
         Weight_line_cnt<=#1 'd0;
         Weight_Cntl2SRAM_Interface_out<=#1 'd0;
         Cur_Weight_num<=#1 'd0;
+        reg_eos<=#1 'd0;
+        prepare_wr_addr<=#1 'd0;
     end
     else begin
         // Weight_Buffer<=#1 Weight_Buffer;
@@ -164,6 +209,8 @@ always_ff@(posedge clk or negedge reset )begin
         Weight_line_cnt<=#1 nx_Weight_line_cnt;
         Weight_Cntl2SRAM_Interface_out<=#1 nx_Weight_Cntl2SRAM_Interface_out;
         Cur_Weight_num<=#1 nx_Weight_num;
+        reg_eos<=#1 state!=Prepare ?1'b0 :reg_eos? 1'b1: eos;
+        prepare_wr_addr<=#1 nx_prepare_wr_addr;
         
         //reg_Cur_FV_num<=#1 Cur_FV_num;
     end
@@ -175,6 +222,22 @@ Weight_SRAM Weight_SRAM_DUT(
                 .CEN(Weight_Cntl2SRAM_Interface_out.CEN),
                 .WEN(Weight_Cntl2SRAM_Interface_out.WEN),
                 .A(Weight_Cntl2SRAM_Interface_out.A),
-                .D(64'b0)
+                .D(Weight_Cntl2SRAM_Interface_out.D)
                 );
+
+RX#(.BW_MEM(64))
+        Weight_Bank_Rx(
+            .clk(clk),
+            // input wclk,
+            .reset(reset),//rd
+            // input wrst,
+
+            .data_in(Weight_Bank_Data),//from TX
+            .SOS(sos),
+            .EOS(eos),
+
+        // output logic wr_full,
+            .valid(data_valid),
+            .data_out(nx_Weight_Cntl2SRAM_Interface_out.D)
+        );
 endmodule

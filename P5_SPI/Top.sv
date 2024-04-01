@@ -17,16 +17,17 @@ module Top(
 
     input FV_Info_Bank0_data,
 
-    input FV_Bank0_data,
-    input FV_Bank1_data,
-    input FV_Bank2_data,
-    input FV_Bank3_data,
+    // input FV_Bank0_data,
+    // input FV_Bank1_data,
+    // input FV_Bank2_data,
+    // input FV_Bank3_data,
 
     input Big_FV_Bank0_data,
     input Big_FV_Bank1_data,
     input Big_FV_Bank2_data,
     input Big_FV_Bank3_data,
 
+    input Weight_Bank_Data,
 
     output logic task_complete
 );
@@ -1275,7 +1276,9 @@ Weight_CNTL Weight_CNTL_U(
     .Num_Weight_layer(Weights_boundary),//Num_Weight_layer-1
     .Num_FV(Num_FV),
     .fire(fire), //from RS
-
+    .sos(sos),
+    .eos(eos),
+    .Weight_Bank_Data(Weight_Bank_Data),
     // output logic[`Mult_per_PE-1:0][`FV_size-1:0] Weight_data2Vertex,
     .Weight_data2Vertex_0(Weight_data2Vertex_0),
     .Weight_data2Vertex_1(Weight_data2Vertex_1),
@@ -1328,6 +1331,13 @@ Big_FV_wrapper_0 Big_FV_wrapper_0_U(
     .req_pkt_wr_eos_3(Req2Output_SRAM_Bank_out_wr_eos_3),
 
     .stream_begin(stream_begin),
+    .sos(sos),
+    .eos(eos),
+    .Big_FV_Bank0_data(Big_FV_Bank0_data),
+    .Big_FV_Bank1_data(Big_FV_Bank1_data),
+    .Big_FV_Bank2_data(Big_FV_Bank2_data),
+    .Big_FV_Bank3_data(Big_FV_Bank3_data),
+
 
     .Big_FV2Sm_FV_sos_0(Big_FV2Sm_FV_sos_0),
     .Big_FV2Sm_FV_eos_0(Big_FV2Sm_FV_eos_0),
@@ -1375,26 +1385,6 @@ Big_FV_wrapper_0 Big_FV_wrapper_0_U(
     .EdgePE_rd_out_valid_3(EdgePE_rd_out_valid_3),
     .available(inbuff_available)
 
-    //TB
-    //.state_tb(state_tb), 
-    //.nx_state_tb(nx_state_tb),
-    //.node_offset(node_offset),
-    //.node_cnt_tb(node_cnt_tb),
-    //.nx_node_cnt(nx_node_cnt),
-    //.cnt_tb(cnt_tb),// sram bank cache line per iteration = 64
-    //.nx_cnt(nx_cnt),
-    //.total_FV_num_tb(total_FV_num_tb),
-    //.nx_total_FV_num(nx_total_FV_num),
-    //.iter_offset(iter_offset),
-    //.cur_iter_tb(cur_iter_tb),
-    //.nx_iter(nx_iter),
-    //.change(change),
-    //.stream_addr(stream_addr),
-    //.prev_addr_tb(prev_addr_tb),
-    //.nx_PE_tag(nx_PE_tag),
-    //.PE_tag_tb(PE_tag_tb),
-    //.//curr_nodeid_tb(curr_nodeid_tb),
-    //.nxt_nodeid(nxt_nodeid)
 );
 
 Big_FV_wrapper_1 Big_FV_wrapper_1_U(

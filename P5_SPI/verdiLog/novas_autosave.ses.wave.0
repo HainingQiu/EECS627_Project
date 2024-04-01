@@ -2,7 +2,7 @@ Magic 271485
 Revision Verdi_R-2020.12-SP2-1
 
 ; Window Layout <x> <y> <width> <height> <signalwidth> <valuewidth>
-viewPort 0 25 1697 569 632 65
+viewPort 0 25 1701 636 100 65
 
 ; File list:
 ; openDirFile [-d delimiter] [-s time_offset] [-rf auto_bus_rule_file] path_name file_name
@@ -16,16 +16,16 @@ signalSpacing 5
 
 ; windowTimeUnit is used for zoom, cursor & marker
 ; waveform viewport range
-zoom 0.000000 5339771006.160164
+zoom 1992618.262941 2984958.035322
 cursor 1000100000.000000
 marker 0.000000
 
 ; user define markers
 ; userMarker time_pos marker_name color linestyle
 ; visible top row signal index
-top 78
+top 30
 ; marker line index
-markerPos 99
+markerPos 54
 
 ; event list
 ; addEvent event_name event_expression
@@ -45,111 +45,67 @@ COMPLEX_EVENT_END
 curSTATUS ByChange
 
 
-addGroup "PACKET_SRAM_integration_U"
+addGroup "Weight_Bank_TX"
 activeDirFile "" "/home/zzyyds/EECS627_Project/P5_SPI/inter.fsdb"
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/clk
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/reset
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/grant
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PE_IDLE[3:0]
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Edge_PE2IMEM_CNTL_in_packet_0[15:0]
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Edge_PE2IMEM_CNTL_in_packet_1[15:0]
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Edge_PE2IMEM_CNTL_in_packet_2[15:0]
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Edge_PE2IMEM_CNTL_in_packet_3[15:0]
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Edge_PE2IMEM_CNTL_in_valid[3:0]
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/bank_busy[3:0]
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Big_FV2Sm_FV_eos_0
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Big_FV2Sm_FV_eos_1
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Big_FV2Sm_FV_eos_2
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Big_FV2Sm_FV_eos_3
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Vertex_empty
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Vertex_RS_empty
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/outbuff_available
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Packet_Bank_data
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/sos
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/eos
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/task_complete
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/DP_task2Edge_PE_out_packet_0[13:0]
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/DP_task2Edge_PE_out_packet_1[13:0]
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/DP_task2Edge_PE_out_packet_2[13:0]
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/DP_task2Edge_PE_out_packet_3[13:0]
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/DP_task2Edge_PE_out_valid[3:0]
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Req
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/replay_Iter[1:0]
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Num_FV[7:0]
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/Weights_boundary[2:0]
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/stream_begin
-addSubGroup "decoder_0"
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/clk
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/reset
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/com2DPpacket
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/RS_empty
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/grant
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/bank_busy_in[3:0]
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/PE_IDLE[3:0]
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/stream_end
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/vertex_done
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/outbuff_available
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/cntl_done
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/task_complete
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/DP_task2RS_out
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/Req
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/fifo_stall
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/current_replay_iter_flag
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/replay_Iter[1:0]
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/Num_FV[7:0]
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/Weights_boundary[2:0]
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/DP2mem_packet_out
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/decoder_0/stream_begin
-addSubGroup "PACKET_CNTL_0"
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/clk
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/reset
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/DP2mem_packet_in
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/Edge_PE2IMEM_CNTL_in[3:0]
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/full
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/cntl_done
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/Packet_Bank_data
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/sos
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/eos
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/wr_en
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/replay_iter_flag
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/fifo_stall
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/Data_SRAM_in[15:0]
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/PACKET_CNTL_SRAM_out
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/mem2fifo
-addSubGroup "IMem_Sram_U"
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/IMem_Sram_U/Q[15:0]
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/IMem_Sram_U/CLK
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/IMem_Sram_U/CEN
-addSignal -h 15 /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/IMem_Sram_U/WEN
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/IMem_Sram_U/A[7:0]
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/IMem_Sram_U/D[15:0]
-addSubGroup "iTop_DUT"
-addSignal -h 15 /Top_tb/iTop_DUT/clk
-addSignal -h 15 /Top_tb/iTop_DUT/reset
-addSignal -h 15 /Top_tb/iTop_DUT/sos
-addSignal -h 15 /Top_tb/iTop_DUT/eos
-addSignal -h 15 /Top_tb/iTop_DUT/Packet_Bank_data
-addSignal -h 15 /Top_tb/iTop_DUT/Neighbor_Info_Bank0_data
-addSignal -h 15 /Top_tb/iTop_DUT/Neighbor_Info_Bank1_data
-addSignal -h 15 /Top_tb/iTop_DUT/Neighbor_ID_Bank0_data
-addSignal -h 15 /Top_tb/iTop_DUT/Neighbor_ID_Bank1_data
-addSignal -h 15 /Top_tb/iTop_DUT/Neighbor_ID_Bank2_data
-addSignal -h 15 /Top_tb/iTop_DUT/Neighbor_ID_Bank3_data
-addSignal -h 15 /Top_tb/iTop_DUT/FV_Info_Bank0_data
-addSignal -h 15 /Top_tb/iTop_DUT/FV_Bank0_data
-addSignal -h 15 /Top_tb/iTop_DUT/FV_Bank1_data
-addSignal -h 15 /Top_tb/iTop_DUT/FV_Bank2_data
-addSignal -h 15 /Top_tb/iTop_DUT/FV_Bank3_data
-addSignal -h 15 /Top_tb/iTop_DUT/Big_FV_Bank0_data
-addSignal -h 15 /Top_tb/iTop_DUT/Big_FV_Bank1_data
-addSignal -h 15 /Top_tb/iTop_DUT/Big_FV_Bank2_data
-addSignal -h 15 /Top_tb/iTop_DUT/Big_FV_Bank3_data
-addSignal -h 15 /Top_tb/iTop_DUT/task_complete
-addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/PACKET_SRAM_integration_U/PACKET_CNTL_0/nx_state[2:0]
-endSubGroup "iTop_DUT"
-endSubGroup "IMem_Sram_U"
-endSubGroup "PACKET_CNTL_0"
-endSubGroup "decoder_0"
+addSignal -h 15 /Top_tb/Weight_Bank_TX/wclk
+addSignal -h 15 /Top_tb/Weight_Bank_TX/wrst
+addSignal -h 15 /Top_tb/Weight_Bank_TX/data_out
+addSubGroup "Weight_CNTL_U"
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/clk
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/reset
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/Weight_CNTL_U/Num_Weight_layer[2:0]
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/Weight_CNTL_U/Num_FV[7:0]
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/fire
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/sos
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/eos
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Data
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_data2Vertex_0[15:0]
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_data2Vertex_1[15:0]
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_data2Vertex_2[15:0]
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_data2Vertex_3[15:0]
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Cntl2RS_out_Cur_FV_num[6:0]
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Cntl2bank_out_sos
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Cntl2bank_out_eos
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Cntl2bank_out_change
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/RS_IDLE
+addSubGroup "Weight_Bank_Rx"
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Rx/clk
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Rx/reset
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Rx/data_in
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Rx/SOS
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Rx/EOS
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Rx/valid
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Rx/data_out[63:0]
+addSubGroup "SPI_Sync_FIFO_RX"
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Rx/SPI_Sync_FIFO_RX/clk
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Rx/SPI_Sync_FIFO_RX/rst
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Rx/SPI_Sync_FIFO_RX/winc
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Rx/SPI_Sync_FIFO_RX/rinc
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Rx/SPI_Sync_FIFO_RX/wdata[63:0]
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Rx/SPI_Sync_FIFO_RX/wfull
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Rx/SPI_Sync_FIFO_RX/rempty
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Rx/SPI_Sync_FIFO_RX/rdata[63:0]
+addSubGroup "tb_dual_port_RAM"
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Rx/SPI_Sync_FIFO_RX/tb_dual_port_RAM/wclk
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Rx/SPI_Sync_FIFO_RX/tb_dual_port_RAM/wenc
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Rx/SPI_Sync_FIFO_RX/tb_dual_port_RAM/waddr
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Rx/SPI_Sync_FIFO_RX/tb_dual_port_RAM/wdata[63:0]
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Rx/SPI_Sync_FIFO_RX/tb_dual_port_RAM/rclk
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Rx/SPI_Sync_FIFO_RX/tb_dual_port_RAM/renc
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Rx/SPI_Sync_FIFO_RX/tb_dual_port_RAM/raddr
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_Bank_Rx/SPI_Sync_FIFO_RX/tb_dual_port_RAM/rdata[63:0]
+addSubGroup "Weight_SRAM_DUT"
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_SRAM_DUT/Q[63:0]
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_SRAM_DUT/CLK
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_SRAM_DUT/CEN
+addSignal -h 15 /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_SRAM_DUT/WEN
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_SRAM_DUT/A[7:0]
+addSignal -h 15 -UNSIGNED -HEX /Top_tb/iTop_DUT/Weight_CNTL_U/Weight_SRAM_DUT/D[63:0]
+endSubGroup "Weight_SRAM_DUT"
+endSubGroup "tb_dual_port_RAM"
+endSubGroup "SPI_Sync_FIFO_RX"
+endSubGroup "Weight_Bank_Rx"
+endSubGroup "Weight_CNTL_U"
 addGroup "G2"
 
 ; getSignalForm Scope Hierarchy Status

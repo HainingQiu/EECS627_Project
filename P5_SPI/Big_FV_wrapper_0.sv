@@ -41,6 +41,14 @@ module Big_FV_wrapper_0(
 
     input stream_begin,
 
+    input sos,
+    input eos,
+    input Big_FV_Bank0_data,
+    input Big_FV_Bank1_data,
+    input Big_FV_Bank2_data,
+    input Big_FV_Bank3_data,
+
+    
     output logic Big_FV2Sm_FV_sos_0,
     output logic Big_FV2Sm_FV_eos_0,
     output logic [`FV_bandwidth-1:0] Big_FV2Sm_FV_FV_data_0,
